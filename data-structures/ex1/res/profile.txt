@@ -1,0 +1,3143 @@
+Testing 13ordered_arrayIiE
+All tests passed for 13ordered_arrayIiE
+Testing 17ordered_array_stlIiE
+All tests passed for 17ordered_array_stlIiE
+Testing 12ordered_listIiE
+All tests passed for 12ordered_listIiE
+Testing 16ordered_list_stlIiE
+All tests passed for 16ordered_list_stlIiE
+All container tests finished!
+
+Profiling with n = 0
+13ordered_arrayIiE push_back: 6e-08s
+13ordered_arrayIiE ordered_insert: 2e-08s
+13ordered_arrayIiE contains: 2e-08s
+13ordered_arrayIiE remove: 2e-08s
+13ordered_arrayIiE sort: 3e-08s
+13ordered_arrayIiE clear: 4e-08s
+13ordered_arrayIiE merge: 3e-08s
+17ordered_array_stlIiE push_back: 2e-08s
+17ordered_array_stlIiE ordered_insert: 2e-08s
+17ordered_array_stlIiE contains: 2e-08s
+17ordered_array_stlIiE remove: 2e-08s
+17ordered_array_stlIiE sort: 7e-08s
+17ordered_array_stlIiE clear: 4e-08s
+17ordered_array_stlIiE merge: 3.1e-07s
+12ordered_listIiE push_back: 2e-08s
+12ordered_listIiE ordered_insert: 2e-08s
+12ordered_listIiE contains: 2e-08s
+12ordered_listIiE remove: 1e-08s
+12ordered_listIiE sort: 4e-08s
+12ordered_listIiE clear: 3e-08s
+12ordered_listIiE merge: 6e-08s
+16ordered_list_stlIiE push_back: 2e-08s
+16ordered_list_stlIiE ordered_insert: 2e-08s
+16ordered_list_stlIiE contains: 2e-08s
+16ordered_list_stlIiE remove: 2e-08s
+16ordered_list_stlIiE sort: 4e-08s
+16ordered_list_stlIiE clear: 5e-08s
+16ordered_list_stlIiE merge: 6e-08s
+Finished profiling for n = 0
+
+Profiling with n = 1000
+13ordered_arrayIiE push_back: 1.052e-05s
+13ordered_arrayIiE ordered_insert: 0.00158257s
+13ordered_arrayIiE contains: 3.936e-05s
+13ordered_arrayIiE remove: 1.785e-05s
+13ordered_arrayIiE sort: 0.000122298s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 8.06e-06s
+17ordered_array_stlIiE push_back: 8.66e-06s
+17ordered_array_stlIiE ordered_insert: 0.000287826s
+17ordered_array_stlIiE contains: 0.000138179s
+17ordered_array_stlIiE remove: 1.6359e-05s
+17ordered_array_stlIiE sort: 0.000236258s
+17ordered_array_stlIiE clear: 6e-08s
+17ordered_array_stlIiE merge: 4.22e-05s
+12ordered_listIiE push_back: 1.3839e-05s
+12ordered_listIiE ordered_insert: 0.000340666s
+12ordered_listIiE contains: 0.000739581s
+12ordered_listIiE remove: 0.000125979s
+12ordered_listIiE sort: 9.5139e-05s
+12ordered_listIiE clear: 1.114e-05s
+12ordered_listIiE merge: 7.0219e-05s
+16ordered_list_stlIiE push_back: 4.724e-05s
+16ordered_list_stlIiE ordered_insert: 0.00232193s
+16ordered_list_stlIiE contains: 0.00363297s
+16ordered_list_stlIiE remove: 0.000317346s
+16ordered_list_stlIiE sort: 0.000271937s
+16ordered_list_stlIiE clear: 2.397e-05s
+16ordered_list_stlIiE merge: 8.9178e-05s
+Finished profiling for n = 1000
+
+Profiling with n = 2000
+13ordered_arrayIiE push_back: 1.207e-05s
+13ordered_arrayIiE ordered_insert: 0.00355947s
+13ordered_arrayIiE contains: 9.9949e-05s
+13ordered_arrayIiE remove: 7.8999e-05s
+13ordered_arrayIiE sort: 0.000279907s
+13ordered_arrayIiE clear: 1.1e-07s
+13ordered_arrayIiE merge: 1.5949e-05s
+17ordered_array_stlIiE push_back: 1.592e-05s
+17ordered_array_stlIiE ordered_insert: 0.000704442s
+17ordered_array_stlIiE contains: 0.000333537s
+17ordered_array_stlIiE remove: 4.382e-05s
+17ordered_array_stlIiE sort: 0.000646692s
+17ordered_array_stlIiE clear: 2.5e-07s
+17ordered_array_stlIiE merge: 9.8889e-05s
+12ordered_listIiE push_back: 3.1899e-05s
+12ordered_listIiE ordered_insert: 0.00177498s
+12ordered_listIiE contains: 0.00408434s
+12ordered_listIiE remove: 0.000742801s
+12ordered_listIiE sort: 0.000162198s
+12ordered_listIiE clear: 3.024e-05s
+12ordered_listIiE merge: 0.000112709s
+16ordered_list_stlIiE push_back: 7.349e-05s
+16ordered_list_stlIiE ordered_insert: 0.00881471s
+16ordered_list_stlIiE contains: 0.0150359s
+16ordered_list_stlIiE remove: 0.00155431s
+16ordered_list_stlIiE sort: 0.000694822s
+16ordered_list_stlIiE clear: 5.9659e-05s
+16ordered_list_stlIiE merge: 0.000288957s
+Finished profiling for n = 2000
+
+Profiling with n = 3000
+13ordered_arrayIiE push_back: 2.731e-05s
+13ordered_arrayIiE ordered_insert: 0.0076063s
+13ordered_arrayIiE contains: 0.000131758s
+13ordered_arrayIiE remove: 0.000115619s
+13ordered_arrayIiE sort: 0.000430935s
+13ordered_arrayIiE clear: 1.63e-05s
+13ordered_arrayIiE merge: 3.6829e-05s
+17ordered_array_stlIiE push_back: 2.898e-05s
+17ordered_array_stlIiE ordered_insert: 0.00124554s
+17ordered_array_stlIiE contains: 0.000459925s
+17ordered_array_stlIiE remove: 5.2809e-05s
+17ordered_array_stlIiE sort: 0.000788691s
+17ordered_array_stlIiE clear: 6e-08s
+17ordered_array_stlIiE merge: 0.000116949s
+12ordered_listIiE push_back: 3.647e-05s
+12ordered_listIiE ordered_insert: 0.00472944s
+12ordered_listIiE contains: 0.0102911s
+12ordered_listIiE remove: 0.00186773s
+12ordered_listIiE sort: 0.000255407s
+12ordered_listIiE clear: 2.8759e-05s
+12ordered_listIiE merge: 0.000157118s
+16ordered_list_stlIiE push_back: 0.000113599s
+16ordered_list_stlIiE ordered_insert: 0.019395s
+16ordered_list_stlIiE contains: 0.0339601s
+16ordered_list_stlIiE remove: 0.00318442s
+16ordered_list_stlIiE sort: 0.00107779s
+16ordered_list_stlIiE clear: 0.000110439s
+16ordered_list_stlIiE merge: 0.000332157s
+Finished profiling for n = 3000
+
+Profiling with n = 4000
+13ordered_arrayIiE push_back: 2.947e-05s
+13ordered_arrayIiE ordered_insert: 0.0140564s
+13ordered_arrayIiE contains: 0.000195668s
+13ordered_arrayIiE remove: 0.000156488s
+13ordered_arrayIiE sort: 0.000526384s
+13ordered_arrayIiE clear: 6.689e-06s
+13ordered_arrayIiE merge: 3.113e-05s
+17ordered_array_stlIiE push_back: 3.54e-05s
+17ordered_array_stlIiE ordered_insert: 0.00144965s
+17ordered_array_stlIiE contains: 0.000615593s
+17ordered_array_stlIiE remove: 7.1539e-05s
+17ordered_array_stlIiE sort: 0.00114079s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.000160108s
+12ordered_listIiE push_back: 8.0349e-05s
+12ordered_listIiE ordered_insert: 0.00945539s
+12ordered_listIiE contains: 0.0203164s
+12ordered_listIiE remove: 0.00368266s
+12ordered_listIiE sort: 0.000358176s
+12ordered_listIiE clear: 4.475e-05s
+12ordered_listIiE merge: 0.000232887s
+16ordered_list_stlIiE push_back: 0.000145829s
+16ordered_list_stlIiE ordered_insert: 0.0339603s
+16ordered_list_stlIiE contains: 0.0601051s
+16ordered_list_stlIiE remove: 0.00565877s
+16ordered_list_stlIiE sort: 0.00122867s
+16ordered_list_stlIiE clear: 9.4529e-05s
+16ordered_list_stlIiE merge: 0.000349736s
+Finished profiling for n = 4000
+
+Profiling with n = 5000
+13ordered_arrayIiE push_back: 3.4159e-05s
+13ordered_arrayIiE ordered_insert: 0.020022s
+13ordered_arrayIiE contains: 0.000212377s
+13ordered_arrayIiE remove: 0.000174588s
+13ordered_arrayIiE sort: 0.000612583s
+13ordered_arrayIiE clear: 3.093e-05s
+13ordered_arrayIiE merge: 3.8559e-05s
+17ordered_array_stlIiE push_back: 3.755e-05s
+17ordered_array_stlIiE ordered_insert: 0.00187615s
+17ordered_array_stlIiE contains: 0.000727152s
+17ordered_array_stlIiE remove: 8.5929e-05s
+17ordered_array_stlIiE sort: 0.00146968s
+17ordered_array_stlIiE clear: 1.2e-07s
+17ordered_array_stlIiE merge: 0.000193888s
+12ordered_listIiE push_back: 6.0459e-05s
+12ordered_listIiE ordered_insert: 0.0148376s
+12ordered_listIiE contains: 0.0326866s
+12ordered_listIiE remove: 0.00676873s
+12ordered_listIiE sort: 0.000448305s
+12ordered_listIiE clear: 4.326e-05s
+12ordered_listIiE merge: 0.000401216s
+16ordered_list_stlIiE push_back: 0.000256527s
+16ordered_list_stlIiE ordered_insert: 0.0520779s
+16ordered_list_stlIiE contains: 0.0942233s
+16ordered_list_stlIiE remove: 0.00888255s
+16ordered_list_stlIiE sort: 0.00165992s
+16ordered_list_stlIiE clear: 0.000132139s
+16ordered_list_stlIiE merge: 0.000438255s
+Finished profiling for n = 5000
+
+Profiling with n = 6000
+13ordered_arrayIiE push_back: 3.8359e-05s
+13ordered_arrayIiE ordered_insert: 0.0302303s
+13ordered_arrayIiE contains: 0.000265357s
+13ordered_arrayIiE remove: 0.000258357s
+13ordered_arrayIiE sort: 0.000752591s
+13ordered_arrayIiE clear: 2.62e-05s
+13ordered_arrayIiE merge: 4.5799e-05s
+17ordered_array_stlIiE push_back: 4.4929e-05s
+17ordered_array_stlIiE ordered_insert: 0.002433s
+17ordered_array_stlIiE contains: 0.000885159s
+17ordered_array_stlIiE remove: 0.000100629s
+17ordered_array_stlIiE sort: 0.00167843s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.000232837s
+12ordered_listIiE push_back: 8.2209e-05s
+12ordered_listIiE ordered_insert: 0.0226444s
+12ordered_listIiE contains: 0.045591s
+12ordered_listIiE remove: 0.00914478s
+12ordered_listIiE sort: 0.000656853s
+12ordered_listIiE clear: 9.6819e-05s
+12ordered_listIiE merge: 0.000463135s
+16ordered_list_stlIiE push_back: 0.000325887s
+16ordered_list_stlIiE ordered_insert: 0.0815657s
+16ordered_list_stlIiE contains: 0.13974s
+16ordered_list_stlIiE remove: 0.0128002s
+16ordered_list_stlIiE sort: 0.00196497s
+16ordered_list_stlIiE clear: 0.000151049s
+16ordered_list_stlIiE merge: 0.000522124s
+Finished profiling for n = 6000
+
+Profiling with n = 7000
+13ordered_arrayIiE push_back: 4.2729e-05s
+13ordered_arrayIiE ordered_insert: 0.0409281s
+13ordered_arrayIiE contains: 0.000321366s
+13ordered_arrayIiE remove: 0.000541284s
+13ordered_arrayIiE sort: 0.000938969s
+13ordered_arrayIiE clear: 2e-07s
+13ordered_arrayIiE merge: 5.3179e-05s
+17ordered_array_stlIiE push_back: 5.303e-05s
+17ordered_array_stlIiE ordered_insert: 0.00307453s
+17ordered_array_stlIiE contains: 0.00101745s
+17ordered_array_stlIiE remove: 0.000127478s
+17ordered_array_stlIiE sort: 0.00200681s
+17ordered_array_stlIiE clear: 1.2e-07s
+17ordered_array_stlIiE merge: 0.000270807s
+12ordered_listIiE push_back: 8.2939e-05s
+12ordered_listIiE ordered_insert: 0.0313033s
+12ordered_listIiE contains: 0.0650575s
+12ordered_listIiE remove: 0.0119461s
+12ordered_listIiE sort: 0.000660923s
+12ordered_listIiE clear: 6.0719e-05s
+12ordered_listIiE merge: 0.000402146s
+16ordered_list_stlIiE push_back: 0.000254307s
+16ordered_list_stlIiE ordered_insert: 0.102966s
+16ordered_list_stlIiE contains: 0.18671s
+16ordered_list_stlIiE remove: 0.0170335s
+16ordered_list_stlIiE sort: 0.00228847s
+16ordered_list_stlIiE clear: 0.000164818s
+16ordered_list_stlIiE merge: 0.000615153s
+Finished profiling for n = 7000
+
+Profiling with n = 8000
+13ordered_arrayIiE push_back: 4.6939e-05s
+13ordered_arrayIiE ordered_insert: 0.0543453s
+13ordered_arrayIiE contains: 0.000369555s
+13ordered_arrayIiE remove: 0.000432715s
+13ordered_arrayIiE sort: 0.00102865s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 6.0769e-05s
+17ordered_array_stlIiE push_back: 5.828e-05s
+17ordered_array_stlIiE ordered_insert: 0.00368528s
+17ordered_array_stlIiE contains: 0.00115996s
+17ordered_array_stlIiE remove: 0.000141038s
+17ordered_array_stlIiE sort: 0.00257154s
+17ordered_array_stlIiE clear: 2.7e-07s
+17ordered_array_stlIiE merge: 0.000307407s
+12ordered_listIiE push_back: 9.5279e-05s
+12ordered_listIiE ordered_insert: 0.0411448s
+12ordered_listIiE contains: 0.0821011s
+12ordered_listIiE remove: 0.0159764s
+12ordered_listIiE sort: 0.000760431s
+12ordered_listIiE clear: 6.9429e-05s
+12ordered_listIiE merge: 0.000453264s
+16ordered_list_stlIiE push_back: 0.000294627s
+16ordered_list_stlIiE ordered_insert: 0.132398s
+16ordered_list_stlIiE contains: 0.241139s
+16ordered_list_stlIiE remove: 0.0224965s
+16ordered_list_stlIiE sort: 0.00264796s
+16ordered_list_stlIiE clear: 0.000250977s
+16ordered_list_stlIiE merge: 0.000707951s
+Finished profiling for n = 8000
+
+Profiling with n = 9000
+13ordered_arrayIiE push_back: 8.151e-05s
+13ordered_arrayIiE ordered_insert: 0.0668315s
+13ordered_arrayIiE contains: 0.000446435s
+13ordered_arrayIiE remove: 0.000304576s
+13ordered_arrayIiE sort: 0.00120972s
+13ordered_arrayIiE clear: 9e-08s
+13ordered_arrayIiE merge: 6.738e-05s
+17ordered_array_stlIiE push_back: 8.3599e-05s
+17ordered_array_stlIiE ordered_insert: 0.00437679s
+17ordered_array_stlIiE contains: 0.00141073s
+17ordered_array_stlIiE remove: 0.000174288s
+17ordered_array_stlIiE sort: 0.0027204s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.000349266s
+12ordered_listIiE push_back: 0.000149918s
+12ordered_listIiE ordered_insert: 0.0522099s
+12ordered_listIiE contains: 0.105348s
+12ordered_listIiE remove: 0.0207528s
+12ordered_listIiE sort: 0.0009324s
+12ordered_listIiE clear: 8.2849e-05s
+12ordered_listIiE merge: 0.000528354s
+16ordered_list_stlIiE push_back: 0.000349646s
+16ordered_list_stlIiE ordered_insert: 0.165808s
+16ordered_list_stlIiE contains: 0.302796s
+16ordered_list_stlIiE remove: 0.0288992s
+16ordered_list_stlIiE sort: 0.00314906s
+16ordered_list_stlIiE clear: 0.000271457s
+16ordered_list_stlIiE merge: 0.00082293s
+Finished profiling for n = 9000
+
+Profiling with n = 10000
+13ordered_arrayIiE push_back: 8.7789e-05s
+13ordered_arrayIiE ordered_insert: 0.0826208s
+13ordered_arrayIiE contains: 0.000474275s
+13ordered_arrayIiE remove: 0.00079938s
+13ordered_arrayIiE sort: 0.0013226s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 7.6319e-05s
+17ordered_array_stlIiE push_back: 7.2409e-05s
+17ordered_array_stlIiE ordered_insert: 0.00513171s
+17ordered_array_stlIiE contains: 0.00151101s
+17ordered_array_stlIiE remove: 0.000192978s
+17ordered_array_stlIiE sort: 0.00290482s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.000388136s
+12ordered_listIiE push_back: 0.000116999s
+12ordered_listIiE ordered_insert: 0.0655784s
+12ordered_listIiE contains: 0.139172s
+12ordered_listIiE remove: 0.0265123s
+12ordered_listIiE sort: 0.000980169s
+12ordered_listIiE clear: 8.8889e-05s
+12ordered_listIiE merge: 0.000590694s
+16ordered_list_stlIiE push_back: 0.000365876s
+16ordered_list_stlIiE ordered_insert: 0.205864s
+16ordered_list_stlIiE contains: 0.373821s
+16ordered_list_stlIiE remove: 0.0355665s
+16ordered_list_stlIiE sort: 0.00349423s
+16ordered_list_stlIiE clear: 0.000246507s
+16ordered_list_stlIiE merge: 0.00088865s
+Finished profiling for n = 10000
+
+Profiling with n = 11000
+13ordered_arrayIiE push_back: 7.0999e-05s
+13ordered_arrayIiE ordered_insert: 0.0975124s
+13ordered_arrayIiE contains: 0.000553214s
+13ordered_arrayIiE remove: 0.000567673s
+13ordered_arrayIiE sort: 0.00144361s
+13ordered_arrayIiE clear: 5e-08s
+13ordered_arrayIiE merge: 8.4079e-05s
+17ordered_array_stlIiE push_back: 7.9519e-05s
+17ordered_array_stlIiE ordered_insert: 0.00590443s
+17ordered_array_stlIiE contains: 0.00170682s
+17ordered_array_stlIiE remove: 0.000201888s
+17ordered_array_stlIiE sort: 0.00325054s
+17ordered_array_stlIiE clear: 6e-08s
+17ordered_array_stlIiE merge: 0.000428635s
+12ordered_listIiE push_back: 0.000129968s
+12ordered_listIiE ordered_insert: 0.0810666s
+12ordered_listIiE contains: 0.180316s
+12ordered_listIiE remove: 0.0342429s
+12ordered_listIiE sort: 0.00117793s
+12ordered_listIiE clear: 0.000144628s
+12ordered_listIiE merge: 0.000653442s
+16ordered_list_stlIiE push_back: 0.000398565s
+16ordered_list_stlIiE ordered_insert: 0.248178s
+16ordered_list_stlIiE contains: 0.449364s
+16ordered_list_stlIiE remove: 0.0431255s
+16ordered_list_stlIiE sort: 0.00389057s
+16ordered_list_stlIiE clear: 0.000338006s
+16ordered_list_stlIiE merge: 0.000981519s
+Finished profiling for n = 11000
+
+Profiling with n = 12000
+13ordered_arrayIiE push_back: 9.4889e-05s
+13ordered_arrayIiE ordered_insert: 0.119226s
+13ordered_arrayIiE contains: 0.000621923s
+13ordered_arrayIiE remove: 0.00101261s
+13ordered_arrayIiE sort: 0.00164321s
+13ordered_arrayIiE clear: 1.2e-07s
+13ordered_arrayIiE merge: 9.1299e-05s
+17ordered_array_stlIiE push_back: 0.000107219s
+17ordered_array_stlIiE ordered_insert: 0.00692841s
+17ordered_array_stlIiE contains: 0.00191025s
+17ordered_array_stlIiE remove: 0.000275617s
+17ordered_array_stlIiE sort: 0.00371371s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.000481324s
+12ordered_listIiE push_back: 0.000166278s
+12ordered_listIiE ordered_insert: 0.0989513s
+12ordered_listIiE contains: 0.223897s
+12ordered_listIiE remove: 0.0425427s
+12ordered_listIiE sort: 0.00123599s
+12ordered_listIiE clear: 0.000119099s
+12ordered_listIiE merge: 0.000709032s
+16ordered_list_stlIiE push_back: 0.000438205s
+16ordered_list_stlIiE ordered_insert: 0.295755s
+16ordered_list_stlIiE contains: 0.532994s
+16ordered_list_stlIiE remove: 0.0513438s
+16ordered_list_stlIiE sort: 0.00415718s
+16ordered_list_stlIiE clear: 0.000287807s
+16ordered_list_stlIiE merge: 0.00107105s
+Finished profiling for n = 12000
+
+Profiling with n = 13000
+13ordered_arrayIiE push_back: 8.0159e-05s
+13ordered_arrayIiE ordered_insert: 0.137869s
+13ordered_arrayIiE contains: 0.000638243s
+13ordered_arrayIiE remove: 0.00100929s
+13ordered_arrayIiE sort: 0.00173896s
+13ordered_arrayIiE clear: 6e-08s
+13ordered_arrayIiE merge: 9.8139e-05s
+17ordered_array_stlIiE push_back: 9.4769e-05s
+17ordered_array_stlIiE ordered_insert: 0.00769428s
+17ordered_array_stlIiE contains: 0.00204787s
+17ordered_array_stlIiE remove: 0.000244917s
+17ordered_array_stlIiE sort: 0.00394981s
+17ordered_array_stlIiE clear: 6e-08s
+17ordered_array_stlIiE merge: 0.000500014s
+12ordered_listIiE push_back: 0.000153358s
+12ordered_listIiE ordered_insert: 0.118927s
+12ordered_listIiE contains: 0.273717s
+12ordered_listIiE remove: 0.0522568s
+12ordered_listIiE sort: 0.00142933s
+12ordered_listIiE clear: 0.000131929s
+12ordered_listIiE merge: 0.000754992s
+16ordered_list_stlIiE push_back: 0.000483564s
+16ordered_list_stlIiE ordered_insert: 0.347435s
+16ordered_list_stlIiE contains: 0.624632s
+16ordered_list_stlIiE remove: 0.0593295s
+16ordered_list_stlIiE sort: 0.00457302s
+16ordered_list_stlIiE clear: 0.000311266s
+16ordered_list_stlIiE merge: 0.00117248s
+Finished profiling for n = 13000
+
+Profiling with n = 14000
+13ordered_arrayIiE push_back: 8.3079e-05s
+13ordered_arrayIiE ordered_insert: 0.157352s
+13ordered_arrayIiE contains: 0.000675392s
+13ordered_arrayIiE remove: 0.000634723s
+13ordered_arrayIiE sort: 0.00192802s
+13ordered_arrayIiE clear: 6e-08s
+13ordered_arrayIiE merge: 0.000105879s
+17ordered_array_stlIiE push_back: 0.000100399s
+17ordered_array_stlIiE ordered_insert: 0.00875654s
+17ordered_array_stlIiE contains: 0.00219563s
+17ordered_array_stlIiE remove: 0.000245177s
+17ordered_array_stlIiE sort: 0.00434736s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.000539223s
+12ordered_listIiE push_back: 0.000164808s
+12ordered_listIiE ordered_insert: 0.141064s
+12ordered_listIiE contains: 0.326204s
+12ordered_listIiE remove: 0.0619504s
+12ordered_listIiE sort: 0.00156046s
+12ordered_listIiE clear: 0.000150359s
+12ordered_listIiE merge: 0.00084481s
+16ordered_list_stlIiE push_back: 0.000509884s
+16ordered_list_stlIiE ordered_insert: 0.403148s
+16ordered_list_stlIiE contains: 0.723566s
+16ordered_list_stlIiE remove: 0.0685701s
+16ordered_list_stlIiE sort: 0.00488002s
+16ordered_list_stlIiE clear: 0.000343806s
+16ordered_list_stlIiE merge: 0.00128765s
+Finished profiling for n = 14000
+
+Profiling with n = 15000
+13ordered_arrayIiE push_back: 8.8559e-05s
+13ordered_arrayIiE ordered_insert: 0.182861s
+13ordered_arrayIiE contains: 0.000755832s
+13ordered_arrayIiE remove: 0.00117786s
+13ordered_arrayIiE sort: 0.00204789s
+13ordered_arrayIiE clear: 1.9e-07s
+13ordered_arrayIiE merge: 0.000114139s
+17ordered_array_stlIiE push_back: 0.000108178s
+17ordered_array_stlIiE ordered_insert: 0.0096124s
+17ordered_array_stlIiE contains: 0.00243226s
+17ordered_array_stlIiE remove: 0.000276987s
+17ordered_array_stlIiE sort: 0.00454393s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.000580673s
+12ordered_listIiE push_back: 0.000176098s
+12ordered_listIiE ordered_insert: 0.166047s
+12ordered_listIiE contains: 0.394924s
+12ordered_listIiE remove: 0.0767965s
+12ordered_listIiE sort: 0.0016593s
+12ordered_listIiE clear: 0.000155968s
+12ordered_listIiE merge: 0.000914149s
+16ordered_list_stlIiE push_back: 0.000540744s
+16ordered_list_stlIiE ordered_insert: 0.461977s
+16ordered_list_stlIiE contains: 0.827903s
+16ordered_list_stlIiE remove: 0.0800127s
+16ordered_list_stlIiE sort: 0.00528743s
+16ordered_list_stlIiE clear: 0.000362486s
+16ordered_list_stlIiE merge: 0.00137081s
+Finished profiling for n = 15000
+
+Profiling with n = 16000
+13ordered_arrayIiE push_back: 9.1239e-05s
+13ordered_arrayIiE ordered_insert: 0.208059s
+13ordered_arrayIiE contains: 0.000942759s
+13ordered_arrayIiE remove: 0.00164536s
+13ordered_arrayIiE sort: 0.00217446s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000121119s
+17ordered_array_stlIiE push_back: 0.000114259s
+17ordered_array_stlIiE ordered_insert: 0.0107352s
+17ordered_array_stlIiE contains: 0.00259412s
+17ordered_array_stlIiE remove: 0.000301057s
+17ordered_array_stlIiE sort: 0.00494544s
+17ordered_array_stlIiE clear: 6e-08s
+17ordered_array_stlIiE merge: 0.000617783s
+12ordered_listIiE push_back: 0.000200288s
+12ordered_listIiE ordered_insert: 0.191444s
+12ordered_listIiE contains: 0.451743s
+12ordered_listIiE remove: 0.087125s
+12ordered_listIiE sort: 0.00186422s
+12ordered_listIiE clear: 0.000182098s
+12ordered_listIiE merge: 0.000972099s
+16ordered_list_stlIiE push_back: 0.000576733s
+16ordered_list_stlIiE ordered_insert: 0.524079s
+16ordered_list_stlIiE contains: 0.943513s
+16ordered_list_stlIiE remove: 0.0895288s
+16ordered_list_stlIiE sort: 0.00561135s
+16ordered_list_stlIiE clear: 0.000401325s
+16ordered_list_stlIiE merge: 0.00145768s
+Finished profiling for n = 16000
+
+Profiling with n = 17000
+13ordered_arrayIiE push_back: 0.000227667s
+13ordered_arrayIiE ordered_insert: 0.235014s
+13ordered_arrayIiE contains: 0.00085404s
+13ordered_arrayIiE remove: 0.00159258s
+13ordered_arrayIiE sort: 0.00237477s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000129139s
+17ordered_array_stlIiE push_back: 0.000121899s
+17ordered_array_stlIiE ordered_insert: 0.0118738s
+17ordered_array_stlIiE contains: 0.00271856s
+17ordered_array_stlIiE remove: 0.000401115s
+17ordered_array_stlIiE sort: 0.00529764s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.000656453s
+12ordered_listIiE push_back: 0.000220727s
+12ordered_listIiE ordered_insert: 0.224049s
+12ordered_listIiE contains: 0.53828s
+12ordered_listIiE remove: 0.103296s
+12ordered_listIiE sort: 0.00211448s
+12ordered_listIiE clear: 0.000259897s
+12ordered_listIiE merge: 0.00102851s
+16ordered_list_stlIiE push_back: 0.000615783s
+16ordered_list_stlIiE ordered_insert: 0.589818s
+16ordered_list_stlIiE contains: 1.06447s
+16ordered_list_stlIiE remove: 0.100743s
+16ordered_list_stlIiE sort: 0.00603436s
+16ordered_list_stlIiE clear: 0.000530764s
+16ordered_list_stlIiE merge: 0.0017124s
+Finished profiling for n = 17000
+
+Profiling with n = 18000
+13ordered_arrayIiE push_back: 0.000123859s
+13ordered_arrayIiE ordered_insert: 0.271302s
+13ordered_arrayIiE contains: 0.000940089s
+13ordered_arrayIiE remove: 0.000997268s
+13ordered_arrayIiE sort: 0.0024901s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000136459s
+17ordered_array_stlIiE push_back: 0.000129408s
+17ordered_array_stlIiE ordered_insert: 0.0130042s
+17ordered_array_stlIiE contains: 0.00294026s
+17ordered_array_stlIiE remove: 0.000340396s
+17ordered_array_stlIiE sort: 0.00568938s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.000692232s
+12ordered_listIiE push_back: 0.000228338s
+12ordered_listIiE ordered_insert: 0.250495s
+12ordered_listIiE contains: 0.593318s
+12ordered_listIiE remove: 0.11571s
+12ordered_listIiE sort: 0.0021768s
+12ordered_listIiE clear: 0.000248277s
+12ordered_listIiE merge: 0.00108861s
+16ordered_list_stlIiE push_back: 0.000653182s
+16ordered_list_stlIiE ordered_insert: 0.656434s
+16ordered_list_stlIiE contains: 1.18543s
+16ordered_list_stlIiE remove: 0.115591s
+16ordered_list_stlIiE sort: 0.00662328s
+16ordered_list_stlIiE clear: 0.000456185s
+16ordered_list_stlIiE merge: 0.00183474s
+Finished profiling for n = 18000
+
+Profiling with n = 19000
+13ordered_arrayIiE push_back: 0.000127788s
+13ordered_arrayIiE ordered_insert: 0.296152s
+13ordered_arrayIiE contains: 0.00101539s
+13ordered_arrayIiE remove: 0.000943979s
+13ordered_arrayIiE sort: 0.00263993s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000148719s
+17ordered_array_stlIiE push_back: 0.000135829s
+17ordered_array_stlIiE ordered_insert: 0.0143002s
+17ordered_array_stlIiE contains: 0.00302078s
+17ordered_array_stlIiE remove: 0.000356696s
+17ordered_array_stlIiE sort: 0.00602623s
+17ordered_array_stlIiE clear: 1e-07s
+17ordered_array_stlIiE merge: 0.000731151s
+12ordered_listIiE push_back: 0.000221747s
+12ordered_listIiE ordered_insert: 0.283893s
+12ordered_listIiE contains: 0.671019s
+12ordered_listIiE remove: 0.129701s
+12ordered_listIiE sort: 0.00264646s
+12ordered_listIiE clear: 0.000328497s
+12ordered_listIiE merge: 0.00116912s
+16ordered_list_stlIiE push_back: 0.000689912s
+16ordered_list_stlIiE ordered_insert: 0.737631s
+16ordered_list_stlIiE contains: 1.32715s
+16ordered_list_stlIiE remove: 0.125166s
+16ordered_list_stlIiE sort: 0.00707939s
+16ordered_list_stlIiE clear: 0.000584583s
+16ordered_list_stlIiE merge: 0.00197081s
+Finished profiling for n = 19000
+
+Profiling with n = 20000
+13ordered_arrayIiE push_back: 0.000137719s
+13ordered_arrayIiE ordered_insert: 0.335496s
+13ordered_arrayIiE contains: 0.00116433s
+13ordered_arrayIiE remove: 0.00177147s
+13ordered_arrayIiE sort: 0.00285032s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000151048s
+17ordered_array_stlIiE push_back: 0.000145348s
+17ordered_array_stlIiE ordered_insert: 0.0156104s
+17ordered_array_stlIiE contains: 0.0036096s
+17ordered_array_stlIiE remove: 0.000444855s
+17ordered_array_stlIiE sort: 0.00636515s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.000774811s
+12ordered_listIiE push_back: 0.000236677s
+12ordered_listIiE ordered_insert: 0.320935s
+12ordered_listIiE contains: 0.767464s
+12ordered_listIiE remove: 0.148085s
+12ordered_listIiE sort: 0.00247547s
+12ordered_listIiE clear: 0.000270877s
+12ordered_listIiE merge: 0.00123829s
+16ordered_list_stlIiE push_back: 0.000722351s
+16ordered_list_stlIiE ordered_insert: 0.811636s
+16ordered_list_stlIiE contains: 1.45302s
+16ordered_list_stlIiE remove: 0.137802s
+16ordered_list_stlIiE sort: 0.00745627s
+16ordered_list_stlIiE clear: 0.000489844s
+16ordered_list_stlIiE merge: 0.00207716s
+Finished profiling for n = 20000
+
+Profiling with n = 21000
+13ordered_arrayIiE push_back: 0.000136359s
+13ordered_arrayIiE ordered_insert: 0.358479s
+13ordered_arrayIiE contains: 0.00106853s
+13ordered_arrayIiE remove: 0.00109156s
+13ordered_arrayIiE sort: 0.00292996s
+13ordered_arrayIiE clear: 7.9e-08s
+13ordered_arrayIiE merge: 0.000159698s
+17ordered_array_stlIiE push_back: 0.000149849s
+17ordered_array_stlIiE ordered_insert: 0.0167146s
+17ordered_array_stlIiE contains: 0.00342906s
+17ordered_array_stlIiE remove: 0.000384805s
+17ordered_array_stlIiE sort: 0.00666444s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.000872429s
+12ordered_listIiE push_back: 0.000247097s
+12ordered_listIiE ordered_insert: 0.361999s
+12ordered_listIiE contains: 0.887195s
+12ordered_listIiE remove: 0.171501s
+12ordered_listIiE sort: 0.00265758s
+12ordered_listIiE clear: 0.000295156s
+12ordered_listIiE merge: 0.00133291s
+16ordered_list_stlIiE push_back: 0.000764541s
+16ordered_list_stlIiE ordered_insert: 0.899097s
+16ordered_list_stlIiE contains: 1.59951s
+16ordered_list_stlIiE remove: 0.152603s
+16ordered_list_stlIiE sort: 0.00778402s
+16ordered_list_stlIiE clear: 0.000537484s
+16ordered_list_stlIiE merge: 0.00218147s
+Finished profiling for n = 21000
+
+Profiling with n = 22000
+13ordered_arrayIiE push_back: 0.000140908s
+13ordered_arrayIiE ordered_insert: 0.395495s
+13ordered_arrayIiE contains: 0.00111028s
+13ordered_arrayIiE remove: 0.00198132s
+13ordered_arrayIiE sort: 0.00308905s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000168058s
+17ordered_array_stlIiE push_back: 0.000156978s
+17ordered_array_stlIiE ordered_insert: 0.0179935s
+17ordered_array_stlIiE contains: 0.003531s
+17ordered_array_stlIiE remove: 0.000425975s
+17ordered_array_stlIiE sort: 0.00710792s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00085218s
+12ordered_listIiE push_back: 0.000258347s
+12ordered_listIiE ordered_insert: 0.401452s
+12ordered_listIiE contains: 0.958035s
+12ordered_listIiE remove: 0.183961s
+12ordered_listIiE sort: 0.00281048s
+12ordered_listIiE clear: 0.000283736s
+12ordered_listIiE merge: 0.00137089s
+16ordered_list_stlIiE push_back: 0.000797501s
+16ordered_list_stlIiE ordered_insert: 0.980293s
+16ordered_list_stlIiE contains: 1.76062s
+16ordered_list_stlIiE remove: 0.167024s
+16ordered_list_stlIiE sort: 0.00814264s
+16ordered_list_stlIiE clear: 0.000560914s
+16ordered_list_stlIiE merge: 0.00229851s
+Finished profiling for n = 22000
+
+Profiling with n = 23000
+13ordered_arrayIiE push_back: 0.000144018s
+13ordered_arrayIiE ordered_insert: 0.428314s
+13ordered_arrayIiE contains: 0.00120681s
+13ordered_arrayIiE remove: 0.00255579s
+13ordered_arrayIiE sort: 0.00328167s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000173498s
+17ordered_array_stlIiE push_back: 0.000165578s
+17ordered_array_stlIiE ordered_insert: 0.0195479s
+17ordered_array_stlIiE contains: 0.00370333s
+17ordered_array_stlIiE remove: 0.000473095s
+17ordered_array_stlIiE sort: 0.00733747s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00088687s
+12ordered_listIiE push_back: 0.000272767s
+12ordered_listIiE ordered_insert: 0.46569s
+12ordered_listIiE contains: 1.2026s
+12ordered_listIiE remove: 0.224745s
+12ordered_listIiE sort: 0.00303739s
+12ordered_listIiE clear: 0.000334567s
+12ordered_listIiE merge: 0.00149608s
+16ordered_list_stlIiE push_back: 0.00083492s
+16ordered_list_stlIiE ordered_insert: 1.08135s
+16ordered_list_stlIiE contains: 1.92561s
+16ordered_list_stlIiE remove: 0.186507s
+16ordered_list_stlIiE sort: 0.00857672s
+16ordered_list_stlIiE clear: 0.000594773s
+16ordered_list_stlIiE merge: 0.0024104s
+Finished profiling for n = 23000
+
+Profiling with n = 24000
+13ordered_arrayIiE push_back: 0.000148389s
+13ordered_arrayIiE ordered_insert: 0.463859s
+13ordered_arrayIiE contains: 0.00113699s
+13ordered_arrayIiE remove: 0.00187368s
+13ordered_arrayIiE sort: 0.00339965s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000182497s
+17ordered_array_stlIiE push_back: 0.000170648s
+17ordered_array_stlIiE ordered_insert: 0.0208598s
+17ordered_array_stlIiE contains: 0.0037495s
+17ordered_array_stlIiE remove: 0.000440955s
+17ordered_array_stlIiE sort: 0.00787244s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.000925459s
+12ordered_listIiE push_back: 0.000284807s
+12ordered_listIiE ordered_insert: 0.504328s
+12ordered_listIiE contains: 1.32459s
+12ordered_listIiE remove: 0.24582s
+12ordered_listIiE sort: 0.00316021s
+12ordered_listIiE clear: 0.000347736s
+12ordered_listIiE merge: 0.00172366s
+16ordered_list_stlIiE push_back: 0.00086747s
+16ordered_list_stlIiE ordered_insert: 1.17567s
+16ordered_list_stlIiE contains: 2.08609s
+16ordered_list_stlIiE remove: 0.203008s
+16ordered_list_stlIiE sort: 0.00893539s
+16ordered_list_stlIiE clear: 0.000614013s
+16ordered_list_stlIiE merge: 0.00251365s
+Finished profiling for n = 24000
+
+Profiling with n = 25000
+13ordered_arrayIiE push_back: 0.000152568s
+13ordered_arrayIiE ordered_insert: 0.505576s
+13ordered_arrayIiE contains: 0.00146687s
+13ordered_arrayIiE remove: 0.00308393s
+13ordered_arrayIiE sort: 0.00352156s
+13ordered_arrayIiE clear: 1.3e-07s
+13ordered_arrayIiE merge: 0.000187628s
+17ordered_array_stlIiE push_back: 0.000178458s
+17ordered_array_stlIiE ordered_insert: 0.0228125s
+17ordered_array_stlIiE contains: 0.00416278s
+17ordered_array_stlIiE remove: 0.000575293s
+17ordered_array_stlIiE sort: 0.00800491s
+17ordered_array_stlIiE clear: 1e-07s
+17ordered_array_stlIiE merge: 0.000972228s
+12ordered_listIiE push_back: 0.000294076s
+12ordered_listIiE ordered_insert: 0.543655s
+12ordered_listIiE contains: 1.35525s
+12ordered_listIiE remove: 0.25856s
+12ordered_listIiE sort: 0.00331708s
+12ordered_listIiE clear: 0.000361456s
+12ordered_listIiE merge: 0.00163197s
+16ordered_list_stlIiE push_back: 0.00090491s
+16ordered_list_stlIiE ordered_insert: 1.27343s
+16ordered_list_stlIiE contains: 2.26224s
+16ordered_list_stlIiE remove: 0.218101s
+16ordered_list_stlIiE sort: 0.00957145s
+16ordered_list_stlIiE clear: 0.000662812s
+16ordered_list_stlIiE merge: 0.00319276s
+Finished profiling for n = 25000
+
+Profiling with n = 26000
+13ordered_arrayIiE push_back: 0.000162738s
+13ordered_arrayIiE ordered_insert: 0.548517s
+13ordered_arrayIiE contains: 0.00130029s
+13ordered_arrayIiE remove: 0.0022001s
+13ordered_arrayIiE sort: 0.00374472s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000200868s
+17ordered_array_stlIiE push_back: 0.000187598s
+17ordered_array_stlIiE ordered_insert: 0.0239484s
+17ordered_array_stlIiE contains: 0.00417098s
+17ordered_array_stlIiE remove: 0.000495614s
+17ordered_array_stlIiE sort: 0.00863538s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00108288s
+12ordered_listIiE push_back: 0.000305456s
+12ordered_listIiE ordered_insert: 0.621489s
+12ordered_listIiE contains: 1.65721s
+12ordered_listIiE remove: 0.306739s
+12ordered_listIiE sort: 0.00366079s
+12ordered_listIiE clear: 0.000403915s
+12ordered_listIiE merge: 0.00167507s
+16ordered_list_stlIiE push_back: 0.0009423s
+16ordered_list_stlIiE ordered_insert: 1.37275s
+16ordered_list_stlIiE contains: 2.44616s
+16ordered_list_stlIiE remove: 0.234276s
+16ordered_list_stlIiE sort: 0.00984645s
+16ordered_list_stlIiE clear: 0.000653102s
+16ordered_list_stlIiE merge: 0.00272823s
+Finished profiling for n = 26000
+
+Profiling with n = 27000
+13ordered_arrayIiE push_back: 0.000161848s
+13ordered_arrayIiE ordered_insert: 0.593043s
+13ordered_arrayIiE contains: 0.00138514s
+13ordered_arrayIiE remove: 0.00457634s
+13ordered_arrayIiE sort: 0.00385969s
+13ordered_arrayIiE clear: 1.7e-07s
+13ordered_arrayIiE merge: 0.000208828s
+17ordered_array_stlIiE push_back: 0.000192818s
+17ordered_array_stlIiE ordered_insert: 0.025351s
+17ordered_array_stlIiE contains: 0.00437481s
+17ordered_array_stlIiE remove: 0.000597173s
+17ordered_array_stlIiE sort: 0.00893487s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00105812s
+12ordered_listIiE push_back: 0.000317967s
+12ordered_listIiE ordered_insert: 0.673183s
+12ordered_listIiE contains: 1.73764s
+12ordered_listIiE remove: 0.321508s
+12ordered_listIiE sort: 0.00370837s
+12ordered_listIiE clear: 0.000429815s
+12ordered_listIiE merge: 0.00173377s
+16ordered_list_stlIiE push_back: 0.000977108s
+16ordered_list_stlIiE ordered_insert: 1.48219s
+16ordered_list_stlIiE contains: 2.62265s
+16ordered_list_stlIiE remove: 0.253039s
+16ordered_list_stlIiE sort: 0.0100588s
+16ordered_list_stlIiE clear: 0.000671752s
+16ordered_list_stlIiE merge: 0.00284787s
+Finished profiling for n = 27000
+
+Profiling with n = 28000
+13ordered_arrayIiE push_back: 0.000164928s
+13ordered_arrayIiE ordered_insert: 0.644605s
+13ordered_arrayIiE contains: 0.00143179s
+13ordered_arrayIiE remove: 0.00351941s
+13ordered_arrayIiE sort: 0.00400028s
+13ordered_arrayIiE clear: 1.3e-07s
+13ordered_arrayIiE merge: 0.000211748s
+17ordered_array_stlIiE push_back: 0.000199237s
+17ordered_array_stlIiE ordered_insert: 0.027013s
+17ordered_array_stlIiE contains: 0.00452743s
+17ordered_array_stlIiE remove: 0.000601653s
+17ordered_array_stlIiE sort: 0.00902464s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00109253s
+12ordered_listIiE push_back: 0.000330026s
+12ordered_listIiE ordered_insert: 0.722929s
+12ordered_listIiE contains: 1.89813s
+12ordered_listIiE remove: 0.348424s
+12ordered_listIiE sort: 0.0039026s
+12ordered_listIiE clear: 0.000436755s
+12ordered_listIiE merge: 0.0017928s
+16ordered_list_stlIiE push_back: 0.00101813s
+16ordered_list_stlIiE ordered_insert: 1.59362s
+16ordered_list_stlIiE contains: 2.84325s
+16ordered_list_stlIiE remove: 0.277909s
+16ordered_list_stlIiE sort: 0.0105806s
+16ordered_list_stlIiE clear: 0.00077563s
+16ordered_list_stlIiE merge: 0.0029228s
+Finished profiling for n = 28000
+
+Profiling with n = 29000
+13ordered_arrayIiE push_back: 0.000170498s
+13ordered_arrayIiE ordered_insert: 0.693909s
+13ordered_arrayIiE contains: 0.0014751s
+13ordered_arrayIiE remove: 0.00195635s
+13ordered_arrayIiE sort: 0.0041428s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000221037s
+17ordered_array_stlIiE push_back: 0.000207817s
+17ordered_array_stlIiE ordered_insert: 0.0285466s
+17ordered_array_stlIiE contains: 0.0048514s
+17ordered_array_stlIiE remove: 0.000552224s
+17ordered_array_stlIiE sort: 0.00952315s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.00113062s
+12ordered_listIiE push_back: 0.000338546s
+12ordered_listIiE ordered_insert: 0.816123s
+12ordered_listIiE contains: 2.12709s
+12ordered_listIiE remove: 0.391177s
+12ordered_listIiE sort: 0.0040552s
+12ordered_listIiE clear: 0.000451695s
+12ordered_listIiE merge: 0.00185657s
+16ordered_list_stlIiE push_back: 0.00104843s
+16ordered_list_stlIiE ordered_insert: 1.7011s
+16ordered_list_stlIiE contains: 3.04025s
+16ordered_list_stlIiE remove: 0.301533s
+16ordered_list_stlIiE sort: 0.0107936s
+16ordered_list_stlIiE clear: 0.000726322s
+16ordered_list_stlIiE merge: 0.00306867s
+Finished profiling for n = 29000
+
+Profiling with n = 30000
+13ordered_arrayIiE push_back: 0.000178267s
+13ordered_arrayIiE ordered_insert: 0.722073s
+13ordered_arrayIiE contains: 0.00153435s
+13ordered_arrayIiE remove: 0.00338052s
+13ordered_arrayIiE sort: 0.00438394s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000227748s
+17ordered_array_stlIiE push_back: 0.000211768s
+17ordered_array_stlIiE ordered_insert: 0.0305879s
+17ordered_array_stlIiE contains: 0.00491579s
+17ordered_array_stlIiE remove: 0.000586043s
+17ordered_array_stlIiE sort: 0.00997118s
+17ordered_array_stlIiE clear: 2.2e-07s
+17ordered_array_stlIiE merge: 0.00115689s
+12ordered_listIiE push_back: 0.000384776s
+12ordered_listIiE ordered_insert: 0.911277s
+12ordered_listIiE contains: 2.451s
+12ordered_listIiE remove: 0.454894s
+12ordered_listIiE sort: 0.00433225s
+12ordered_listIiE clear: 0.000479625s
+12ordered_listIiE merge: 0.00192505s
+16ordered_list_stlIiE push_back: 0.0010865s
+16ordered_list_stlIiE ordered_insert: 1.82028s
+16ordered_list_stlIiE contains: 3.28217s
+16ordered_list_stlIiE remove: 0.321155s
+16ordered_list_stlIiE sort: 0.0114668s
+16ordered_list_stlIiE clear: 0.00081817s
+16ordered_list_stlIiE merge: 0.00316218s
+Finished profiling for n = 30000
+
+Profiling with n = 31000
+13ordered_arrayIiE push_back: 0.000183238s
+13ordered_arrayIiE ordered_insert: 0.77872s
+13ordered_arrayIiE contains: 0.0016909s
+13ordered_arrayIiE remove: 0.00349725s
+13ordered_arrayIiE sort: 0.00446432s
+13ordered_arrayIiE clear: 1.7e-07s
+13ordered_arrayIiE merge: 0.000234597s
+17ordered_array_stlIiE push_back: 0.000220207s
+17ordered_array_stlIiE ordered_insert: 0.0320704s
+17ordered_array_stlIiE contains: 0.00524836s
+17ordered_array_stlIiE remove: 0.000626303s
+17ordered_array_stlIiE sort: 0.0101268s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.00119429s
+12ordered_listIiE push_back: 0.000369545s
+12ordered_listIiE ordered_insert: 0.942977s
+12ordered_listIiE contains: 2.48081s
+12ordered_listIiE remove: 0.45631s
+12ordered_listIiE sort: 0.0044637s
+12ordered_listIiE clear: 0.000508194s
+12ordered_listIiE merge: 0.00204588s
+16ordered_list_stlIiE push_back: 0.00112462s
+16ordered_list_stlIiE ordered_insert: 1.93985s
+16ordered_list_stlIiE contains: 3.50919s
+16ordered_list_stlIiE remove: 0.344549s
+16ordered_list_stlIiE sort: 0.0116641s
+16ordered_list_stlIiE clear: 0.000773361s
+16ordered_list_stlIiE merge: 0.00324208s
+Finished profiling for n = 31000
+
+Profiling with n = 32000
+13ordered_arrayIiE push_back: 0.000181098s
+13ordered_arrayIiE ordered_insert: 0.834973s
+13ordered_arrayIiE contains: 0.00162091s
+13ordered_arrayIiE remove: 0.00317329s
+13ordered_arrayIiE sort: 0.00464148s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000243087s
+17ordered_array_stlIiE push_back: 0.000229067s
+17ordered_array_stlIiE ordered_insert: 0.033832s
+17ordered_array_stlIiE contains: 0.00533261s
+17ordered_array_stlIiE remove: 0.000626423s
+17ordered_array_stlIiE sort: 0.010737s
+17ordered_array_stlIiE clear: 6e-08s
+17ordered_array_stlIiE merge: 0.00123588s
+12ordered_listIiE push_back: 0.000396336s
+12ordered_listIiE ordered_insert: 1.0806s
+12ordered_listIiE contains: 2.8446s
+12ordered_listIiE remove: 0.516027s
+12ordered_listIiE sort: 0.00464202s
+12ordered_listIiE clear: 0.000543723s
+12ordered_listIiE merge: 0.00208459s
+16ordered_list_stlIiE push_back: 0.00115367s
+16ordered_list_stlIiE ordered_insert: 2.07731s
+16ordered_list_stlIiE contains: 3.7316s
+16ordered_list_stlIiE remove: 0.366548s
+16ordered_list_stlIiE sort: 0.0132188s
+16ordered_list_stlIiE clear: 0.00089923s
+16ordered_list_stlIiE merge: 0.00340587s
+Finished profiling for n = 32000
+
+Profiling with n = 33000
+13ordered_arrayIiE push_back: 0.000237617s
+13ordered_arrayIiE ordered_insert: 0.888503s
+13ordered_arrayIiE contains: 0.00177109s
+13ordered_arrayIiE remove: 0.00272739s
+13ordered_arrayIiE sort: 0.00490039s
+13ordered_arrayIiE clear: 3e-07s
+13ordered_arrayIiE merge: 0.000290967s
+17ordered_array_stlIiE push_back: 0.000237257s
+17ordered_array_stlIiE ordered_insert: 0.0358277s
+17ordered_array_stlIiE contains: 0.00549454s
+17ordered_array_stlIiE remove: 0.000623103s
+17ordered_array_stlIiE sort: 0.010884s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00137155s
+12ordered_listIiE push_back: 0.000389625s
+12ordered_listIiE ordered_insert: 1.17077s
+12ordered_listIiE contains: 3.09343s
+12ordered_listIiE remove: 0.570689s
+12ordered_listIiE sort: 0.00486086s
+12ordered_listIiE clear: 0.000547914s
+12ordered_listIiE merge: 0.00214079s
+16ordered_list_stlIiE push_back: 0.00119051s
+16ordered_list_stlIiE ordered_insert: 2.21323s
+16ordered_list_stlIiE contains: 4.01367s
+16ordered_list_stlIiE remove: 0.399052s
+16ordered_list_stlIiE sort: 0.0124763s
+16ordered_list_stlIiE clear: 0.00084675s
+16ordered_list_stlIiE merge: 0.00350159s
+Finished profiling for n = 33000
+
+Profiling with n = 34000
+13ordered_arrayIiE push_back: 0.000240557s
+13ordered_arrayIiE ordered_insert: 0.935657s
+13ordered_arrayIiE contains: 0.00169531s
+13ordered_arrayIiE remove: 0.0045857s
+13ordered_arrayIiE sort: 0.00496727s
+13ordered_arrayIiE clear: 6e-08s
+13ordered_arrayIiE merge: 0.000261457s
+17ordered_array_stlIiE push_back: 0.000243067s
+17ordered_array_stlIiE ordered_insert: 0.0381924s
+17ordered_array_stlIiE contains: 0.0054658s
+17ordered_array_stlIiE remove: 0.000724171s
+17ordered_array_stlIiE sort: 0.0114087s
+17ordered_array_stlIiE clear: 3.9e-07s
+17ordered_array_stlIiE merge: 0.0013165s
+12ordered_listIiE push_back: 0.000402995s
+12ordered_listIiE ordered_insert: 1.23049s
+12ordered_listIiE contains: 3.20128s
+12ordered_listIiE remove: 0.590964s
+12ordered_listIiE sort: 0.0049669s
+12ordered_listIiE clear: 0.000573293s
+12ordered_listIiE merge: 0.00219155s
+16ordered_list_stlIiE push_back: 0.00123994s
+16ordered_list_stlIiE ordered_insert: 2.3478s
+16ordered_list_stlIiE contains: 4.30512s
+16ordered_list_stlIiE remove: 0.424267s
+16ordered_list_stlIiE sort: 0.0128251s
+16ordered_list_stlIiE clear: 0.00093788s
+16ordered_list_stlIiE merge: 0.00357323s
+Finished profiling for n = 34000
+
+Profiling with n = 35000
+13ordered_arrayIiE push_back: 0.000241407s
+13ordered_arrayIiE ordered_insert: 1.01859s
+13ordered_arrayIiE contains: 0.00185777s
+13ordered_arrayIiE remove: 0.00365623s
+13ordered_arrayIiE sort: 0.00518527s
+13ordered_arrayIiE clear: 1.2e-07s
+13ordered_arrayIiE merge: 0.000272957s
+17ordered_array_stlIiE push_back: 0.000254497s
+17ordered_array_stlIiE ordered_insert: 0.0395021s
+17ordered_array_stlIiE contains: 0.00579188s
+17ordered_array_stlIiE remove: 0.000679102s
+17ordered_array_stlIiE sort: 0.0117213s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00144107s
+12ordered_listIiE push_back: 0.000410175s
+12ordered_listIiE ordered_insert: 1.27974s
+12ordered_listIiE contains: 3.53364s
+12ordered_listIiE remove: 0.650921s
+12ordered_listIiE sort: 0.00507851s
+12ordered_listIiE clear: 0.000570203s
+12ordered_listIiE merge: 0.00233919s
+16ordered_list_stlIiE push_back: 0.00129444s
+16ordered_list_stlIiE ordered_insert: 2.47916s
+16ordered_list_stlIiE contains: 4.51457s
+16ordered_list_stlIiE remove: 0.449088s
+16ordered_list_stlIiE sort: 0.0139261s
+16ordered_list_stlIiE clear: 0.000910869s
+16ordered_list_stlIiE merge: 0.00364494s
+Finished profiling for n = 35000
+
+Profiling with n = 36000
+13ordered_arrayIiE push_back: 0.000251357s
+13ordered_arrayIiE ordered_insert: 1.05286s
+13ordered_arrayIiE contains: 0.00191509s
+13ordered_arrayIiE remove: 0.00579623s
+13ordered_arrayIiE sort: 0.0052836s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000271596s
+17ordered_array_stlIiE push_back: 0.000259457s
+17ordered_array_stlIiE ordered_insert: 0.0416563s
+17ordered_array_stlIiE contains: 0.00613065s
+17ordered_array_stlIiE remove: 0.000763581s
+17ordered_array_stlIiE sort: 0.0118897s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00138683s
+12ordered_listIiE push_back: 0.000417965s
+12ordered_listIiE ordered_insert: 1.42507s
+12ordered_listIiE contains: 3.81376s
+12ordered_listIiE remove: 0.696796s
+12ordered_listIiE sort: 0.00519984s
+12ordered_listIiE clear: 0.000610323s
+12ordered_listIiE merge: 0.00234219s
+16ordered_list_stlIiE push_back: 0.00130049s
+16ordered_list_stlIiE ordered_insert: 2.62078s
+16ordered_list_stlIiE contains: 4.82914s
+16ordered_list_stlIiE remove: 0.478371s
+16ordered_list_stlIiE sort: 0.0142082s
+16ordered_list_stlIiE clear: 0.00093341s
+16ordered_list_stlIiE merge: 0.00376606s
+Finished profiling for n = 36000
+
+Profiling with n = 37000
+13ordered_arrayIiE push_back: 0.000249277s
+13ordered_arrayIiE ordered_insert: 1.11911s
+13ordered_arrayIiE contains: 0.00204816s
+13ordered_arrayIiE remove: 0.00650133s
+13ordered_arrayIiE sort: 0.0054891s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000279447s
+17ordered_array_stlIiE push_back: 0.000262926s
+17ordered_array_stlIiE ordered_insert: 0.043734s
+17ordered_array_stlIiE contains: 0.00618858s
+17ordered_array_stlIiE remove: 0.00086609s
+17ordered_array_stlIiE sort: 0.0123416s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00142599s
+12ordered_listIiE push_back: 0.000542874s
+12ordered_listIiE ordered_insert: 1.5089s
+12ordered_listIiE contains: 4.03278s
+12ordered_listIiE remove: 0.732995s
+12ordered_listIiE sort: 0.00539499s
+12ordered_listIiE clear: 0.000632483s
+12ordered_listIiE merge: 0.00238521s
+16ordered_list_stlIiE push_back: 0.00133998s
+16ordered_list_stlIiE ordered_insert: 2.76906s
+16ordered_list_stlIiE contains: 5.11034s
+16ordered_list_stlIiE remove: 0.506649s
+16ordered_list_stlIiE sort: 0.0145534s
+16ordered_list_stlIiE clear: 0.0009664s
+16ordered_list_stlIiE merge: 0.00381427s
+Finished profiling for n = 37000
+
+Profiling with n = 38000
+13ordered_arrayIiE push_back: 0.000254917s
+13ordered_arrayIiE ordered_insert: 1.17717s
+13ordered_arrayIiE contains: 0.0021119s
+13ordered_arrayIiE remove: 0.00568411s
+13ordered_arrayIiE sort: 0.00560223s
+13ordered_arrayIiE clear: 9e-08s
+13ordered_arrayIiE merge: 0.000289547s
+17ordered_array_stlIiE push_back: 0.000274737s
+17ordered_array_stlIiE ordered_insert: 0.0458361s
+17ordered_array_stlIiE contains: 0.0072638s
+17ordered_array_stlIiE remove: 0.0007981s
+17ordered_array_stlIiE sort: 0.0127149s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00155292s
+12ordered_listIiE push_back: 0.000449174s
+12ordered_listIiE ordered_insert: 1.63366s
+12ordered_listIiE contains: 4.46175s
+12ordered_listIiE remove: 0.81457s
+12ordered_listIiE sort: 0.00586954s
+12ordered_listIiE clear: 0.000650793s
+12ordered_listIiE merge: 0.0023978s
+16ordered_list_stlIiE push_back: 0.00137582s
+16ordered_list_stlIiE ordered_insert: 2.93829s
+16ordered_list_stlIiE contains: 5.39968s
+16ordered_list_stlIiE remove: 0.536763s
+16ordered_list_stlIiE sort: 0.0148528s
+16ordered_list_stlIiE clear: 0.000996769s
+16ordered_list_stlIiE merge: 0.0038961s
+Finished profiling for n = 38000
+
+Profiling with n = 39000
+13ordered_arrayIiE push_back: 0.000258217s
+13ordered_arrayIiE ordered_insert: 1.23819s
+13ordered_arrayIiE contains: 0.0020528s
+13ordered_arrayIiE remove: 0.00336638s
+13ordered_arrayIiE sort: 0.00570161s
+13ordered_arrayIiE clear: 1.3e-07s
+13ordered_arrayIiE merge: 0.000294777s
+17ordered_array_stlIiE push_back: 0.000276347s
+17ordered_array_stlIiE ordered_insert: 0.0478234s
+17ordered_array_stlIiE contains: 0.00648952s
+17ordered_array_stlIiE remove: 0.000758791s
+17ordered_array_stlIiE sort: 0.0131709s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00150201s
+12ordered_listIiE push_back: 0.000463045s
+12ordered_listIiE ordered_insert: 1.73102s
+12ordered_listIiE contains: 4.61024s
+12ordered_listIiE remove: 0.846295s
+12ordered_listIiE sort: 0.0057084s
+12ordered_listIiE clear: 0.000684442s
+12ordered_listIiE merge: 0.00251226s
+16ordered_list_stlIiE push_back: 0.00141475s
+16ordered_list_stlIiE ordered_insert: 3.101s
+16ordered_list_stlIiE contains: 5.87683s
+16ordered_list_stlIiE remove: 0.585416s
+16ordered_list_stlIiE sort: 0.0152514s
+16ordered_list_stlIiE clear: 0.00101971s
+16ordered_list_stlIiE merge: 0.00406054s
+Finished profiling for n = 39000
+
+Profiling with n = 40000
+13ordered_arrayIiE push_back: 0.000262997s
+13ordered_arrayIiE ordered_insert: 1.31865s
+13ordered_arrayIiE contains: 0.00219476s
+13ordered_arrayIiE remove: 0.00697343s
+13ordered_arrayIiE sort: 0.00591087s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000303186s
+17ordered_array_stlIiE push_back: 0.000284327s
+17ordered_array_stlIiE ordered_insert: 0.0501048s
+17ordered_array_stlIiE contains: 0.00672336s
+17ordered_array_stlIiE remove: 0.00091973s
+17ordered_array_stlIiE sort: 0.0136007s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00154081s
+12ordered_listIiE push_back: 0.000476715s
+12ordered_listIiE ordered_insert: 1.89583s
+12ordered_listIiE contains: 5.17421s
+12ordered_listIiE remove: 0.9456s
+12ordered_listIiE sort: 0.00597169s
+12ordered_listIiE clear: 0.000704082s
+12ordered_listIiE merge: 0.00255587s
+16ordered_list_stlIiE push_back: 0.00145021s
+16ordered_list_stlIiE ordered_insert: 3.26244s
+16ordered_list_stlIiE contains: 6.23361s
+16ordered_list_stlIiE remove: 0.622708s
+16ordered_list_stlIiE sort: 0.0155757s
+16ordered_list_stlIiE clear: 0.00102929s
+16ordered_list_stlIiE merge: 0.00413474s
+Finished profiling for n = 40000
+
+Profiling with n = 41000
+13ordered_arrayIiE push_back: 0.000266417s
+13ordered_arrayIiE ordered_insert: 1.36725s
+13ordered_arrayIiE contains: 0.00209046s
+13ordered_arrayIiE remove: 0.00434402s
+13ordered_arrayIiE sort: 0.00603889s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000316047s
+17ordered_array_stlIiE push_back: 0.000294576s
+17ordered_array_stlIiE ordered_insert: 0.0523658s
+17ordered_array_stlIiE contains: 0.00689797s
+17ordered_array_stlIiE remove: 0.00090546s
+17ordered_array_stlIiE sort: 0.0137993s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.00158317s
+12ordered_listIiE push_back: 0.000479945s
+12ordered_listIiE ordered_insert: 1.98856s
+12ordered_listIiE contains: 5.39659s
+12ordered_listIiE remove: 0.982437s
+12ordered_listIiE sort: 0.00611289s
+12ordered_listIiE clear: 0.000719511s
+12ordered_listIiE merge: 0.00277557s
+16ordered_list_stlIiE push_back: 0.00148276s
+16ordered_list_stlIiE ordered_insert: 3.42296s
+16ordered_list_stlIiE contains: 6.53603s
+16ordered_list_stlIiE remove: 0.651018s
+16ordered_list_stlIiE sort: 0.0161536s
+16ordered_list_stlIiE clear: 0.001071s
+16ordered_list_stlIiE merge: 0.00432786s
+Finished profiling for n = 41000
+
+Profiling with n = 42000
+13ordered_arrayIiE push_back: 0.000274007s
+13ordered_arrayIiE ordered_insert: 1.45012s
+13ordered_arrayIiE contains: 0.00225485s
+13ordered_arrayIiE remove: 0.00290631s
+13ordered_arrayIiE sort: 0.00628072s
+13ordered_arrayIiE clear: 1.5e-07s
+13ordered_arrayIiE merge: 0.000317616s
+17ordered_array_stlIiE push_back: 0.000296397s
+17ordered_array_stlIiE ordered_insert: 0.0545313s
+17ordered_array_stlIiE contains: 0.0069842s
+17ordered_array_stlIiE remove: 0.000768251s
+17ordered_array_stlIiE sort: 0.0141129s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00162319s
+12ordered_listIiE push_back: 0.000491524s
+12ordered_listIiE ordered_insert: 2.10318s
+12ordered_listIiE contains: 5.69804s
+12ordered_listIiE remove: 1.04661s
+12ordered_listIiE sort: 0.0063242s
+12ordered_listIiE clear: 0.000735571s
+12ordered_listIiE merge: 0.00273971s
+16ordered_list_stlIiE push_back: 0.00151958s
+16ordered_list_stlIiE ordered_insert: 3.6291s
+16ordered_list_stlIiE contains: 7.15325s
+16ordered_list_stlIiE remove: 0.701496s
+16ordered_list_stlIiE sort: 0.0164068s
+16ordered_list_stlIiE clear: 0.00108959s
+16ordered_list_stlIiE merge: 0.00444175s
+Finished profiling for n = 42000
+
+Profiling with n = 43000
+13ordered_arrayIiE push_back: 0.000279407s
+13ordered_arrayIiE ordered_insert: 1.5322s
+13ordered_arrayIiE contains: 0.00222377s
+13ordered_arrayIiE remove: 0.00541338s
+13ordered_arrayIiE sort: 0.00641827s
+13ordered_arrayIiE clear: 6e-08s
+13ordered_arrayIiE merge: 0.000324796s
+17ordered_array_stlIiE push_back: 0.000304686s
+17ordered_array_stlIiE ordered_insert: 0.0569642s
+17ordered_array_stlIiE contains: 0.00707733s
+17ordered_array_stlIiE remove: 0.000912499s
+17ordered_array_stlIiE sort: 0.014491s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00165402s
+12ordered_listIiE push_back: 0.000508234s
+12ordered_listIiE ordered_insert: 2.29866s
+12ordered_listIiE contains: 6.23047s
+12ordered_listIiE remove: 1.14323s
+12ordered_listIiE sort: 0.0065806s
+12ordered_listIiE clear: 0.000764951s
+12ordered_listIiE merge: 0.0028096s
+16ordered_list_stlIiE push_back: 0.00155492s
+16ordered_list_stlIiE ordered_insert: 3.79993s
+16ordered_list_stlIiE contains: 7.3878s
+16ordered_list_stlIiE remove: 0.739734s
+16ordered_list_stlIiE sort: 0.016942s
+16ordered_list_stlIiE clear: 0.00112746s
+16ordered_list_stlIiE merge: 0.00455163s
+Finished profiling for n = 43000
+
+Profiling with n = 44000
+13ordered_arrayIiE push_back: 0.000278417s
+13ordered_arrayIiE ordered_insert: 1.61584s
+13ordered_arrayIiE contains: 0.00229077s
+13ordered_arrayIiE remove: 0.00615984s
+13ordered_arrayIiE sort: 0.00656094s
+13ordered_arrayIiE clear: 2.322e-05s
+13ordered_arrayIiE merge: 0.000332296s
+17ordered_array_stlIiE push_back: 0.000310286s
+17ordered_array_stlIiE ordered_insert: 0.0594731s
+17ordered_array_stlIiE contains: 0.00738111s
+17ordered_array_stlIiE remove: 0.000950669s
+17ordered_array_stlIiE sort: 0.01498s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.00169912s
+12ordered_listIiE push_back: 0.000523264s
+12ordered_listIiE ordered_insert: 2.3815s
+12ordered_listIiE contains: 6.45853s
+12ordered_listIiE remove: 1.17318s
+12ordered_listIiE sort: 0.0067248s
+12ordered_listIiE clear: 0.000794381s
+12ordered_listIiE merge: 0.00288961s
+16ordered_list_stlIiE push_back: 0.00159269s
+16ordered_list_stlIiE ordered_insert: 4.00137s
+16ordered_list_stlIiE contains: 7.75204s
+16ordered_list_stlIiE remove: 0.778676s
+16ordered_list_stlIiE sort: 0.0176223s
+16ordered_list_stlIiE clear: 0.00114814s
+16ordered_list_stlIiE merge: 0.0046044s
+Finished profiling for n = 44000
+
+Profiling with n = 45000
+13ordered_arrayIiE push_back: 0.000282926s
+13ordered_arrayIiE ordered_insert: 1.66107s
+13ordered_arrayIiE contains: 0.00242455s
+13ordered_arrayIiE remove: 0.00521485s
+13ordered_arrayIiE sort: 0.00670361s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000343466s
+17ordered_array_stlIiE push_back: 0.000318057s
+17ordered_array_stlIiE ordered_insert: 0.0619375s
+17ordered_array_stlIiE contains: 0.00754275s
+17ordered_array_stlIiE remove: 0.000941479s
+17ordered_array_stlIiE sort: 0.0152415s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.00173724s
+12ordered_listIiE push_back: 0.000531734s
+12ordered_listIiE ordered_insert: 2.63586s
+12ordered_listIiE contains: 7.11676s
+12ordered_listIiE remove: 1.303s
+12ordered_listIiE sort: 0.00697965s
+12ordered_listIiE clear: 0.000798461s
+12ordered_listIiE merge: 0.00296527s
+16ordered_list_stlIiE push_back: 0.00162907s
+16ordered_list_stlIiE ordered_insert: 4.22736s
+16ordered_list_stlIiE contains: 8.42951s
+16ordered_list_stlIiE remove: 0.833836s
+16ordered_list_stlIiE sort: 0.0177912s
+16ordered_list_stlIiE clear: 0.00114898s
+16ordered_list_stlIiE merge: 0.00472077s
+Finished profiling for n = 45000
+
+Profiling with n = 46000
+13ordered_arrayIiE push_back: 0.000287067s
+13ordered_arrayIiE ordered_insert: 1.71471s
+13ordered_arrayIiE contains: 0.00259081s
+13ordered_arrayIiE remove: 0.00833304s
+13ordered_arrayIiE sort: 0.00686134s
+13ordered_arrayIiE clear: 1.5e-07s
+13ordered_arrayIiE merge: 0.000348646s
+17ordered_array_stlIiE push_back: 0.000327686s
+17ordered_array_stlIiE ordered_insert: 0.0644988s
+17ordered_array_stlIiE contains: 0.00789589s
+17ordered_array_stlIiE remove: 0.00118759s
+17ordered_array_stlIiE sort: 0.015919s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00178943s
+12ordered_listIiE push_back: 0.000542104s
+12ordered_listIiE ordered_insert: 2.72605s
+12ordered_listIiE contains: 7.30717s
+12ordered_listIiE remove: 1.3288s
+12ordered_listIiE sort: 0.00708402s
+12ordered_listIiE clear: 0.00081626s
+12ordered_listIiE merge: 0.00298507s
+16ordered_list_stlIiE push_back: 0.00166293s
+16ordered_list_stlIiE ordered_insert: 4.40514s
+16ordered_list_stlIiE contains: 8.68922s
+16ordered_list_stlIiE remove: 0.866136s
+16ordered_list_stlIiE sort: 0.0183697s
+16ordered_list_stlIiE clear: 0.00119056s
+16ordered_list_stlIiE merge: 0.00485951s
+Finished profiling for n = 46000
+
+Profiling with n = 47000
+13ordered_arrayIiE push_back: 0.000295346s
+13ordered_arrayIiE ordered_insert: 1.80044s
+13ordered_arrayIiE contains: 0.00258735s
+13ordered_arrayIiE remove: 0.00649937s
+13ordered_arrayIiE sort: 0.00703218s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000355496s
+17ordered_array_stlIiE push_back: 0.000332036s
+17ordered_array_stlIiE ordered_insert: 0.0668527s
+17ordered_array_stlIiE contains: 0.00807708s
+17ordered_array_stlIiE remove: 0.00104631s
+17ordered_array_stlIiE sort: 0.0158392s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00187799s
+12ordered_listIiE push_back: 0.000556913s
+12ordered_listIiE ordered_insert: 2.85666s
+12ordered_listIiE contains: 7.83161s
+12ordered_listIiE remove: 1.43108s
+12ordered_listIiE sort: 0.00728378s
+12ordered_listIiE clear: 0.00084863s
+12ordered_listIiE merge: 0.00304733s
+16ordered_list_stlIiE push_back: 0.00170011s
+16ordered_list_stlIiE ordered_insert: 4.60615s
+16ordered_list_stlIiE contains: 9.13156s
+16ordered_list_stlIiE remove: 0.909878s
+16ordered_list_stlIiE sort: 0.0188056s
+16ordered_list_stlIiE clear: 0.00118792s
+16ordered_list_stlIiE merge: 0.00491533s
+Finished profiling for n = 47000
+
+Profiling with n = 48000
+13ordered_arrayIiE push_back: 0.000295947s
+13ordered_arrayIiE ordered_insert: 1.90995s
+13ordered_arrayIiE contains: 0.00271138s
+13ordered_arrayIiE remove: 0.0075797s
+13ordered_arrayIiE sort: 0.00720991s
+13ordered_arrayIiE clear: 1.1e-07s
+13ordered_arrayIiE merge: 0.000366496s
+17ordered_array_stlIiE push_back: 0.000340786s
+17ordered_array_stlIiE ordered_insert: 0.0692771s
+17ordered_array_stlIiE contains: 0.00809004s
+17ordered_array_stlIiE remove: 0.00107729s
+17ordered_array_stlIiE sort: 0.0161657s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00184891s
+12ordered_listIiE push_back: 0.000564734s
+12ordered_listIiE ordered_insert: 2.98971s
+12ordered_listIiE contains: 8.24058s
+12ordered_listIiE remove: 1.50403s
+12ordered_listIiE sort: 0.00759079s
+12ordered_listIiE clear: 0.00087368s
+12ordered_listIiE merge: 0.00316101s
+16ordered_list_stlIiE push_back: 0.00173737s
+16ordered_list_stlIiE ordered_insert: 4.78628s
+16ordered_list_stlIiE contains: 9.49927s
+16ordered_list_stlIiE remove: 0.945173s
+16ordered_list_stlIiE sort: 0.0190132s
+16ordered_list_stlIiE clear: 0.00124676s
+16ordered_list_stlIiE merge: 0.00502871s
+Finished profiling for n = 48000
+
+Profiling with n = 49000
+13ordered_arrayIiE push_back: 0.000304436s
+13ordered_arrayIiE ordered_insert: 1.98467s
+13ordered_arrayIiE contains: 0.00272501s
+13ordered_arrayIiE remove: 0.00599221s
+13ordered_arrayIiE sort: 0.00734468s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000374145s
+17ordered_array_stlIiE push_back: 0.000360796s
+17ordered_array_stlIiE ordered_insert: 0.0720482s
+17ordered_array_stlIiE contains: 0.0085611s
+17ordered_array_stlIiE remove: 0.000981119s
+17ordered_array_stlIiE sort: 0.0168799s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00189163s
+12ordered_listIiE push_back: 0.000580053s
+12ordered_listIiE ordered_insert: 3.18063s
+12ordered_listIiE contains: 8.82441s
+12ordered_listIiE remove: 1.61383s
+12ordered_listIiE sort: 0.00774735s
+12ordered_listIiE clear: 0.000893969s
+12ordered_listIiE merge: 0.00322711s
+16ordered_list_stlIiE push_back: 0.00176839s
+16ordered_list_stlIiE ordered_insert: 5.05782s
+16ordered_list_stlIiE contains: 10.1587s
+16ordered_list_stlIiE remove: 1.00494s
+16ordered_list_stlIiE sort: 0.0194573s
+16ordered_list_stlIiE clear: 0.00128759s
+16ordered_list_stlIiE merge: 0.0051598s
+Finished profiling for n = 49000
+
+Profiling with n = 50000
+13ordered_arrayIiE push_back: 0.000303536s
+13ordered_arrayIiE ordered_insert: 2.05927s
+13ordered_arrayIiE contains: 0.00269738s
+13ordered_arrayIiE remove: 0.00691053s
+13ordered_arrayIiE sort: 0.0075293s
+13ordered_arrayIiE clear: 1.4e-07s
+13ordered_arrayIiE merge: 0.000378016s
+17ordered_array_stlIiE push_back: 0.000350516s
+17ordered_array_stlIiE ordered_insert: 0.0746627s
+17ordered_array_stlIiE contains: 0.00832584s
+17ordered_array_stlIiE remove: 0.00109853s
+17ordered_array_stlIiE sort: 0.0174006s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00192854s
+12ordered_listIiE push_back: 0.000594323s
+12ordered_listIiE ordered_insert: 3.29773s
+12ordered_listIiE contains: 9.22091s
+12ordered_listIiE remove: 1.69374s
+12ordered_listIiE sort: 0.00795867s
+12ordered_listIiE clear: 0.000914149s
+12ordered_listIiE merge: 0.00327366s
+16ordered_list_stlIiE push_back: 0.0018091s
+16ordered_list_stlIiE ordered_insert: 5.28812s
+16ordered_list_stlIiE contains: 10.6529s
+16ordered_list_stlIiE remove: 1.05334s
+16ordered_list_stlIiE sort: 0.0198756s
+16ordered_list_stlIiE clear: 0.00132033s
+16ordered_list_stlIiE merge: 0.00527011s
+Finished profiling for n = 50000
+
+Profiling with n = 51000
+13ordered_arrayIiE push_back: 0.000307956s
+13ordered_arrayIiE ordered_insert: 2.14148s
+13ordered_arrayIiE contains: 0.0026136s
+13ordered_arrayIiE remove: 0.00832872s
+13ordered_arrayIiE sort: 0.00784314s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000394936s
+17ordered_array_stlIiE push_back: 0.000359135s
+17ordered_array_stlIiE ordered_insert: 0.077356s
+17ordered_array_stlIiE contains: 0.00863869s
+17ordered_array_stlIiE remove: 0.0011311s
+17ordered_array_stlIiE sort: 0.0175096s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00196651s
+12ordered_listIiE push_back: 0.000600433s
+12ordered_listIiE ordered_insert: 3.42128s
+12ordered_listIiE contains: 9.61982s
+12ordered_listIiE remove: 1.76946s
+12ordered_listIiE sort: 0.0081696s
+12ordered_listIiE clear: 0.000933249s
+12ordered_listIiE merge: 0.00335468s
+16ordered_list_stlIiE push_back: 0.0018425s
+16ordered_list_stlIiE ordered_insert: 5.50411s
+16ordered_list_stlIiE contains: 11.1761s
+16ordered_list_stlIiE remove: 1.10998s
+16ordered_list_stlIiE sort: 0.0203858s
+16ordered_list_stlIiE clear: 0.00133459s
+16ordered_list_stlIiE merge: 0.00536367s
+Finished profiling for n = 51000
+
+Profiling with n = 52000
+13ordered_arrayIiE push_back: 0.000315027s
+13ordered_arrayIiE ordered_insert: 2.21021s
+13ordered_arrayIiE contains: 0.00261084s
+13ordered_arrayIiE remove: 0.00605907s
+13ordered_arrayIiE sort: 0.00787499s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000392605s
+17ordered_array_stlIiE push_back: 0.000370066s
+17ordered_array_stlIiE ordered_insert: 0.0801475s
+17ordered_array_stlIiE contains: 0.00843336s
+17ordered_array_stlIiE remove: 0.00107713s
+17ordered_array_stlIiE sort: 0.0182239s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00200786s
+12ordered_listIiE push_back: 0.000614252s
+12ordered_listIiE ordered_insert: 3.71421s
+12ordered_listIiE contains: 10.0291s
+12ordered_listIiE remove: 1.83922s
+12ordered_listIiE sort: 0.00835406s
+12ordered_listIiE clear: 0.000950039s
+12ordered_listIiE merge: 0.00343918s
+16ordered_list_stlIiE push_back: 0.00188111s
+16ordered_list_stlIiE ordered_insert: 5.71144s
+16ordered_list_stlIiE contains: 11.6716s
+16ordered_list_stlIiE remove: 1.15709s
+16ordered_list_stlIiE sort: 0.0209249s
+16ordered_list_stlIiE clear: 0.00136122s
+16ordered_list_stlIiE merge: 0.00546006s
+Finished profiling for n = 52000
+
+Profiling with n = 53000
+13ordered_arrayIiE push_back: 0.000320747s
+13ordered_arrayIiE ordered_insert: 2.30651s
+13ordered_arrayIiE contains: 0.00301647s
+13ordered_arrayIiE remove: 0.00773861s
+13ordered_arrayIiE sort: 0.00802112s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000400136s
+17ordered_array_stlIiE push_back: 0.000375876s
+17ordered_array_stlIiE ordered_insert: 0.0829557s
+17ordered_array_stlIiE contains: 0.00923003s
+17ordered_array_stlIiE remove: 0.00124215s
+17ordered_array_stlIiE sort: 0.0181688s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00204485s
+12ordered_listIiE push_back: 0.000623453s
+12ordered_listIiE ordered_insert: 3.85244s
+12ordered_listIiE contains: 10.6979s
+12ordered_listIiE remove: 1.96101s
+12ordered_listIiE sort: 0.00852517s
+12ordered_listIiE clear: 0.000976609s
+12ordered_listIiE merge: 0.00348708s
+16ordered_list_stlIiE push_back: 0.00191445s
+16ordered_list_stlIiE ordered_insert: 5.95052s
+16ordered_list_stlIiE contains: 12.2325s
+16ordered_list_stlIiE remove: 1.2116s
+16ordered_list_stlIiE sort: 0.02114s
+16ordered_list_stlIiE clear: 0.0013497s
+16ordered_list_stlIiE merge: 0.00555635s
+Finished profiling for n = 53000
+
+Profiling with n = 54000
+13ordered_arrayIiE push_back: 0.000323906s
+13ordered_arrayIiE ordered_insert: 2.37584s
+13ordered_arrayIiE contains: 0.00301513s
+13ordered_arrayIiE remove: 0.00820566s
+13ordered_arrayIiE sort: 0.00818086s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000406986s
+17ordered_array_stlIiE push_back: 0.000383085s
+17ordered_array_stlIiE ordered_insert: 0.0857026s
+17ordered_array_stlIiE contains: 0.00932209s
+17ordered_array_stlIiE remove: 0.00119769s
+17ordered_array_stlIiE sort: 0.0185711s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.00208508s
+12ordered_listIiE push_back: 0.000635512s
+12ordered_listIiE ordered_insert: 4.17177s
+12ordered_listIiE contains: 11.1287s
+12ordered_listIiE remove: 2.05149s
+12ordered_listIiE sort: 0.008735s
+12ordered_listIiE clear: 0.000993699s
+12ordered_listIiE merge: 0.00356788s
+16ordered_list_stlIiE push_back: 0.00195402s
+16ordered_list_stlIiE ordered_insert: 6.2341s
+16ordered_list_stlIiE contains: 12.8381s
+16ordered_list_stlIiE remove: 1.27624s
+16ordered_list_stlIiE sort: 0.0217474s
+16ordered_list_stlIiE clear: 0.00141206s
+16ordered_list_stlIiE merge: 0.00568389s
+Finished profiling for n = 54000
+
+Profiling with n = 55000
+13ordered_arrayIiE push_back: 0.000323477s
+13ordered_arrayIiE ordered_insert: 2.46292s
+13ordered_arrayIiE contains: 0.00317065s
+13ordered_arrayIiE remove: 0.0131087s
+13ordered_arrayIiE sort: 0.00832823s
+13ordered_arrayIiE clear: 9e-08s
+13ordered_arrayIiE merge: 0.000418786s
+17ordered_array_stlIiE push_back: 0.000387016s
+17ordered_array_stlIiE ordered_insert: 0.0888161s
+17ordered_array_stlIiE contains: 0.00949513s
+17ordered_array_stlIiE remove: 0.00142239s
+17ordered_array_stlIiE sort: 0.0187804s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00212386s
+12ordered_listIiE push_back: 0.000657622s
+12ordered_listIiE ordered_insert: 4.36101s
+12ordered_listIiE contains: 11.7055s
+12ordered_listIiE remove: 2.14788s
+12ordered_listIiE sort: 0.00904644s
+12ordered_listIiE clear: 0.00102337s
+12ordered_listIiE merge: 0.00364692s
+16ordered_list_stlIiE push_back: 0.00198585s
+16ordered_list_stlIiE ordered_insert: 6.4872s
+16ordered_list_stlIiE contains: 13.5593s
+16ordered_list_stlIiE remove: 1.33921s
+16ordered_list_stlIiE sort: 0.021861s
+16ordered_list_stlIiE clear: 0.00144505s
+16ordered_list_stlIiE merge: 0.00581493s
+Finished profiling for n = 55000
+
+Profiling with n = 56000
+13ordered_arrayIiE push_back: 0.000329646s
+13ordered_arrayIiE ordered_insert: 2.56305s
+13ordered_arrayIiE contains: 0.00308846s
+13ordered_arrayIiE remove: 0.0124457s
+13ordered_arrayIiE sort: 0.00849516s
+13ordered_arrayIiE clear: 1.4e-07s
+13ordered_arrayIiE merge: 0.000427055s
+17ordered_array_stlIiE push_back: 0.000395516s
+17ordered_array_stlIiE ordered_insert: 0.091688s
+17ordered_array_stlIiE contains: 0.0095756s
+17ordered_array_stlIiE remove: 0.00122567s
+17ordered_array_stlIiE sort: 0.0192536s
+17ordered_array_stlIiE clear: 7e-08s
+17ordered_array_stlIiE merge: 0.00216381s
+12ordered_listIiE push_back: 0.000673242s
+12ordered_listIiE ordered_insert: 4.6157s
+12ordered_listIiE contains: 12.1855s
+12ordered_listIiE remove: 2.25284s
+12ordered_listIiE sort: 0.00919503s
+12ordered_listIiE clear: 0.00103925s
+12ordered_listIiE merge: 0.00368971s
+16ordered_list_stlIiE push_back: 0.00202706s
+16ordered_list_stlIiE ordered_insert: 6.78388s
+16ordered_list_stlIiE contains: 14.1795s
+16ordered_list_stlIiE remove: 1.41133s
+16ordered_list_stlIiE sort: 0.0223412s
+16ordered_list_stlIiE clear: 0.00146679s
+16ordered_list_stlIiE merge: 0.00591656s
+Finished profiling for n = 56000
+
+Profiling with n = 57000
+13ordered_arrayIiE push_back: 0.000332976s
+13ordered_arrayIiE ordered_insert: 2.65138s
+13ordered_arrayIiE contains: 0.0032903s
+13ordered_arrayIiE remove: 0.0100707s
+13ordered_arrayIiE sort: 0.00871516s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000430015s
+17ordered_array_stlIiE push_back: 0.000402366s
+17ordered_array_stlIiE ordered_insert: 0.0950445s
+17ordered_array_stlIiE contains: 0.00990795s
+17ordered_array_stlIiE remove: 0.00116876s
+17ordered_array_stlIiE sort: 0.0199098s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00220092s
+12ordered_listIiE push_back: 0.000671352s
+12ordered_listIiE ordered_insert: 4.84567s
+12ordered_listIiE contains: 12.8315s
+12ordered_listIiE remove: 2.36875s
+12ordered_listIiE sort: 0.00934237s
+12ordered_listIiE clear: 0.0010587s
+12ordered_listIiE merge: 0.00373276s
+16ordered_list_stlIiE push_back: 0.00205349s
+16ordered_list_stlIiE ordered_insert: 7.02356s
+16ordered_list_stlIiE contains: 14.6256s
+16ordered_list_stlIiE remove: 1.46211s
+16ordered_list_stlIiE sort: 0.022868s
+16ordered_list_stlIiE clear: 0.00148226s
+16ordered_list_stlIiE merge: 0.00600951s
+Finished profiling for n = 57000
+
+Profiling with n = 58000
+13ordered_arrayIiE push_back: 0.000335096s
+13ordered_arrayIiE ordered_insert: 2.73432s
+13ordered_arrayIiE contains: 0.00324635s
+13ordered_arrayIiE remove: 0.009563s
+13ordered_arrayIiE sort: 0.00893798s
+13ordered_arrayIiE clear: 1.2e-07s
+13ordered_arrayIiE merge: 0.000441645s
+17ordered_array_stlIiE push_back: 0.000412666s
+17ordered_array_stlIiE ordered_insert: 0.0976206s
+17ordered_array_stlIiE contains: 0.00980086s
+17ordered_array_stlIiE remove: 0.00128425s
+17ordered_array_stlIiE sort: 0.0205367s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00231046s
+12ordered_listIiE push_back: 0.000682662s
+12ordered_listIiE ordered_insert: 4.94822s
+12ordered_listIiE contains: 13.4342s
+12ordered_listIiE remove: 2.4807s
+12ordered_listIiE sort: 0.00953913s
+12ordered_listIiE clear: 0.00107578s
+12ordered_listIiE merge: 0.00388617s
+16ordered_list_stlIiE push_back: 0.00210238s
+16ordered_list_stlIiE ordered_insert: 7.36556s
+16ordered_list_stlIiE contains: 15.5529s
+16ordered_list_stlIiE remove: 1.54583s
+16ordered_list_stlIiE sort: 0.0232289s
+16ordered_list_stlIiE clear: 0.0015245s
+16ordered_list_stlIiE merge: 0.00610814s
+Finished profiling for n = 58000
+
+Profiling with n = 59000
+13ordered_arrayIiE push_back: 0.000332746s
+13ordered_arrayIiE ordered_insert: 2.82903s
+13ordered_arrayIiE contains: 0.00318551s
+13ordered_arrayIiE remove: 0.00790796s
+13ordered_arrayIiE sort: 0.00902058s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000447065s
+17ordered_array_stlIiE push_back: 0.000416405s
+17ordered_array_stlIiE ordered_insert: 0.101463s
+17ordered_array_stlIiE contains: 0.009958s
+17ordered_array_stlIiE remove: 0.00131905s
+17ordered_array_stlIiE sort: 0.0204292s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00227877s
+12ordered_listIiE push_back: 0.000694211s
+12ordered_listIiE ordered_insert: 5.19449s
+12ordered_listIiE contains: 13.9407s
+12ordered_listIiE remove: 2.58043s
+12ordered_listIiE sort: 0.00971441s
+12ordered_listIiE clear: 0.00108671s
+12ordered_listIiE merge: 0.00389477s
+16ordered_list_stlIiE push_back: 0.0021292s
+16ordered_list_stlIiE ordered_insert: 7.56035s
+16ordered_list_stlIiE contains: 16.0652s
+16ordered_list_stlIiE remove: 1.58624s
+16ordered_list_stlIiE sort: 0.0233863s
+16ordered_list_stlIiE clear: 0.00156341s
+16ordered_list_stlIiE merge: 0.00625122s
+Finished profiling for n = 59000
+
+Profiling with n = 60000
+13ordered_arrayIiE push_back: 0.000345986s
+13ordered_arrayIiE ordered_insert: 2.86618s
+13ordered_arrayIiE contains: 0.00309755s
+13ordered_arrayIiE remove: 0.00737119s
+13ordered_arrayIiE sort: 0.00921253s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000458165s
+17ordered_array_stlIiE push_back: 0.000424175s
+17ordered_array_stlIiE ordered_insert: 0.103989s
+17ordered_array_stlIiE contains: 0.0101974s
+17ordered_array_stlIiE remove: 0.00126146s
+17ordered_array_stlIiE sort: 0.0209556s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00231926s
+12ordered_listIiE push_back: 0.000704002s
+12ordered_listIiE ordered_insert: 5.44438s
+12ordered_listIiE contains: 14.4816s
+12ordered_listIiE remove: 2.68638s
+12ordered_listIiE sort: 0.00988422s
+12ordered_listIiE clear: 0.00110886s
+12ordered_listIiE merge: 0.00393542s
+16ordered_list_stlIiE push_back: 0.0021702s
+16ordered_list_stlIiE ordered_insert: 7.90478s
+16ordered_list_stlIiE contains: 16.7834s
+16ordered_list_stlIiE remove: 1.67069s
+16ordered_list_stlIiE sort: 0.0240221s
+16ordered_list_stlIiE clear: 0.0015374s
+16ordered_list_stlIiE merge: 0.00636859s
+Finished profiling for n = 60000
+
+Profiling with n = 61000
+13ordered_arrayIiE push_back: 0.000340746s
+13ordered_arrayIiE ordered_insert: 3.03793s
+13ordered_arrayIiE contains: 0.003502s
+13ordered_arrayIiE remove: 0.00954023s
+13ordered_arrayIiE sort: 0.00946209s
+13ordered_arrayIiE clear: 9e-08s
+13ordered_arrayIiE merge: 0.000460755s
+17ordered_array_stlIiE push_back: 0.000428396s
+17ordered_array_stlIiE ordered_insert: 0.107313s
+17ordered_array_stlIiE contains: 0.0106179s
+17ordered_array_stlIiE remove: 0.00137637s
+17ordered_array_stlIiE sort: 0.0210791s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.0023569s
+12ordered_listIiE push_back: 0.000717512s
+12ordered_listIiE ordered_insert: 5.70184s
+12ordered_listIiE contains: 15.0957s
+12ordered_listIiE remove: 2.8211s
+12ordered_listIiE sort: 0.0101265s
+12ordered_listIiE clear: 0.00114419s
+12ordered_listIiE merge: 0.00402968s
+16ordered_list_stlIiE push_back: 0.00220599s
+16ordered_list_stlIiE ordered_insert: 8.12596s
+16ordered_list_stlIiE contains: 17.0772s
+16ordered_list_stlIiE remove: 1.70877s
+16ordered_list_stlIiE sort: 0.024337s
+16ordered_list_stlIiE clear: 0.0015993s
+16ordered_list_stlIiE merge: 0.0064335s
+Finished profiling for n = 61000
+
+Profiling with n = 62000
+13ordered_arrayIiE push_back: 0.000353676s
+13ordered_arrayIiE ordered_insert: 3.09289s
+13ordered_arrayIiE contains: 0.00326766s
+13ordered_arrayIiE remove: 0.00721224s
+13ordered_arrayIiE sort: 0.00958347s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000470615s
+17ordered_array_stlIiE push_back: 0.000435495s
+17ordered_array_stlIiE ordered_insert: 0.110674s
+17ordered_array_stlIiE contains: 0.0102363s
+17ordered_array_stlIiE remove: 0.0012435s
+17ordered_array_stlIiE sort: 0.0220765s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00239218s
+12ordered_listIiE push_back: 0.000729302s
+12ordered_listIiE ordered_insert: 6.02687s
+12ordered_listIiE contains: 15.7838s
+12ordered_listIiE remove: 2.93275s
+12ordered_listIiE sort: 0.0104345s
+12ordered_listIiE clear: 0.00115962s
+12ordered_listIiE merge: 0.00413447s
+16ordered_list_stlIiE push_back: 0.00223842s
+16ordered_list_stlIiE ordered_insert: 8.49786s
+16ordered_list_stlIiE contains: 17.8047s
+16ordered_list_stlIiE remove: 1.77927s
+16ordered_list_stlIiE sort: 0.0248256s
+16ordered_list_stlIiE clear: 0.00161262s
+16ordered_list_stlIiE merge: 0.00654766s
+Finished profiling for n = 62000
+
+Profiling with n = 63000
+13ordered_arrayIiE push_back: 0.000359757s
+13ordered_arrayIiE ordered_insert: 3.22509s
+13ordered_arrayIiE contains: 0.00328223s
+13ordered_arrayIiE remove: 0.00857766s
+13ordered_arrayIiE sort: 0.00967129s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000479334s
+17ordered_array_stlIiE push_back: 0.000442525s
+17ordered_array_stlIiE ordered_insert: 0.113995s
+17ordered_array_stlIiE contains: 0.0107759s
+17ordered_array_stlIiE remove: 0.00140512s
+17ordered_array_stlIiE sort: 0.021961s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00243137s
+12ordered_listIiE push_back: 0.000783692s
+12ordered_listIiE ordered_insert: 6.13402s
+12ordered_listIiE contains: 16.2958s
+12ordered_listIiE remove: 3.03202s
+12ordered_listIiE sort: 0.0105877s
+12ordered_listIiE clear: 0.00116437s
+12ordered_listIiE merge: 0.0041715s
+16ordered_list_stlIiE push_back: 0.00226898s
+16ordered_list_stlIiE ordered_insert: 8.77456s
+16ordered_list_stlIiE contains: 18.5628s
+16ordered_list_stlIiE remove: 1.84826s
+16ordered_list_stlIiE sort: 0.025161s
+16ordered_list_stlIiE clear: 0.00164342s
+16ordered_list_stlIiE merge: 0.00667017s
+Finished profiling for n = 63000
+
+Profiling with n = 64000
+13ordered_arrayIiE push_back: 0.000364806s
+13ordered_arrayIiE ordered_insert: 3.39085s
+13ordered_arrayIiE contains: 0.00354731s
+13ordered_arrayIiE remove: 0.0129349s
+13ordered_arrayIiE sort: 0.00984182s
+13ordered_arrayIiE clear: 1.7e-07s
+13ordered_arrayIiE merge: 0.000483554s
+17ordered_array_stlIiE push_back: 0.000450375s
+17ordered_array_stlIiE ordered_insert: 0.117097s
+17ordered_array_stlIiE contains: 0.0106056s
+17ordered_array_stlIiE remove: 0.00149345s
+17ordered_array_stlIiE sort: 0.0225468s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00246809s
+12ordered_listIiE push_back: 0.000751952s
+12ordered_listIiE ordered_insert: 6.41549s
+12ordered_listIiE contains: 17.0719s
+12ordered_listIiE remove: 3.17357s
+12ordered_listIiE sort: 0.0107022s
+12ordered_listIiE clear: 0.00117728s
+12ordered_listIiE merge: 0.0042055s
+16ordered_list_stlIiE push_back: 0.00230908s
+16ordered_list_stlIiE ordered_insert: 9.04103s
+16ordered_list_stlIiE contains: 19.0996s
+16ordered_list_stlIiE remove: 1.90699s
+16ordered_list_stlIiE sort: 0.0254678s
+16ordered_list_stlIiE clear: 0.00163767s
+16ordered_list_stlIiE merge: 0.00676566s
+Finished profiling for n = 64000
+
+Profiling with n = 65000
+13ordered_arrayIiE push_back: 0.000364756s
+13ordered_arrayIiE ordered_insert: 3.46861s
+13ordered_arrayIiE contains: 0.00359849s
+13ordered_arrayIiE remove: 0.0157132s
+13ordered_arrayIiE sort: 0.00998096s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000494645s
+17ordered_array_stlIiE push_back: 0.000455775s
+17ordered_array_stlIiE ordered_insert: 0.120596s
+17ordered_array_stlIiE contains: 0.0112093s
+17ordered_array_stlIiE remove: 0.00160204s
+17ordered_array_stlIiE sort: 0.0228552s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00250808s
+12ordered_listIiE push_back: 0.000761581s
+12ordered_listIiE ordered_insert: 6.81714s
+12ordered_listIiE contains: 17.8035s
+12ordered_listIiE remove: 3.31379s
+12ordered_listIiE sort: 0.0109231s
+12ordered_listIiE clear: 0.00120613s
+12ordered_listIiE merge: 0.00438522s
+16ordered_list_stlIiE push_back: 0.00234662s
+16ordered_list_stlIiE ordered_insert: 9.44644s
+16ordered_list_stlIiE contains: 19.98s
+16ordered_list_stlIiE remove: 1.99797s
+16ordered_list_stlIiE sort: 0.0260568s
+16ordered_list_stlIiE clear: 0.0016473s
+16ordered_list_stlIiE merge: 0.00686655s
+Finished profiling for n = 65000
+
+Profiling with n = 66000
+13ordered_arrayIiE push_back: 0.000464464s
+13ordered_arrayIiE ordered_insert: 3.54037s
+13ordered_arrayIiE contains: 0.0036186s
+13ordered_arrayIiE remove: 0.00925477s
+13ordered_arrayIiE sort: 0.0101258s
+13ordered_arrayIiE clear: 1.3e-07s
+13ordered_arrayIiE merge: 0.000501504s
+17ordered_array_stlIiE push_back: 0.000470364s
+17ordered_array_stlIiE ordered_insert: 0.124087s
+17ordered_array_stlIiE contains: 0.0113306s
+17ordered_array_stlIiE remove: 0.00145122s
+17ordered_array_stlIiE sort: 0.0228995s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00254603s
+12ordered_listIiE push_back: 0.000775862s
+12ordered_listIiE ordered_insert: 6.95093s
+12ordered_listIiE contains: 18.3294s
+12ordered_listIiE remove: 3.42804s
+12ordered_listIiE sort: 0.0111315s
+12ordered_listIiE clear: 0.00122866s
+12ordered_listIiE merge: 0.00441607s
+16ordered_list_stlIiE push_back: 0.00238533s
+16ordered_list_stlIiE ordered_insert: 9.79419s
+16ordered_list_stlIiE contains: 20.6071s
+16ordered_list_stlIiE remove: 2.05783s
+16ordered_list_stlIiE sort: 0.0264804s
+16ordered_list_stlIiE clear: 0.00171704s
+16ordered_list_stlIiE merge: 0.00697935s
+Finished profiling for n = 66000
+
+Profiling with n = 67000
+13ordered_arrayIiE push_back: 0.000472365s
+13ordered_arrayIiE ordered_insert: 3.68126s
+13ordered_arrayIiE contains: 0.00382658s
+13ordered_arrayIiE remove: 0.0162134s
+13ordered_arrayIiE sort: 0.0102931s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000510094s
+17ordered_array_stlIiE push_back: 0.000478405s
+17ordered_array_stlIiE ordered_insert: 0.127411s
+17ordered_array_stlIiE contains: 0.0115773s
+17ordered_array_stlIiE remove: 0.00166155s
+17ordered_array_stlIiE sort: 0.0234844s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00273367s
+12ordered_listIiE push_back: 0.000789302s
+12ordered_listIiE ordered_insert: 7.3467s
+12ordered_listIiE contains: 19.1374s
+12ordered_listIiE remove: 3.57083s
+12ordered_listIiE sort: 0.0114259s
+12ordered_listIiE clear: 0.00125315s
+12ordered_listIiE merge: 0.0045195s
+16ordered_list_stlIiE push_back: 0.00243145s
+16ordered_list_stlIiE ordered_insert: 10.1242s
+16ordered_list_stlIiE contains: 21.3204s
+16ordered_list_stlIiE remove: 2.13663s
+16ordered_list_stlIiE sort: 0.026869s
+16ordered_list_stlIiE clear: 0.00174371s
+16ordered_list_stlIiE merge: 0.00706676s
+Finished profiling for n = 67000
+
+Profiling with n = 68000
+13ordered_arrayIiE push_back: 0.000478934s
+13ordered_arrayIiE ordered_insert: 3.85025s
+13ordered_arrayIiE contains: 0.00384988s
+13ordered_arrayIiE remove: 0.0125047s
+13ordered_arrayIiE sort: 0.0105347s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000514534s
+17ordered_array_stlIiE push_back: 0.000481725s
+17ordered_array_stlIiE ordered_insert: 0.130812s
+17ordered_array_stlIiE contains: 0.0117144s
+17ordered_array_stlIiE remove: 0.00158155s
+17ordered_array_stlIiE sort: 0.0236404s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00262477s
+12ordered_listIiE push_back: 0.000801511s
+12ordered_listIiE ordered_insert: 7.63816s
+12ordered_listIiE contains: 19.7005s
+12ordered_listIiE remove: 3.68149s
+12ordered_listIiE sort: 0.0115387s
+12ordered_listIiE clear: 0.00127128s
+12ordered_listIiE merge: 0.00454448s
+16ordered_list_stlIiE push_back: 0.00246651s
+16ordered_list_stlIiE ordered_insert: 10.4359s
+16ordered_list_stlIiE contains: 22.1058s
+16ordered_list_stlIiE remove: 2.21607s
+16ordered_list_stlIiE sort: 0.0272895s
+16ordered_list_stlIiE clear: 0.00176491s
+16ordered_list_stlIiE merge: 0.00717722s
+Finished profiling for n = 68000
+
+Profiling with n = 69000
+13ordered_arrayIiE push_back: 0.000481755s
+13ordered_arrayIiE ordered_insert: 3.8187s
+13ordered_arrayIiE contains: 0.00373584s
+13ordered_arrayIiE remove: 0.0158499s
+13ordered_arrayIiE sort: 0.0108229s
+13ordered_arrayIiE clear: 9e-08s
+13ordered_arrayIiE merge: 0.000522044s
+17ordered_array_stlIiE push_back: 0.000491285s
+17ordered_array_stlIiE ordered_insert: 0.134796s
+17ordered_array_stlIiE contains: 0.0119309s
+17ordered_array_stlIiE remove: 0.00179176s
+17ordered_array_stlIiE sort: 0.0243432s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.0026624s
+12ordered_listIiE push_back: 0.000818631s
+12ordered_listIiE ordered_insert: 7.88851s
+12ordered_listIiE contains: 20.4226s
+12ordered_listIiE remove: 3.82597s
+12ordered_listIiE sort: 0.0117927s
+12ordered_listIiE clear: 0.00128071s
+12ordered_listIiE merge: 0.00465233s
+16ordered_list_stlIiE push_back: 0.002494s
+16ordered_list_stlIiE ordered_insert: 10.7449s
+16ordered_list_stlIiE contains: 22.7361s
+16ordered_list_stlIiE remove: 2.29155s
+16ordered_list_stlIiE sort: 0.0292223s
+16ordered_list_stlIiE clear: 0.00180897s
+16ordered_list_stlIiE merge: 0.00726614s
+Finished profiling for n = 69000
+
+Profiling with n = 70000
+13ordered_arrayIiE push_back: 0.000487505s
+13ordered_arrayIiE ordered_insert: 4.03679s
+13ordered_arrayIiE contains: 0.00378315s
+13ordered_arrayIiE remove: 0.0175072s
+13ordered_arrayIiE sort: 0.0108471s
+13ordered_arrayIiE clear: 4.8269e-05s
+13ordered_arrayIiE merge: 0.000533854s
+17ordered_array_stlIiE push_back: 0.000499494s
+17ordered_array_stlIiE ordered_insert: 0.138401s
+17ordered_array_stlIiE contains: 0.0121495s
+17ordered_array_stlIiE remove: 0.00188567s
+17ordered_array_stlIiE sort: 0.0253339s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00270194s
+12ordered_listIiE push_back: 0.0008268s
+12ordered_listIiE ordered_insert: 8.12093s
+12ordered_listIiE contains: 21.1479s
+12ordered_listIiE remove: 3.96093s
+12ordered_listIiE sort: 0.0120684s
+12ordered_listIiE clear: 0.00131281s
+12ordered_listIiE merge: 0.0047521s
+16ordered_list_stlIiE push_back: 0.00253237s
+16ordered_list_stlIiE ordered_insert: 11.1113s
+16ordered_list_stlIiE contains: 23.4735s
+16ordered_list_stlIiE remove: 2.36176s
+16ordered_list_stlIiE sort: 0.0294332s
+16ordered_list_stlIiE clear: 0.0018425s
+16ordered_list_stlIiE merge: 0.00744251s
+Finished profiling for n = 70000
+
+Profiling with n = 71000
+13ordered_arrayIiE push_back: 0.000484715s
+13ordered_arrayIiE ordered_insert: 4.17548s
+13ordered_arrayIiE contains: 0.00421774s
+13ordered_arrayIiE remove: 0.0147537s
+13ordered_arrayIiE sort: 0.0109998s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000540314s
+17ordered_array_stlIiE push_back: 0.000501834s
+17ordered_array_stlIiE ordered_insert: 0.14181s
+17ordered_array_stlIiE contains: 0.0125643s
+17ordered_array_stlIiE remove: 0.00181744s
+17ordered_array_stlIiE sort: 0.0249573s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00274217s
+12ordered_listIiE push_back: 0.000842521s
+12ordered_listIiE ordered_insert: 8.48158s
+12ordered_listIiE contains: 21.7331s
+12ordered_listIiE remove: 4.07815s
+12ordered_listIiE sort: 0.012159s
+12ordered_listIiE clear: 0.00132526s
+12ordered_listIiE merge: 0.00473059s
+16ordered_list_stlIiE push_back: 0.0025807s
+16ordered_list_stlIiE ordered_insert: 11.4342s
+16ordered_list_stlIiE contains: 24.2394s
+16ordered_list_stlIiE remove: 2.44447s
+16ordered_list_stlIiE sort: 0.0298318s
+16ordered_list_stlIiE clear: 0.00185398s
+16ordered_list_stlIiE merge: 0.0075739s
+Finished profiling for n = 71000
+
+Profiling with n = 72000
+13ordered_arrayIiE push_back: 0.000492375s
+13ordered_arrayIiE ordered_insert: 4.25922s
+13ordered_arrayIiE contains: 0.00377829s
+13ordered_arrayIiE remove: 0.00666925s
+13ordered_arrayIiE sort: 0.0112329s
+13ordered_arrayIiE clear: 1.7e-07s
+13ordered_arrayIiE merge: 0.000544764s
+17ordered_array_stlIiE push_back: 0.000510925s
+17ordered_array_stlIiE ordered_insert: 0.145665s
+17ordered_array_stlIiE contains: 0.0124527s
+17ordered_array_stlIiE remove: 0.00152084s
+17ordered_array_stlIiE sort: 0.0253862s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00277579s
+12ordered_listIiE push_back: 0.000860131s
+12ordered_listIiE ordered_insert: 8.76492s
+12ordered_listIiE contains: 22.6s
+12ordered_listIiE remove: 4.25076s
+12ordered_listIiE sort: 0.0125663s
+12ordered_listIiE clear: 0.00134449s
+12ordered_listIiE merge: 0.00491708s
+16ordered_list_stlIiE push_back: 0.00259405s
+16ordered_list_stlIiE ordered_insert: 11.8532s
+16ordered_list_stlIiE contains: 24.967s
+16ordered_list_stlIiE remove: 2.52373s
+16ordered_list_stlIiE sort: 0.0304253s
+16ordered_list_stlIiE clear: 0.00184186s
+16ordered_list_stlIiE merge: 0.00764873s
+Finished profiling for n = 72000
+
+Profiling with n = 73000
+13ordered_arrayIiE push_back: 0.000497024s
+13ordered_arrayIiE ordered_insert: 4.33517s
+13ordered_arrayIiE contains: 0.00402208s
+13ordered_arrayIiE remove: 0.0211064s
+13ordered_arrayIiE sort: 0.0113014s
+13ordered_arrayIiE clear: 1.3e-07s
+13ordered_arrayIiE merge: 0.000556554s
+17ordered_array_stlIiE push_back: 0.000514714s
+17ordered_array_stlIiE ordered_insert: 0.149802s
+17ordered_array_stlIiE contains: 0.0126931s
+17ordered_array_stlIiE remove: 0.0021356s
+17ordered_array_stlIiE sort: 0.0260232s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00281367s
+12ordered_listIiE push_back: 0.0008587s
+12ordered_listIiE ordered_insert: 9.0022s
+12ordered_listIiE contains: 23.2732s
+12ordered_listIiE remove: 4.37248s
+12ordered_listIiE sort: 0.0129484s
+12ordered_listIiE clear: 0.0013797s
+12ordered_listIiE merge: 0.00489741s
+16ordered_list_stlIiE push_back: 0.0026423s
+16ordered_list_stlIiE ordered_insert: 12.2366s
+16ordered_list_stlIiE contains: 25.8586s
+16ordered_list_stlIiE remove: 2.60075s
+16ordered_list_stlIiE sort: 0.0306318s
+16ordered_list_stlIiE clear: 0.00191839s
+16ordered_list_stlIiE merge: 0.0077707s
+Finished profiling for n = 73000
+
+Profiling with n = 74000
+13ordered_arrayIiE push_back: 0.000501444s
+13ordered_arrayIiE ordered_insert: 4.47212s
+13ordered_arrayIiE contains: 0.00385246s
+13ordered_arrayIiE remove: 0.0165288s
+13ordered_arrayIiE sort: 0.0114753s
+13ordered_arrayIiE clear: 7e-08s
+13ordered_arrayIiE merge: 0.000563274s
+17ordered_array_stlIiE push_back: 0.000521204s
+17ordered_array_stlIiE ordered_insert: 0.153434s
+17ordered_array_stlIiE contains: 0.0119451s
+17ordered_array_stlIiE remove: 0.00172344s
+17ordered_array_stlIiE sort: 0.026381s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00285424s
+12ordered_listIiE push_back: 0.00086845s
+12ordered_listIiE ordered_insert: 9.43315s
+12ordered_listIiE contains: 24.3713s
+12ordered_listIiE remove: 4.57497s
+12ordered_listIiE sort: 0.0128203s
+12ordered_listIiE clear: 0.00139645s
+12ordered_listIiE merge: 0.00496131s
+16ordered_list_stlIiE push_back: 0.00267285s
+16ordered_list_stlIiE ordered_insert: 12.6043s
+16ordered_list_stlIiE contains: 26.7845s
+16ordered_list_stlIiE remove: 2.69572s
+16ordered_list_stlIiE sort: 0.0309093s
+16ordered_list_stlIiE clear: 0.00187915s
+16ordered_list_stlIiE merge: 0.00781951s
+Finished profiling for n = 74000
+
+Profiling with n = 75000
+13ordered_arrayIiE push_back: 0.000500254s
+13ordered_arrayIiE ordered_insert: 4.59029s
+13ordered_arrayIiE contains: 0.00408818s
+13ordered_arrayIiE remove: 0.0162376s
+13ordered_arrayIiE sort: 0.0116152s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000565914s
+17ordered_array_stlIiE push_back: 0.000531904s
+17ordered_array_stlIiE ordered_insert: 0.157472s
+17ordered_array_stlIiE contains: 0.0127748s
+17ordered_array_stlIiE remove: 0.00186721s
+17ordered_array_stlIiE sort: 0.0267901s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00306562s
+12ordered_listIiE push_back: 0.000889061s
+12ordered_listIiE ordered_insert: 9.7494s
+12ordered_listIiE contains: 24.8608s
+12ordered_listIiE remove: 4.67718s
+12ordered_listIiE sort: 0.0130924s
+12ordered_listIiE clear: 0.0014092s
+12ordered_listIiE merge: 0.00503663s
+16ordered_list_stlIiE push_back: 0.00270382s
+16ordered_list_stlIiE ordered_insert: 12.9537s
+16ordered_list_stlIiE contains: 27.5961s
+16ordered_list_stlIiE remove: 2.7769s
+16ordered_list_stlIiE sort: 0.0314329s
+16ordered_list_stlIiE clear: 0.00190876s
+16ordered_list_stlIiE merge: 0.00798621s
+Finished profiling for n = 75000
+
+Profiling with n = 76000
+13ordered_arrayIiE push_back: 0.000510954s
+13ordered_arrayIiE ordered_insert: 4.69552s
+13ordered_arrayIiE contains: 0.00423244s
+13ordered_arrayIiE remove: 0.0218367s
+13ordered_arrayIiE sort: 0.0118027s
+13ordered_arrayIiE clear: 6e-08s
+13ordered_arrayIiE merge: 0.000573984s
+17ordered_array_stlIiE push_back: 0.000536714s
+17ordered_array_stlIiE ordered_insert: 0.160409s
+17ordered_array_stlIiE contains: 0.0132196s
+17ordered_array_stlIiE remove: 0.00207342s
+17ordered_array_stlIiE sort: 0.0268502s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00293495s
+12ordered_listIiE push_back: 0.00089937s
+12ordered_listIiE ordered_insert: 10.1272s
+12ordered_listIiE contains: 25.4652s
+12ordered_listIiE remove: 4.79265s
+12ordered_listIiE sort: 0.0132748s
+12ordered_listIiE clear: 0.00143393s
+12ordered_listIiE merge: 0.00515228s
+16ordered_list_stlIiE push_back: 0.00273348s
+16ordered_list_stlIiE ordered_insert: 13.3805s
+16ordered_list_stlIiE contains: 28.3716s
+16ordered_list_stlIiE remove: 2.85723s
+16ordered_list_stlIiE sort: 0.0316972s
+16ordered_list_stlIiE clear: 0.00198864s
+16ordered_list_stlIiE merge: 0.00798629s
+Finished profiling for n = 76000
+
+Profiling with n = 77000
+13ordered_arrayIiE push_back: 0.000512735s
+13ordered_arrayIiE ordered_insert: 4.84996s
+13ordered_arrayIiE contains: 0.00422765s
+13ordered_arrayIiE remove: 0.0163688s
+13ordered_arrayIiE sort: 0.0119491s
+13ordered_arrayIiE clear: 9e-08s
+13ordered_arrayIiE merge: 0.000581953s
+17ordered_array_stlIiE push_back: 0.000543854s
+17ordered_array_stlIiE ordered_insert: 0.164959s
+17ordered_array_stlIiE contains: 0.0132534s
+17ordered_array_stlIiE remove: 0.00187834s
+17ordered_array_stlIiE sort: 0.0271801s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00297093s
+12ordered_listIiE push_back: 0.00091423s
+12ordered_listIiE ordered_insert: 10.541s
+12ordered_listIiE contains: 26.5278s
+12ordered_listIiE remove: 4.98856s
+12ordered_listIiE sort: 0.0134563s
+12ordered_listIiE clear: 0.00145883s
+12ordered_listIiE merge: 0.00517126s
+16ordered_list_stlIiE push_back: 0.00277512s
+16ordered_list_stlIiE ordered_insert: 13.7735s
+16ordered_list_stlIiE contains: 29.149s
+16ordered_list_stlIiE remove: 2.93901s
+16ordered_list_stlIiE sort: 0.0322094s
+16ordered_list_stlIiE clear: 0.00201416s
+16ordered_list_stlIiE merge: 0.00829061s
+Finished profiling for n = 77000
+
+Profiling with n = 78000
+13ordered_arrayIiE push_back: 0.000517404s
+13ordered_arrayIiE ordered_insert: 4.95011s
+13ordered_arrayIiE contains: 0.00419756s
+13ordered_arrayIiE remove: 0.0161838s
+13ordered_arrayIiE sort: 0.0120574s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000593364s
+17ordered_array_stlIiE push_back: 0.000548254s
+17ordered_array_stlIiE ordered_insert: 0.169616s
+17ordered_array_stlIiE contains: 0.013523s
+17ordered_array_stlIiE remove: 0.00184639s
+17ordered_array_stlIiE sort: 0.0275634s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00300862s
+12ordered_listIiE push_back: 0.00092118s
+12ordered_listIiE ordered_insert: 10.7359s
+12ordered_listIiE contains: 27.1588s
+12ordered_listIiE remove: 5.11275s
+12ordered_listIiE sort: 0.0138377s
+12ordered_listIiE clear: 0.00152428s
+12ordered_listIiE merge: 0.00528858s
+16ordered_list_stlIiE push_back: 0.0028288s
+16ordered_list_stlIiE ordered_insert: 14.1881s
+16ordered_list_stlIiE contains: 30.0391s
+16ordered_list_stlIiE remove: 3.03056s
+16ordered_list_stlIiE sort: 0.0330197s
+16ordered_list_stlIiE clear: 0.00204034s
+16ordered_list_stlIiE merge: 0.00821844s
+Finished profiling for n = 78000
+
+Profiling with n = 79000
+13ordered_arrayIiE push_back: 0.000523244s
+13ordered_arrayIiE ordered_insert: 5.15046s
+13ordered_arrayIiE contains: 0.00461805s
+13ordered_arrayIiE remove: 0.0237837s
+13ordered_arrayIiE sort: 0.0123358s
+13ordered_arrayIiE clear: 9e-08s
+13ordered_arrayIiE merge: 0.000597813s
+17ordered_array_stlIiE push_back: 0.000558704s
+17ordered_array_stlIiE ordered_insert: 0.173643s
+17ordered_array_stlIiE contains: 0.0142152s
+17ordered_array_stlIiE remove: 0.00221346s
+17ordered_array_stlIiE sort: 0.0282642s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00305463s
+12ordered_listIiE push_back: 0.000930259s
+12ordered_listIiE ordered_insert: 11.0886s
+12ordered_listIiE contains: 27.9245s
+12ordered_listIiE remove: 5.25056s
+12ordered_listIiE sort: 0.0140217s
+12ordered_listIiE clear: 0.00149574s
+12ordered_listIiE merge: 0.00534447s
+16ordered_list_stlIiE push_back: 0.00286172s
+16ordered_list_stlIiE ordered_insert: 14.5644s
+16ordered_list_stlIiE contains: 31.0353s
+16ordered_list_stlIiE remove: 3.10784s
+16ordered_list_stlIiE sort: 0.0334671s
+16ordered_list_stlIiE clear: 0.00208879s
+16ordered_list_stlIiE merge: 0.00838981s
+Finished profiling for n = 79000
+
+Profiling with n = 80000
+13ordered_arrayIiE push_back: 0.000523264s
+13ordered_arrayIiE ordered_insert: 5.23177s
+13ordered_arrayIiE contains: 0.0047827s
+13ordered_arrayIiE remove: 0.0150325s
+13ordered_arrayIiE sort: 0.0125626s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000606634s
+17ordered_array_stlIiE push_back: 0.000569884s
+17ordered_array_stlIiE ordered_insert: 0.177228s
+17ordered_array_stlIiE contains: 0.0143171s
+17ordered_array_stlIiE remove: 0.00224552s
+17ordered_array_stlIiE sort: 0.0287082s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00309304s
+12ordered_listIiE push_back: 0.00094825s
+12ordered_listIiE ordered_insert: 11.442s
+12ordered_listIiE contains: 28.6487s
+12ordered_listIiE remove: 5.38117s
+12ordered_listIiE sort: 0.014086s
+12ordered_listIiE clear: 0.00151156s
+12ordered_listIiE merge: 0.00542227s
+16ordered_list_stlIiE push_back: 0.00287607s
+16ordered_list_stlIiE ordered_insert: 15.4744s
+16ordered_list_stlIiE contains: 32.5596s
+16ordered_list_stlIiE remove: 3.21915s
+16ordered_list_stlIiE sort: 0.0344736s
+16ordered_list_stlIiE clear: 0.00211509s
+16ordered_list_stlIiE merge: 0.00857788s
+Finished profiling for n = 80000
+
+Profiling with n = 81000
+13ordered_arrayIiE push_back: 0.000525684s
+13ordered_arrayIiE ordered_insert: 5.34968s
+13ordered_arrayIiE contains: 0.00437654s
+13ordered_arrayIiE remove: 0.0153985s
+13ordered_arrayIiE sort: 0.0126608s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000614984s
+17ordered_array_stlIiE push_back: 0.000575934s
+17ordered_array_stlIiE ordered_insert: 0.181754s
+17ordered_array_stlIiE contains: 0.0140337s
+17ordered_array_stlIiE remove: 0.0021379s
+17ordered_array_stlIiE sort: 0.0289438s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00312488s
+12ordered_listIiE push_back: 0.000957159s
+12ordered_listIiE ordered_insert: 11.8649s
+12ordered_listIiE contains: 29.7642s
+12ordered_listIiE remove: 5.5727s
+12ordered_listIiE sort: 0.0144736s
+12ordered_listIiE clear: 0.00156483s
+12ordered_listIiE merge: 0.00544381s
+16ordered_list_stlIiE push_back: 0.00292499s
+16ordered_list_stlIiE ordered_insert: 15.746s
+16ordered_list_stlIiE contains: 33.5587s
+16ordered_list_stlIiE remove: 3.34315s
+16ordered_list_stlIiE sort: 0.0342558s
+16ordered_list_stlIiE clear: 0.00209004s
+16ordered_list_stlIiE merge: 0.0086736s
+Finished profiling for n = 81000
+
+Profiling with n = 82000
+13ordered_arrayIiE push_back: 0.000530514s
+13ordered_arrayIiE ordered_insert: 5.43507s
+13ordered_arrayIiE contains: 0.00425759s
+13ordered_arrayIiE remove: 0.0221001s
+13ordered_arrayIiE sort: 0.012741s
+13ordered_arrayIiE clear: 1.8e-07s
+13ordered_arrayIiE merge: 0.000619443s
+17ordered_array_stlIiE push_back: 0.000583103s
+17ordered_array_stlIiE ordered_insert: 0.186166s
+17ordered_array_stlIiE contains: 0.0140889s
+17ordered_array_stlIiE remove: 0.00213862s
+17ordered_array_stlIiE sort: 0.0292881s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00316492s
+12ordered_listIiE push_back: 0.00096858s
+12ordered_listIiE ordered_insert: 12.318s
+12ordered_listIiE contains: 30.5527s
+12ordered_listIiE remove: 5.75554s
+12ordered_listIiE sort: 0.0145706s
+12ordered_listIiE clear: 0.00155528s
+12ordered_listIiE merge: 0.00552463s
+16ordered_list_stlIiE push_back: 0.00296861s
+16ordered_list_stlIiE ordered_insert: 16.0372s
+16ordered_list_stlIiE contains: 34.0585s
+16ordered_list_stlIiE remove: 3.38857s
+16ordered_list_stlIiE sort: 0.0346011s
+16ordered_list_stlIiE clear: 0.00209773s
+16ordered_list_stlIiE merge: 0.00872812s
+Finished profiling for n = 82000
+
+Profiling with n = 83000
+13ordered_arrayIiE push_back: 0.000533894s
+13ordered_arrayIiE ordered_insert: 5.65104s
+13ordered_arrayIiE contains: 0.00471426s
+13ordered_arrayIiE remove: 0.0158102s
+13ordered_arrayIiE sort: 0.0129881s
+13ordered_arrayIiE clear: 9e-08s
+13ordered_arrayIiE merge: 0.000629093s
+17ordered_array_stlIiE push_back: 0.000586954s
+17ordered_array_stlIiE ordered_insert: 0.190017s
+17ordered_array_stlIiE contains: 0.0139816s
+17ordered_array_stlIiE remove: 0.00202246s
+17ordered_array_stlIiE sort: 0.0297558s
+17ordered_array_stlIiE clear: 1.1e-07s
+17ordered_array_stlIiE merge: 0.00321093s
+12ordered_listIiE push_back: 0.000972159s
+12ordered_listIiE ordered_insert: 12.4621s
+12ordered_listIiE contains: 31.2942s
+12ordered_listIiE remove: 5.92205s
+12ordered_listIiE sort: 0.0148636s
+12ordered_listIiE clear: 0.00158333s
+12ordered_listIiE merge: 0.00554442s
+16ordered_list_stlIiE push_back: 0.00299746s
+16ordered_list_stlIiE ordered_insert: 16.503s
+16ordered_list_stlIiE contains: 34.6849s
+16ordered_list_stlIiE remove: 3.49019s
+16ordered_list_stlIiE sort: 0.0347145s
+16ordered_list_stlIiE clear: 0.00218659s
+16ordered_list_stlIiE merge: 0.00880715s
+Finished profiling for n = 83000
+
+Profiling with n = 84000
+13ordered_arrayIiE push_back: 0.000545274s
+13ordered_arrayIiE ordered_insert: 5.76895s
+13ordered_arrayIiE contains: 0.00453404s
+13ordered_arrayIiE remove: 0.0210815s
+13ordered_arrayIiE sort: 0.0132394s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000635103s
+17ordered_array_stlIiE push_back: 0.000593343s
+17ordered_array_stlIiE ordered_insert: 0.195038s
+17ordered_array_stlIiE contains: 0.0145484s
+17ordered_array_stlIiE remove: 0.00210383s
+17ordered_array_stlIiE sort: 0.0299542s
+17ordered_array_stlIiE clear: 1e-07s
+17ordered_array_stlIiE merge: 0.00324816s
+12ordered_listIiE push_back: 0.000988429s
+12ordered_listIiE ordered_insert: 12.9775s
+12ordered_listIiE contains: 32.4577s
+12ordered_listIiE remove: 6.05126s
+12ordered_listIiE sort: 0.0149639s
+12ordered_listIiE clear: 0.00165516s
+12ordered_listIiE merge: 0.00571484s
+16ordered_list_stlIiE push_back: 0.0030395s
+16ordered_list_stlIiE ordered_insert: 16.8488s
+16ordered_list_stlIiE contains: 35.5545s
+16ordered_list_stlIiE remove: 3.56899s
+16ordered_list_stlIiE sort: 0.0352129s
+16ordered_list_stlIiE clear: 0.0021971s
+16ordered_list_stlIiE merge: 0.00894482s
+Finished profiling for n = 84000
+
+Profiling with n = 85000
+13ordered_arrayIiE push_back: 0.000548124s
+13ordered_arrayIiE ordered_insert: 5.96784s
+13ordered_arrayIiE contains: 0.00450717s
+13ordered_arrayIiE remove: 0.0211551s
+13ordered_arrayIiE sort: 0.0135956s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000643483s
+17ordered_array_stlIiE push_back: 0.000601743s
+17ordered_array_stlIiE ordered_insert: 0.198503s
+17ordered_array_stlIiE contains: 0.0144834s
+17ordered_array_stlIiE remove: 0.00214118s
+17ordered_array_stlIiE sort: 0.0305414s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00328534s
+12ordered_listIiE push_back: 0.00105976s
+12ordered_listIiE ordered_insert: 13.4966s
+12ordered_listIiE contains: 33.3197s
+12ordered_listIiE remove: 6.26629s
+12ordered_listIiE sort: 0.0152715s
+12ordered_listIiE clear: 0.0016657s
+12ordered_listIiE merge: 0.00568132s
+16ordered_list_stlIiE push_back: 0.00307815s
+16ordered_list_stlIiE ordered_insert: 17.3669s
+16ordered_list_stlIiE contains: 36.7516s
+16ordered_list_stlIiE remove: 3.69039s
+16ordered_list_stlIiE sort: 0.0360616s
+16ordered_list_stlIiE clear: 0.00225487s
+16ordered_list_stlIiE merge: 0.00904471s
+Finished profiling for n = 85000
+
+Profiling with n = 86000
+13ordered_arrayIiE push_back: 0.000546484s
+13ordered_arrayIiE ordered_insert: 6.00573s
+13ordered_arrayIiE contains: 0.00427733s
+13ordered_arrayIiE remove: 0.0167906s
+13ordered_arrayIiE sort: 0.0137013s
+13ordered_arrayIiE clear: 1.5e-07s
+13ordered_arrayIiE merge: 0.000652382s
+17ordered_array_stlIiE push_back: 0.000611173s
+17ordered_array_stlIiE ordered_insert: 0.202227s
+17ordered_array_stlIiE contains: 0.01407s
+17ordered_array_stlIiE remove: 0.00215216s
+17ordered_array_stlIiE sort: 0.0311079s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00351289s
+12ordered_listIiE push_back: 0.0010152s
+12ordered_listIiE ordered_insert: 13.7822s
+12ordered_listIiE contains: 33.9107s
+12ordered_listIiE remove: 6.37096s
+12ordered_listIiE sort: 0.0157247s
+12ordered_listIiE clear: 0.00164817s
+12ordered_listIiE merge: 0.00587838s
+16ordered_list_stlIiE push_back: 0.00312164s
+16ordered_list_stlIiE ordered_insert: 17.804s
+16ordered_list_stlIiE contains: 37.6075s
+16ordered_list_stlIiE remove: 3.78446s
+16ordered_list_stlIiE sort: 0.0361819s
+16ordered_list_stlIiE clear: 0.00224743s
+16ordered_list_stlIiE merge: 0.00915827s
+Finished profiling for n = 86000
+
+Profiling with n = 87000
+13ordered_arrayIiE push_back: 0.000550473s
+13ordered_arrayIiE ordered_insert: 6.11629s
+13ordered_arrayIiE contains: 0.00511194s
+13ordered_arrayIiE remove: 0.0162146s
+13ordered_arrayIiE sort: 0.0136714s
+13ordered_arrayIiE clear: 1e-07s
+13ordered_arrayIiE merge: 0.000660572s
+17ordered_array_stlIiE push_back: 0.000613213s
+17ordered_array_stlIiE ordered_insert: 0.208615s
+17ordered_array_stlIiE contains: 0.0151618s
+17ordered_array_stlIiE remove: 0.0024132s
+17ordered_array_stlIiE sort: 0.0309605s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00336007s
+12ordered_listIiE push_back: 0.00103144s
+12ordered_listIiE ordered_insert: 14.0846s
+12ordered_listIiE contains: 34.7925s
+12ordered_listIiE remove: 6.54154s
+12ordered_listIiE sort: 0.0157704s
+12ordered_listIiE clear: 0.00169082s
+12ordered_listIiE merge: 0.00580852s
+16ordered_list_stlIiE push_back: 0.00315067s
+16ordered_list_stlIiE ordered_insert: 18.3222s
+16ordered_list_stlIiE contains: 38.5531s
+16ordered_list_stlIiE remove: 3.85633s
+16ordered_list_stlIiE sort: 0.0373744s
+16ordered_list_stlIiE clear: 0.00232648s
+16ordered_list_stlIiE merge: 0.0093554s
+Finished profiling for n = 87000
+
+Profiling with n = 88000
+13ordered_arrayIiE push_back: 0.000562004s
+13ordered_arrayIiE ordered_insert: 6.30179s
+13ordered_arrayIiE contains: 0.0050105s
+13ordered_arrayIiE remove: 0.0190258s
+13ordered_arrayIiE sort: 0.0138658s
+13ordered_arrayIiE clear: 9e-08s
+13ordered_arrayIiE merge: 0.000667023s
+17ordered_array_stlIiE push_back: 0.000622853s
+17ordered_array_stlIiE ordered_insert: 0.212474s
+17ordered_array_stlIiE contains: 0.0154619s
+17ordered_array_stlIiE remove: 0.00220056s
+17ordered_array_stlIiE sort: 0.0313109s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00339823s
+12ordered_listIiE push_back: 0.0010813s
+12ordered_listIiE ordered_insert: 14.508s
+12ordered_listIiE contains: 35.6894s
+12ordered_listIiE remove: 6.69949s
+12ordered_listIiE sort: 0.0160103s
+12ordered_listIiE clear: 0.00170417s
+12ordered_listIiE merge: 0.00602265s
+16ordered_list_stlIiE push_back: 0.00317451s
+16ordered_list_stlIiE ordered_insert: 19.1071s
+16ordered_list_stlIiE contains: 39.5822s
+16ordered_list_stlIiE remove: 3.96326s
+16ordered_list_stlIiE sort: 0.0370392s
+16ordered_list_stlIiE clear: 0.00230864s
+16ordered_list_stlIiE merge: 0.00936252s
+Finished profiling for n = 88000
+
+Profiling with n = 89000
+13ordered_arrayIiE push_back: 0.000563514s
+13ordered_arrayIiE ordered_insert: 6.4499s
+13ordered_arrayIiE contains: 0.00510874s
+13ordered_arrayIiE remove: 0.0219874s
+13ordered_arrayIiE sort: 0.0139894s
+13ordered_arrayIiE clear: 1.1e-07s
+13ordered_arrayIiE merge: 0.000674072s
+17ordered_array_stlIiE push_back: 0.000625053s
+17ordered_array_stlIiE ordered_insert: 0.218695s
+17ordered_array_stlIiE contains: 0.0158344s
+17ordered_array_stlIiE remove: 0.00227495s
+17ordered_array_stlIiE sort: 0.0318073s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00343576s
+12ordered_listIiE push_back: 0.00104559s
+12ordered_listIiE ordered_insert: 15.0243s
+12ordered_listIiE contains: 37.1027s
+12ordered_listIiE remove: 6.97145s
+12ordered_listIiE sort: 0.016276s
+12ordered_listIiE clear: 0.00170613s
+12ordered_listIiE merge: 0.00603855s
+16ordered_list_stlIiE push_back: 0.00322332s
+16ordered_list_stlIiE ordered_insert: 19.2244s
+16ordered_list_stlIiE contains: 40.6854s
+16ordered_list_stlIiE remove: 4.06551s
+16ordered_list_stlIiE sort: 0.037708s
+16ordered_list_stlIiE clear: 0.00234436s
+16ordered_list_stlIiE merge: 0.00956122s
+Finished profiling for n = 89000
+
+Profiling with n = 90000
+13ordered_arrayIiE push_back: 0.000567194s
+13ordered_arrayIiE ordered_insert: 6.56067s
+13ordered_arrayIiE contains: 0.00481745s
+13ordered_arrayIiE remove: 0.0255502s
+13ordered_arrayIiE sort: 0.0141897s
+13ordered_arrayIiE clear: 8e-08s
+13ordered_arrayIiE merge: 0.000686982s
+17ordered_array_stlIiE push_back: 0.000640893s
+17ordered_array_stlIiE ordered_insert: 0.219997s
+17ordered_array_stlIiE contains: 0.0153892s
+17ordered_array_stlIiE remove: 0.00217497s
+17ordered_array_stlIiE sort: 0.0326552s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00347472s
+12ordered_listIiE push_back: 0.0010697s
+12ordered_listIiE ordered_insert: 15.4661s
+12ordered_listIiE contains: 37.6995s
+12ordered_listIiE remove: 7.07736s
+12ordered_listIiE sort: 0.0164275s
+12ordered_listIiE clear: 0.00179881s
+12ordered_listIiE merge: 0.00608431s
+16ordered_list_stlIiE push_back: 0.00325558s
+16ordered_list_stlIiE ordered_insert: 19.9408s
+16ordered_list_stlIiE contains: 42.3737s
+16ordered_list_stlIiE remove: 4.26689s
+16ordered_list_stlIiE sort: 0.0385796s
+16ordered_list_stlIiE clear: 0.00232087s
+16ordered_list_stlIiE merge: 0.0101439s
+Finished profiling for n = 90000
+
+Profiling with n = 91000
+13ordered_arrayIiE push_back: 0.000567954s
+13ordered_arrayIiE ordered_insert: 7.05675s
+13ordered_arrayIiE contains: 0.00524726s
+13ordered_arrayIiE remove: 0.0164982s
+13ordered_arrayIiE sort: 0.0148267s
+13ordered_arrayIiE clear: 8.1e-07s
+13ordered_arrayIiE merge: 0.000693722s
+17ordered_array_stlIiE push_back: 0.000692392s
+17ordered_array_stlIiE ordered_insert: 0.251616s
+17ordered_array_stlIiE contains: 0.0170753s
+17ordered_array_stlIiE remove: 0.00223996s
+17ordered_array_stlIiE sort: 0.0335807s
+17ordered_array_stlIiE clear: 4.2e-07s
+17ordered_array_stlIiE merge: 0.00359171s
+12ordered_listIiE push_back: 0.00108704s
+12ordered_listIiE ordered_insert: 16.3479s
+12ordered_listIiE contains: 39.0045s
+12ordered_listIiE remove: 7.30172s
+12ordered_listIiE sort: 0.0166618s
+12ordered_listIiE clear: 0.00180597s
+12ordered_listIiE merge: 0.0061644s
+16ordered_list_stlIiE push_back: 0.00329468s
+16ordered_list_stlIiE ordered_insert: 20.3816s
+16ordered_list_stlIiE contains: 44.3309s
+16ordered_list_stlIiE remove: 4.37178s
+16ordered_list_stlIiE sort: 0.0393264s
+16ordered_list_stlIiE clear: 0.00235486s
+16ordered_list_stlIiE merge: 0.0098549s
+Finished profiling for n = 91000
+
+Profiling with n = 92000
+13ordered_arrayIiE push_back: 0.000579224s
+13ordered_arrayIiE ordered_insert: 7.14989s
+13ordered_arrayIiE contains: 0.00572599s
+13ordered_arrayIiE remove: 0.0293372s
+13ordered_arrayIiE sort: 0.0145918s
+13ordered_arrayIiE clear: 2e-07s
+13ordered_arrayIiE merge: 0.000693532s
+17ordered_array_stlIiE push_back: 0.000653403s
+17ordered_array_stlIiE ordered_insert: 0.235294s
+17ordered_array_stlIiE contains: 0.0166239s
+17ordered_array_stlIiE remove: 0.00274958s
+17ordered_array_stlIiE sort: 0.0331259s
+17ordered_array_stlIiE clear: 7.5e-07s
+17ordered_array_stlIiE merge: 0.00356698s
+12ordered_listIiE push_back: 0.00108661s
+12ordered_listIiE ordered_insert: 16.7348s
+12ordered_listIiE contains: 40.0553s
+12ordered_listIiE remove: 7.52049s
+12ordered_listIiE sort: 0.0172506s
+12ordered_listIiE clear: 0.00183709s
+12ordered_listIiE merge: 0.00626682s
+16ordered_list_stlIiE push_back: 0.00332524s
+16ordered_list_stlIiE ordered_insert: 20.9198s
+16ordered_list_stlIiE contains: 44.6894s
+16ordered_list_stlIiE remove: 4.40534s
+16ordered_list_stlIiE sort: 0.0387931s
+16ordered_list_stlIiE clear: 0.00239956s
+16ordered_list_stlIiE merge: 0.00978177s
+Finished profiling for n = 92000
+
+Profiling with n = 93000
+13ordered_arrayIiE push_back: 0.000577853s
+13ordered_arrayIiE ordered_insert: 7.09574s
+13ordered_arrayIiE contains: 0.00486267s
+13ordered_arrayIiE remove: 0.020464s
+13ordered_arrayIiE sort: 0.0147522s
+13ordered_arrayIiE clear: 1.1e-07s
+13ordered_arrayIiE merge: 0.000701642s
+17ordered_array_stlIiE push_back: 0.000664893s
+17ordered_array_stlIiE ordered_insert: 0.234456s
+17ordered_array_stlIiE contains: 0.0163615s
+17ordered_array_stlIiE remove: 0.00224208s
+17ordered_array_stlIiE sort: 0.0337722s
+17ordered_array_stlIiE clear: 1.6e-07s
+17ordered_array_stlIiE merge: 0.00381975s
+12ordered_listIiE push_back: 0.00110211s
+12ordered_listIiE ordered_insert: 16.678s
+12ordered_listIiE contains: 40.9478s
+12ordered_listIiE remove: 7.85868s
+12ordered_listIiE sort: 0.0192843s
+12ordered_listIiE clear: 0.00183576s
+12ordered_listIiE merge: 0.0063229s
+16ordered_list_stlIiE push_back: 0.00337522s
+16ordered_list_stlIiE ordered_insert: 22.5536s
+16ordered_list_stlIiE contains: 44.6666s
+16ordered_list_stlIiE remove: 4.44641s
+16ordered_list_stlIiE sort: 0.0399293s
+16ordered_list_stlIiE clear: 0.00247821s
+16ordered_list_stlIiE merge: 0.00992661s
+Finished profiling for n = 93000
+
+Profiling with n = 94000
+13ordered_arrayIiE push_back: 0.000580804s
+13ordered_arrayIiE ordered_insert: 7.2176s
+13ordered_arrayIiE contains: 0.00532054s
+13ordered_arrayIiE remove: 0.0244836s
+13ordered_arrayIiE sort: 0.0149308s
+13ordered_arrayIiE clear: 1.2e-07s
+13ordered_arrayIiE merge: 0.000717891s
+17ordered_array_stlIiE push_back: 0.000671543s
+17ordered_array_stlIiE ordered_insert: 0.240529s
+17ordered_array_stlIiE contains: 0.0166245s
+17ordered_array_stlIiE remove: 0.00248336s
+17ordered_array_stlIiE sort: 0.034289s
+17ordered_array_stlIiE clear: 9e-08s
+17ordered_array_stlIiE merge: 0.00362904s
+12ordered_listIiE push_back: 0.00110953s
+12ordered_listIiE ordered_insert: 17.1868s
+12ordered_listIiE contains: 41.5632s
+12ordered_listIiE remove: 7.81962s
+12ordered_listIiE sort: 0.0175069s
+12ordered_listIiE clear: 0.0018777s
+12ordered_listIiE merge: 0.0064168s
+16ordered_list_stlIiE push_back: 0.00339571s
+16ordered_list_stlIiE ordered_insert: 21.8225s
+16ordered_list_stlIiE contains: 45.6065s
+16ordered_list_stlIiE remove: 4.57034s
+16ordered_list_stlIiE sort: 0.0404167s
+16ordered_list_stlIiE clear: 0.00255378s
+16ordered_list_stlIiE merge: 0.00998588s
+Finished profiling for n = 94000
+
+Profiling with n = 95000
+13ordered_arrayIiE push_back: 0.000587624s
+13ordered_arrayIiE ordered_insert: 7.44951s
+13ordered_arrayIiE contains: 0.00523385s
+13ordered_arrayIiE remove: 0.0177863s
+13ordered_arrayIiE sort: 0.0151255s
+13ordered_arrayIiE clear: 1.2e-07s
+13ordered_arrayIiE merge: 0.000720582s
+17ordered_array_stlIiE push_back: 0.000670633s
+17ordered_array_stlIiE ordered_insert: 0.246218s
+17ordered_array_stlIiE contains: 0.0165229s
+17ordered_array_stlIiE remove: 0.0023129s
+17ordered_array_stlIiE sort: 0.0345221s
+17ordered_array_stlIiE clear: 1e-07s
+17ordered_array_stlIiE merge: 0.00367276s
+12ordered_listIiE push_back: 0.00111853s
+12ordered_listIiE ordered_insert: 17.687s
+12ordered_listIiE contains: 42.8419s
+12ordered_listIiE remove: 8.04972s
+12ordered_listIiE sort: 0.0176522s
+12ordered_listIiE clear: 0.00191994s
+12ordered_listIiE merge: 0.00644938s
+16ordered_list_stlIiE push_back: 0.00342641s
+16ordered_list_stlIiE ordered_insert: 22.3941s
+16ordered_list_stlIiE contains: 46.6039s
+16ordered_list_stlIiE remove: 4.66047s
+16ordered_list_stlIiE sort: 0.0403547s
+16ordered_list_stlIiE clear: 0.00255318s
+16ordered_list_stlIiE merge: 0.010187s
+Finished profiling for n = 95000
+
+Profiling with n = 96000
+13ordered_arrayIiE push_back: 0.000588333s
+13ordered_arrayIiE ordered_insert: 7.48181s
+13ordered_arrayIiE contains: 0.00530788s
+13ordered_arrayIiE remove: 0.0306724s
+13ordered_arrayIiE sort: 0.0151416s
+13ordered_arrayIiE clear: 2.3e-07s
+13ordered_arrayIiE merge: 0.000730512s
+17ordered_array_stlIiE push_back: 0.000682772s
+17ordered_array_stlIiE ordered_insert: 0.249634s
+17ordered_array_stlIiE contains: 0.0174996s
+17ordered_array_stlIiE remove: 0.00281964s
+17ordered_array_stlIiE sort: 0.0350348s
+17ordered_array_stlIiE clear: 1e-07s
+17ordered_array_stlIiE merge: 0.00370738s
+12ordered_listIiE push_back: 0.00113433s
+12ordered_listIiE ordered_insert: 18.1198s
+12ordered_listIiE contains: 43.6939s
+12ordered_listIiE remove: 8.21005s
+12ordered_listIiE sort: 0.017732s
+12ordered_listIiE clear: 0.00191675s
+12ordered_listIiE merge: 0.0065776s
+16ordered_list_stlIiE push_back: 0.00347886s
+16ordered_list_stlIiE ordered_insert: 23.0043s
+16ordered_list_stlIiE contains: 47.8472s
+16ordered_list_stlIiE remove: 4.82931s
+16ordered_list_stlIiE sort: 0.041049s
+16ordered_list_stlIiE clear: 0.00250137s
+16ordered_list_stlIiE merge: 0.0102245s
+Finished profiling for n = 96000
+
+Profiling with n = 97000
+13ordered_arrayIiE push_back: 0.000594153s
+13ordered_arrayIiE ordered_insert: 7.71278s
+13ordered_arrayIiE contains: 0.00609902s
+13ordered_arrayIiE remove: 0.0274576s
+13ordered_arrayIiE sort: 0.0152578s
+13ordered_arrayIiE clear: 1.1e-07s
+13ordered_arrayIiE merge: 0.000733831s
+17ordered_array_stlIiE push_back: 0.000693592s
+17ordered_array_stlIiE ordered_insert: 0.25334s
+17ordered_array_stlIiE contains: 0.0179945s
+17ordered_array_stlIiE remove: 0.00331665s
+17ordered_array_stlIiE sort: 0.0346758s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00374017s
+12ordered_listIiE push_back: 0.00114263s
+12ordered_listIiE ordered_insert: 18.627s
+12ordered_listIiE contains: 44.7231s
+12ordered_listIiE remove: 8.42387s
+12ordered_listIiE sort: 0.0178712s
+12ordered_listIiE clear: 0.00198703s
+12ordered_listIiE merge: 0.00653406s
+16ordered_list_stlIiE push_back: 0.00350258s
+16ordered_list_stlIiE ordered_insert: 23.427s
+16ordered_list_stlIiE contains: 48.6398s
+16ordered_list_stlIiE remove: 4.86112s
+16ordered_list_stlIiE sort: 0.0427137s
+16ordered_list_stlIiE clear: 0.00260836s
+16ordered_list_stlIiE merge: 0.0103411s
+Finished profiling for n = 97000
+
+Profiling with n = 98000
+13ordered_arrayIiE push_back: 0.000596613s
+13ordered_arrayIiE ordered_insert: 7.96908s
+13ordered_arrayIiE contains: 0.00530453s
+13ordered_arrayIiE remove: 0.0324093s
+13ordered_arrayIiE sort: 0.0154756s
+13ordered_arrayIiE clear: 3e-07s
+13ordered_arrayIiE merge: 0.000741971s
+17ordered_array_stlIiE push_back: 0.000698782s
+17ordered_array_stlIiE ordered_insert: 0.258955s
+17ordered_array_stlIiE contains: 0.0169792s
+17ordered_array_stlIiE remove: 0.00277968s
+17ordered_array_stlIiE sort: 0.0353127s
+17ordered_array_stlIiE clear: 8e-08s
+17ordered_array_stlIiE merge: 0.00379119s
+12ordered_listIiE push_back: 0.00115932s
+12ordered_listIiE ordered_insert: 18.9361s
+12ordered_listIiE contains: 45.7385s
+12ordered_listIiE remove: 8.60518s
+12ordered_listIiE sort: 0.018163s
+12ordered_listIiE clear: 0.00198874s
+12ordered_listIiE merge: 0.00663682s
+16ordered_list_stlIiE push_back: 0.0035425s
+16ordered_list_stlIiE ordered_insert: 23.9761s
+16ordered_list_stlIiE contains: 51.1906s
+16ordered_list_stlIiE remove: 5.14487s
+16ordered_list_stlIiE sort: 0.0420173s
+16ordered_list_stlIiE clear: 0.00258888s
+16ordered_list_stlIiE merge: 0.0104585s
+Finished profiling for n = 98000
+
+Profiling with n = 99000
+13ordered_arrayIiE push_back: 0.000600553s
+13ordered_arrayIiE ordered_insert: 8.10177s
+13ordered_arrayIiE contains: 0.00561091s
+13ordered_arrayIiE remove: 0.0237544s
+13ordered_arrayIiE sort: 0.015763s
+13ordered_arrayIiE clear: 1.4e-07s
+13ordered_arrayIiE merge: 0.00082341s
+17ordered_array_stlIiE push_back: 0.000722982s
+17ordered_array_stlIiE ordered_insert: 0.268438s
+17ordered_array_stlIiE contains: 0.0177313s
+17ordered_array_stlIiE remove: 0.00258724s
+17ordered_array_stlIiE sort: 0.0370732s
+17ordered_array_stlIiE clear: 3.8e-07s
+17ordered_array_stlIiE merge: 0.00430002s
+12ordered_listIiE push_back: 0.00117552s
+12ordered_listIiE ordered_insert: 20.1496s
+12ordered_listIiE contains: 47.7327s
+12ordered_listIiE remove: 9.14598s
+12ordered_listIiE sort: 0.0225433s
+12ordered_listIiE clear: 0.00204294s
+12ordered_listIiE merge: 0.00726595s
+16ordered_list_stlIiE push_back: 0.00364862s
+16ordered_list_stlIiE ordered_insert: 25.479s
+16ordered_list_stlIiE contains: 51.7536s
+16ordered_list_stlIiE remove: 5.15615s
+16ordered_list_stlIiE sort: 0.0438932s
+16ordered_list_stlIiE clear: 0.00265356s
+16ordered_list_stlIiE merge: 0.0106583s
+Finished profiling for n = 99000
+
+Profiling with n = 100000
+13ordered_arrayIiE push_back: 0.000605353s
+13ordered_arrayIiE ordered_insert: 8.24534s
+13ordered_arrayIiE contains: 0.00512677s
+13ordered_arrayIiE remove: 0.0298989s
+13ordered_arrayIiE sort: 0.0165004s
+13ordered_arrayIiE clear: 5.7e-07s
+13ordered_arrayIiE merge: 0.000763411s
+17ordered_array_stlIiE push_back: 0.000722931s
+17ordered_array_stlIiE ordered_insert: 0.26933s
+17ordered_array_stlIiE contains: 0.0171123s
+17ordered_array_stlIiE remove: 0.00265687s
+17ordered_array_stlIiE sort: 0.0365026s
+17ordered_array_stlIiE clear: 3.6e-07s
+17ordered_array_stlIiE merge: 0.00385436s
+12ordered_listIiE push_back: 0.00117114s
+12ordered_listIiE ordered_insert: 19.9942s
+12ordered_listIiE contains: 48.1907s
+12ordered_listIiE remove: 9.07303s
+12ordered_listIiE sort: 0.0189358s
+12ordered_listIiE clear: 0.00202658s
+12ordered_listIiE merge: 0.00689088s
+16ordered_list_stlIiE push_back: 0.00362162s
+16ordered_list_stlIiE ordered_insert: 25.1313s
+16ordered_list_stlIiE contains: 52.8097s
+16ordered_list_stlIiE remove: 5.24779s
+16ordered_list_stlIiE sort: 0.0425722s
+16ordered_list_stlIiE clear: 0.00263467s
+16ordered_list_stlIiE merge: 0.0110624s
+Finished profiling for n = 100000
+
+All container profiles finished!
+
