@@ -1,0 +1,9 @@
+Hardware Type: 1
+Protocol Type: 0x0800
+Hardware Address Length: 6
+Protocol Address Length: 4
+Operation: 1
+Sender MAC: ee:ee:ee:ee:ee:ee
+Sender IP: 172.21.229.11
+Target MAC: 00:00:00:00:00:00
+Target IP: 100.99.174.71
