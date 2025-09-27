@@ -204,7 +204,7 @@ void test(std::ostream &out = std::cout) {
 \subsubsection{顺序表归并的两种实现方案}
 
 顺序表的核心特性是 ``连续内存 + 随机访问'', 即通过下标可直接定位任意元素, 这一特性直接影响归并操作的实现逻辑与性能.
-，
+
 \paragraph{自定义顺序表 (\mintinline{cpp}{ordered_array<T>})}
 
 \textbf{存储结构}: 基于动态数组 (\mintinline{cpp}{T *data}) 实现, 内存连续分配, 通过 \mintinline{cpp}{size} 记录当前元素个数、\mintinline{cpp}{capacity} 记录数组最大容量, 扩容时按 2 倍比例分配新内存 (减少扩容次数).
