@@ -1,0 +1,12 @@
+=== IPv4 Header ===
+Version: 4
+Header Length: 20
+TTL: 64
+Protocol: 1
+Source IP: 100.85.119.232
+Dest IP: 223.2.9.123
+=== ICMP Header ===
+Type: 8
+Code: 0
+=== Payload ===
+Content: I Love NNU!
