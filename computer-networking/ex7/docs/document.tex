@@ -1,0 +1,155 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{graphicx}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{siunitx}
+
+\begin{document}
+    
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 计算机网络 & \textit{Computer Networking} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{路由器及其基本配置} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2025 年 11 月 3 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验目的}
+
+本实验旨在系统掌握路由器接口的基本配置方法，包括接口 IP 地址的规划与设置、接口的启用与状态管理，这些技能是构建企业分段网络、实现部门间网络隔离与通信的基础；同时深入理解静态路由的工作原理，熟练掌握静态路由条目的配置命令，静态路由在拓扑稳定的小型网络、对路由安全性要求高的场景（如金融机构的核心网段互联）中具有不可替代的作用；最终学会通过 Ping 命令从端到端验证网络连通性，从而透彻理解计算机网络中不同网段间路由转发的机制，为复杂网络的多区域互联、路由策略规划等高级配置奠定扎实的技术基础。
+
+\section{实验内容简要描述}
+
+\begin{enumerate}
+    \item 路由器基本配置：
+    
+    \begin{enumerate}
+        \item 为 PC0、PC1、PC2、PC3 配置静态 IP 地址，基于网络规模和管理需求，将设备划分为 \mintinline{text}`192.168.100.0/24` 和 \mintinline{text}`192.168.200.0/24` 两个网段（PC0、PC1 属于前者，PC2、PC3 属于后者），通过网段划分实现初步的网络隔离与资源分区；
+        \item 对路由器的 GigabitEthernet0/0、GigabitEthernet0/1 等接口进行 IP 地址配置，使其成为对应网段的网关，并启用与交换机连接的接口，激活物理层与数据链路层的通信能力，最终实现同网段内设备的直接通信。
+    \end{enumerate}
+    
+    \item 配置静态路由：
+    
+    \begin{enumerate}
+        \item 为路由器安装 HWIC-2T 模块（该模块提供 2 个串行接口，支持点到点广域网连接），模拟企业分支机构与总部的专线互联场景；
+        \item 分别对两台路由器配置接口 IP、串口的 HDLC 封装协议（HDLC 是面向比特的同步链路层协议，具备高效帧传输能力）及静态路由条目，明确不同网段间的转发路径；
+        \item 通过 Ping 命令从终端设备发起跨网段通信请求，验证静态路由配置的有效性，理解路由转发在网络层的实际运作流程。
+    \end{enumerate}
+\end{enumerate}
+
+\section{实验步骤与结果分析}
+
+\subsection{路由器基本配置}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0000.png}
+\end{figure}
+
+\subsubsection{PC 地址设置}
+
+分别为 PC0、PC1、PC2、PC3 配置静态 IP 地址：以 PC0 为例，在其网络配置界面选择 “Static” 模式，手动设置 IPv4 地址为 \mintinline{text}`192.168.100.11`，子网掩码 \mintinline{text}`255.255.255.0`（该掩码支持 254 台设备，满足实验网络规模需求）；PC2、PC3 所在 \mintinline{text}`192.168.200.0/24` 网段，可配置 PC2 为 \mintinline{text}`192.168.200.11`、PC3 为 \mintinline{text}`192.168.200.12`，通过不同网段的 IP 分配为跨网段路由通信创造条件。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0001.png}
+\end{figure}
+
+\subsubsection{路由器接口配置}
+
+进入路由器全局配置模式后，进入接口配置视图，为该接口配置 IP 地址与子网掩码，使其成为 \mintinline{text}`192.168.100.0/24` 网段的网关；同理，对 GigabitEthernet0/1 接口配置 \mintinline{text}`192.168.200.1 255.255.255.0`，成为另一网段的网关。这些命令的本质是在网络层为接口赋予逻辑地址，使路由器能识别并转发不同网段的数据包。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0002.png}
+\end{figure}
+
+\subsubsection{启用路由器接口}
+
+在路由器接口配置界面中，勾选与交换机连接的 GigabitEthernet0/0 和 GigabitEthernet0/1 接口的 “Port Status” 启用选项，使接口状态从 “down” 变为 “up”。接口 “up/up” 状态表示物理层（如网线连接）和数据链路层（如以太网协议协商）均已就绪，路由器与交换机可正常收发数据帧，为同网段 PC 通信打通链路层通道。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0003.png}
+\end{figure}
+
+\subsection{配置静态路由}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0004.png}
+\end{figure}
+
+\subsubsection{安装 HWIC-2T 模块}
+
+在路由器模块插槽中安装 HWIC-2T 模块，该模块提供的串行接口支持通过 V.35 线缆建立点到点广域网连接，为路由器间的静态路由配置提供物理基础。
+
+\subsubsection{配置 Router0 和 Router1}
+
+进入路由器特权模式和全局配置模式，依次配置接口 IP、串口封装协议及静态路由条目。执行 \mintinline{text}`show ip route` 命令后，路由表中会显示静态路由条目、目标网段和下一跳。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0005.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0006.png}
+\end{figure}
+
+\subsubsection{连通性测试}
+
+在 PC0 命令行中执行 \mintinline{bash}`ping 192.168.200.11`（PC2 的 IP）：若配置正确，PC0 的 ICMP 请求将经 Router0→串口链路→Router1 转发至 PC2，PC2 返回的响应会沿原路径回传，最终在 PC0 终端显示 “Reply from 192.168.200.11” 及往返时间（RTT）、丢包率等统计信息，直观验证跨网段通信的畅通性。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0007.png}
+\end{figure}
+
+\section{实验中遇到的问题及体会}
+
+在实验中，曾因路由器接口未启用导致同网段 PC 无法通信：配置完接口 IP 后，未勾选 “Port Status” 启用选项，接口处于 “down” 状态，此时 PC0 ping PC1 显示 “Request timed out”。通过 \mintinline{text}`show interface GigabitEthernet0/0` 命令查看接口状态（“Line protocol” 和 “Physical” 均为 “down”），定位到问题后启用接口，通信恢复正常。这让我意识到：接口 “up” 状态是通信的基石，配置 IP 仅完成网络层逻辑设置，必须确保物理层和数据链路层同时就绪。
+
+在静态路由配置中，曾因下一跳地址错误（将 Router0 的下一跳误写为自身串口 IP \mintinline{text}`10.0.0.1`）导致跨网段通信失败。通过对比两台路由器的串口 IP（Router0 为 \mintinline{text}`10.0.0.1`，Router1 为 \mintinline{text}`10.0.0.2`），明确 “下一跳需指向对端路由器的直连接口 IP” 的原则，修正后静态路由生效。这让我深刻理解：静态路由的 “下一跳” 是目标网段的 “下一个落脚点”，必须是相邻路由器的可达接口，否则数据包会因无转发路径而丢弃。
+
+通过本次实验，我对路由器和静态路由的认知从理论走向实践：路由器通过接口 IP 划分网段，实现网络分段管理；静态路由是管理员手动建立的 “转发契约”，在拓扑稳定的场景（如小型企业互联）中可靠且易维护，但无法自动适应拓扑变化。Ping 命令则是网络诊断的 “利器”，从同网段到跨网段的连通性测试，将抽象的路由转发具象为终端响应，帮助我快速定位 IP、接口、路由等环节的问题。
+
+总而言之，本次实验不仅让我掌握了 Cisco 设备配置、静态路由配置的实操技能，更构建了从网段划分到路由转发的完整网络层认知体系，为后续学习动态路由协议（如 OSPF、RIP）和复杂路由策略设计奠定了坚实基础。
+
+\end{document}
