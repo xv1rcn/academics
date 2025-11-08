@@ -1,0 +1,262 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{graphicx}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{siunitx}
+
+\begin{document}
+    
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 计算机网络 & \textit{Computer Networking} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{路由器及其动态路由协议} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2025 年 11 月 8 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验目的}
+
+本实验旨在掌握路由器动态路由（RIP）的配置方法，理解静态路由与动态 RIP 路由在配置方式、更新机制及适用场景上的区别；深入理解 RIP 协议的工作原理，包括路由信息的周期性交换、超时收敛机制；通过完整的网络拓扑搭建、设备配置及连通性测试流程，实现多网段主机间的通信，强化对动态路由协议在复杂网络中自动化管理作用的认知。
+
+\section{实验内容简要描述}
+
+\begin{enumerate}
+    \item \textbf{路由器动态路由基础配置}：搭建包含 2 台交换机、2 台路由器、2 台主机的基础网络拓扑，完成交换机 VLAN 划分、路由器接口 IP 配置及静态路由设置，验证跨网段连通性；
+    
+    \item \textbf{动态路由（RIP）配置}：扩展网络拓扑至多 VLAN、多网段结构，在路由器上配置子接口实现 VLAN 间路由，启用 RIP 协议并完成网络通告，验证动态路由表生成及全网连通性；
+    
+    \item \textbf{静态路由与动态 RIP 路由对比分析}：从配置流程、拓扑适应性、路由更新方式三个维度，对比两种路由技术的核心差异；
+    
+    \item \textbf{RIP 工作原理验证}：通过观察路由表动态变化、模拟接口故障后的收敛过程，验证 RIP 协议的信息交换与超时机制。
+\end{enumerate}
+
+\section{实验步骤与结果分析}
+
+\subsection{路由器动态路由基础配置}
+
+\subsubsection{搭建基础网络拓扑}
+
+在 Packet Tracer 中拖拽 2 台交换机（Switch0、Switch1）、2 台路由器（Router0、Router1）、4 台主机（PC0、PC1、PC2、PC3），按如下逻辑连接设备：
+
+\begin{enumerate}
+    \item Switch0 的以太网端口连接 PC0、PC1 和 Router0 的 FastEthernet0/0 接口；
+
+    \item Switch1 的以太网端口连接 PC2、PC3 和 Router1 的 FastEthernet0/0 接口；
+
+    \item Router0 与 Router1 通过 Serial0/1/0 串行接口互联；
+\end{enumerate}
+
+完成拓扑搭建后，呈现设备间的物理连接关系。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0000.png}
+\end{figure}
+
+\subsubsection{配置交换机 VLAN 与接入端口}
+
+在 Switch0 进入全局配置模式，创建 VLAN10，将 FastEthernet0/1 端口配置为接入模式并归属 VLAN10，同时配置 VLAN10 的 SVI 接口 IP 为 \mintinline{text}`192.168.100.100/24`，启用接口使其处于工作状态；Switch1 的配置同理，创建 VLAN20，将 FastEthernet0/1 端口配置为接入模式并归属 VLAN20，配置 VLAN20 的 SVI 接口 IP 为 \mintinline{text}`192.168.200.100/24`，启用接口。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0001.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0002.png}
+\end{figure}
+
+通过此操作，实现交换机对连接主机的 VLAN 划分，为后续网段隔离奠定基础。
+
+\subsubsection{配置路由器接口与静态路由}
+
+在 Router0 配置 FastEthernet0/0 接口 IP 为 \mintinline{text}`192.168.100.1/24`，Serial0/1/0 接口 IP 为 \mintinline{text}`10.0.0.1/8`，并启用接口；Router1 配置 FastEthernet0/0 接口 IP 为 \mintinline{text}`192.168.200.1/24`，Serial0/1/0 接口 IP 为 \mintinline{text}`10.0.0.2/8`，并启用接口。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0003.png}
+\end{figure}
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0004.png}
+\end{figure}
+
+此步骤完成路由器的接口寻址与跨网段静态路由指引。
+
+\subsubsection{配置主机 IP 与网关}
+
+在 PC0 的网络配置界面，设置 IP 地址为 \mintinline{text}`192.168.100.10/24`，默认网关为 \mintinline{text}`192.168.100.1`；在 PC1 的网络配置界面，设置 IP 地址为 \mintinline{text}`192.168.100.12/24`；在 PC2 的网络配置界面，设置 IP 地址为 \mintinline{text}`192.168.200.11/24`，默认网关为 \mintinline{text}`192.168.200.1`。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0005.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0006.png}
+\end{figure}
+
+确保主机的 IP 配置与所在 VLAN 的网段及网关逻辑匹配。
+
+\subsubsection{基础网络连通性测试}
+
+在 PC0 的命令行界面：
+
+\begin{itemize}
+    \item 执行 \mintinline{text}`ping 192.168.100.12` 命令，验证数据包能否通过 Switch0 转发，最终到达 PC1；
+    
+    \item 执行 \mintinline{text}`ping 192.168.100.100` 命令，验证数据包能否到达 Switch0；
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0007.png}
+\end{figure}
+
+\begin{itemize}
+    \item 执行 \mintinline{text}`ping 192.168.100.1` 命令，验证数据包能否到达 PC0 网关；
+    
+    \item 执行 \mintinline{text}`ping 192.168.200.1` 命令，验证数据包能否到达对方路由器；
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0008.png}
+\end{figure}
+
+\begin{itemize}
+    \item 执行 \mintinline{text}`ping 192.168.200.11` 命令，验证数据包能否通过路由在 Router0 与 Router1 间转发，最终到达 PC2。
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0009.png}
+\end{figure}
+
+若返回连续的 “Reply” 信息，说明基础网络连通性正常。
+
+\subsection{动态路由（RIP）配置与验证}
+
+\subsubsection{扩展多 VLAN 网络拓扑}
+
+调整 Switch0 和 Switch1 的端口连接：
+
+\begin{itemize}
+    \item Switch0 的 FastEthernet0/2、0/3 端口分别连接 PC0、PC1，对应划分 VLAN2（\mintinline{text}`192.168.2.0/24`）、VLAN3（\mintinline{text}`192.168.3.0/24`）；
+    
+    \item Switch1 的 FastEthernet0/2、0/3 端口分别连接 PC2、PC3，对应划分 VLAN4（\mintinline{text}`192.168.4.0/24`）、VLAN5（\mintinline{text}`192.168.5.0/24`）；
+    
+    \item Switch0 与 Switch1 的 FastEthernet0/1 端口分别以 trunk 模式连接 Router0、Router1 的 FastEthernet0/0 接口；完成多 VLAN、多网段的拓扑扩展。
+\end{itemize}
+
+\subsubsection{配置交换机动态 VLAN 与 Trunk 链路}
+
+配置 Switch0，创建 VLAN2、VLAN3，将 FastEthernet0/2 端口归属 VLAN2、FastEthernet0/3 端口归属 VLAN3；配置 VLAN2 的 SVI 接口 IP 为 \mintinline{text}`192.168.2.254/24`、VLAN3 的 SVI 接口 IP 为 \mintinline{text}`192.168.3.254/24` 并启用；将 FastEthernet0/1 端口配置为 trunk 模式，允许所有 VLAN 通过。
+
+同样方法配置 Switch1，创建 VLAN4、VLAN5，将 FastEthernet0/2 端口归属 VLAN4、FastEthernet0/3 端口归属 VLAN5；配置 VLAN4 的 SVI 接口 IP 为 \mintinline{text}`192.168.4.254/24`、VLAN5 的 SVI 接口 IP 为 \mintinline{text}`192.168.5.254/24` 并启用；将 FastEthernet0/1 端口配置为 trunk 模式，允许所有 VLAN 通过。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0010.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0011.png}
+\end{figure}
+
+此步骤实现交换机对多 VLAN 的支持及 trunk 链路的配置。
+
+\subsubsection{配置路由器子接口与 RIP 协议}
+
+进入 Router0 配置 FastEthernet0/0 接口的子接口模式，分别创建 Fa0/0.1（封装 VLAN2，IP 为 \mintinline{text}`192.168.2.1/24`）、Fa0/0.2（封装 VLAN3，IP 为 \mintinline{text}`192.168.3.1/24`）并启用；配置 Serial0/1/0 接口 IP 为 \mintinline{text}`10.0.0.1/24` 并启用；进入 RIP 协议配置模式，通告 \mintinline{text}`192.168.2.0`、\mintinline{text}`192.168.3.0`、\mintinline{text}`10.0.0.0`网络。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0012.png}
+\end{figure}
+
+同理，进入 Router1 创建 Fa0/0.1（封装 VLAN4，IP 为 \mintinline{text}`192.168.4.1/24`）、Fa0/0.2（封装 VLAN5，IP 为 \mintinline{text}`192.168.5.1/24`）并启用；配置 Serial0/1/0 接口 IP 为 \mintinline{text}`10.0.0.2/24` 并启用；进入 RIP 协议配置模式，通告 \mintinline{text}`192.168.4.0`、\mintinline{text}`192.168.5.0`、\mintinline{text}`10.0.0.0` 网络。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0013.png}
+\end{figure}
+
+通过子接口与 RIP 配置，实现路由器对多 VLAN 的路由支持及动态路由信息交换。
+
+\subsubsection{动态路由网络连通性测试}
+
+在 PC0 的命令行界面：
+
+\begin{itemize}
+    \item 执行 \mintinline{text}`ping 192.168.2.100` 命令，验证数据包能否到达 Switch0；
+    
+    \item 执行 \mintinline{text}`ping 192.168.5.1` 命令，验证数据包能否到达 Switch1；
+    
+    \item 执行 \mintinline{text}`ping 192.168.4.11` 命令，验证数据包能否通过 RIP 动态路由在多网段、多 VLAN 间转发，最终到达 PC2。
+\end{itemize}
+
+若返回连续 “Reply” 信息，说明动态路由配置生效，全网连通性正常。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0014.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0015.png}
+\end{figure}
+
+\section{实验中遇到的问题及体会}
+
+在配置路由器子接口与交换机 trunk 链路时，因遗漏子接口的 \mintinline{text}`encapsulation dot1q` VLAN 封装命令，导致 Router0 与 Switch0 的 VLAN2 数据链路无法建立。排查时通过对比接口配置、测试单网段连通性，最终补充封装命令后解决问题。这一过程让我深刻认识到：网络分层架构中，数据链路层的 VLAN 封装与网络层的 IP 配置需严格协同，任何一层的配置缺失或不匹配都会导致通信中断。
+
+通过本次实验，我对动态路由协议（RIP）的自动化价值有了直观认知。静态路由虽配置逻辑简单，但在多网段场景下维护成本极高；而 RIP 协议通过自动交换路由信息，大幅降低了管理员的配置工作量，尤其在拓扑变化时的自收敛特性，体现了动态路由在复杂网络中的核心优势。
+
+此外，实验深化了我对 “网络协议分层协作” 的理解。从交换机的 VLAN 划分（数据链路层）、路由器的子接口路由（网络层），到 RIP 的路由信息交换（应用层协议），每一层技术都在各自维度解决网络通信问题，且层与层之间通过协议封装形成协作关系。这种 “分层解耦、各司其职” 的设计思想，不再是理论概念，而是通过实际配置与测试可感知的工程逻辑。
+
+最后，Packet Tracer 的虚拟环境为实验提供了安全的 “试错” 空间。在真实网络中配置错误可能引发业务中断，而在虚拟环境中可反复调整配置、模拟故障，这一过程不仅提升了我的命令行操作熟练度，更培养了从现象倒推配置逻辑的故障排查思维，为后续网络技术的学习与实践奠定了坚实基础。
+
+\end{document}
