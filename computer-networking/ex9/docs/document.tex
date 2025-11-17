@@ -1,0 +1,214 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{graphicx}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{siunitx}
+
+\begin{document}
+    
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 计算机网络 & \textit{Computer Networking} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{路由器 DHCP 与 NAT 配置} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2025 年 11 月 17 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验目的}
+
+本实验旨在掌握路由器上 DHCP 服务器的配置方法，实现多网段主机的 IP 地址自动分配（含排除地址、默认网关、DNS 服务器配置）；同时掌握动态路由协议 RIP 的配置方法，理解多 VLAN 环境下子接口路由与动态路由的协同工作机制；通过搭建复杂网络拓扑、完成设备配置及连通性测试，实现跨 VLAN、跨路由器的全网通信，强化对 DHCP 服务与动态路由在网络中自动化管理作用的认知。
+
+\section{实验内容简要描述}
+
+\begin{enumerate}
+    \item \textbf{DHCP 服务配置}：在路由器上创建多个 DHCP 地址池，为不同网段的主机自动分配 IP 地址，配置排除地址、默认网关、DNS 服务器等参数，验证 IP 地址分配结果；
+
+    \item \textbf{路由器动态路由（RIP）配置}：搭建多 VLAN、多网段网络拓扑，完成交换机 VLAN 划分与 Trunk 链路配置，路由器子接口配置及 RIP 协议启用，实现全网动态路由连通性；
+
+    \item \textbf{DHCP 与动态路由协同验证}：验证 DHCP 分配的主机在动态路由网络中的跨网段通信能力，分析 DHCP 服务与动态路由在网络架构中的角色分工；
+\end{enumerate}
+
+\section{实验步骤与结果分析}
+
+\subsection{DHCP 服务配置与验证}
+
+\subsubsection{搭建 DHCP 实验网络拓扑}
+
+在 Packet Tracer 中拖拽 2 台路由器（Router0、Router1）、2 台交换机（Switch0、Switch1）、4 台主机（PC0、PC1、PC2、PC3），按如下逻辑连接设备：
+
+\begin{enumerate}
+    \item Router0 的 FastEthernet0/0 接口连接 Switch0，FastEthernet0/1 接口连接 Switch1，Serial0/1/0 接口与 Router1 的 Serial0/1/0 接口互联；
+
+    \item Switch0 的 FastEthernet0/2、0/3 端口分别连接 PC0、PC1；Switch1 的 FastEthernet0/2、0/3 端口分别连接 PC2、PC3；
+\end{enumerate}
+
+完成拓扑搭建后，呈现设备间的物理连接关系。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0000.png}
+\end{figure}
+
+\subsubsection{配置路由器接口 IP 及 DHCP 地址池}
+
+进入 Router0 和 Router1 的全局配置模式，配置各接口 IP，为 DHCP 服务和路由通信提供基础。在 Router0 上配置两个 DHCP 地址池，分别对应 \mintinline{text}`192.168.3.0/24` 和 \mintinline{text}`192.168.4.0/24` 网段。配置完成后，路由器将为连接的 PC 自动分配指定网段内的 IP 地址，排除保留地址范围。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0001.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0002.png}
+\end{figure}
+
+\subsubsection{验证 PC 的 DHCP 地址获取}
+
+查看 PC0、PC1、PC2、PC3 的 IP 配置：
+
+\begin{itemize}
+    \item PC0、PC1 获取的 IP 地址在 \mintinline{text}`192.168.3.12` ~ \mintinline{text}`192.168.3.254` 之间；
+    
+    \item PC2、PC3 获取的 IP 地址在 \mintinline{text}`192.168.4.21` ~ \mintinline{text}`192.168.4.254` 之间。
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0003.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0004.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0005.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0006.png}
+\end{figure}
+
+PC 成功获取到对应网段的 IP、默认网关和 DNS 服务器，说明 DHCP 配置生效。
+
+\subsection{路由器动态路由（RIP）配置与验证}
+
+\subsubsection{搭建多 VLAN 动态路由实验拓扑}
+
+调整网络拓扑，包含 2 台交换机（Switch0、Switch1）、2 台路由器（Router0、Router1）、4 台主机（PC0、PC1、PC2、PC3），连接方式如下：
+
+\begin{itemize}
+    \item Switch0 的 FastEthernet0/2、0/3 端口分别连接 PC0、PC1，FastEthernet0/1 端口以 Trunk 模式连接 Router0 的 FastEthernet0/0 接口；
+    
+    \item Switch1 的 Switch1 的 FastEthernet0/2、0/3 端口分别连接 PC2、PC3，FastEthernet0/1 端口以 Trunk 模式连接 Router1 的 FastEthernet0/0 接口；
+    
+    \item Router0 与 Router1 通过 Serial0/1/0 接口互联；
+\end{itemize}
+
+完成多 VLAN、多网段的拓扑扩展。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0007.png}
+\end{figure}
+
+\subsubsection{配置交换机 VLAN 与 Trunk 链路}
+
+配置 Switch0，创建 VLAN2、VLAN3，配置接入端口与 Trunk 链路：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0008.png}
+\end{figure}
+
+配置 Switch1，创建 VLAN4、VLAN5，配置接入端口与 Trunk 链路：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0009.png}
+\end{figure}
+
+此步骤实现交换机对多 VLAN 的支持及 Trunk 链路的配置，为路由器子接口路由奠定基础。
+
+\subsubsection{配置路由器子接口与 RIP 协议}
+
+进入 Router0 配置子接口与 RIP 协议：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0010.png}
+\end{figure}
+
+进入 Router1 配置子接口与 RIP 协议：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0011.png}
+\end{figure}
+
+通过子接口配置实现 VLAN 间路由，通过 RIP 协议实现动态路由信息交换。
+
+\subsubsection{动态路由网络连通性测试}
+
+在 PC0 的命令行界面，执行如下 ping 命令：
+
+\begin{itemize}
+    \item 执行 \mintinline{text}`ping 192.168.5.1` 命令，验证数据包能否通过 RIP 动态路由到达 Router1 的子接口；
+    
+    \item 执行 \mintinline{text}`ping 192.168.4.11` 命令，验证数据包能否通过多网段、多 VLAN 转发到达 PC2；
+\end{itemize}
+
+若返回连续 “Reply” 信息，说明动态路由配置生效，全网连通性正常。
+
+\section{实验中遇到的问题及体会}
+
+在 DHCP 配置阶段，曾因地址池的网络掩码配置错误，导致 PC 获取的 IP 地址与预期网段不符。排查时通过对比路由器 DHCP 配置命令与 PC 实际获取的 IP 信息，发现是地址池的 \mintinline{text}`network` 命令中子网掩码设置失误，修正后 PC 成功获取到正确网段的 IP。这让我意识到，DHCP 配置中地址池的网络参数必须与接口网段严格匹配，任何参数偏差都会导致 IP 分配失败。
+
+在动态路由配置时，因 Switch0 的 Trunk 链路未配置 \mintinline{text}`switchport trunk allowed vlan all` 命令，导致 VLAN2、VLAN3 的数据包无法通过 Trunk 链路到达 Router0，进而造成跨 VLAN 通信中断。通过在交换机接口下查看 Trunk 允许的 VLAN 列表，补充该命令后问题解决。此过程让我深刻理解，Trunk 链路的 VLAN 允许列表是多 VLAN 通信的关键，必须确保所需 VLAN 的通行权限。
+
+通过本次实验，我对 DHCP 服务与动态路由的协同工作有了清晰认知：DHCP 解决了主机 IP 的自动化分配问题，减少了人工配置的工作量与失误率；而动态路由 RIP 则在多网段、多 VLAN 的复杂拓扑中，实现了路由信息的自动交换与网络收敛，两者结合大幅提升了网络管理的自动化程度。
+
+此外，实验强化了我对 “分层网络配置” 的理解。从 DHCP 的应用层服务，到动态路由的网络层协议，再到 VLAN 与 Trunk 的数据链路层配置，每一层的技术都在各自维度支撑网络功能，且层与层之间通过协议封装紧密协作。这种分层设计不仅让网络功能模块化，也为故障排查提供了清晰的逻辑路径 —— 可从应用层的服务现象（如 IP 获取失败）逐步向下层（网络层、数据链路层）追溯原因。
+
+最后，Packet Tracer 的虚拟环境为实验提供了高效的验证平台。在虚拟环境中，我可以大胆尝试不同的配置组合，快速验证技术原理，这种 “试错 — 验证 — 总结” 的学习模式，极大地提升了我的网络配置技能与故障排查思维，为后续深入学习网络技术奠定了坚实的实践基础。
+
+\end{document}
