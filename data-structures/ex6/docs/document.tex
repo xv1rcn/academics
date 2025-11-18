@@ -1,0 +1,198 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{libertine}
+\usepackage{siunitx}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\begin{document}
+    
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 数据结构 & \textit{Data Structures} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{大规模矩阵计算的性能测试} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2025 年 11 月 18 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+Ubuntu 24.04.3 LTS x86\_64，Linux 6.14.0-35-generic，AMD Ryzen 7 7700 (16) @ 5.3GHz，DDR5。
+
+\subsection{编程工具}
+
+NeoVim v0.12.0-dev，gcc 13.3.0，Python 3.12.3 (matplotlib == 3.6.3)。
+
+\subsection{其他工具}
+
+\LaTeX{} (\TeX\textit{studio})。
+
+\section{实验内容及其完成情况}
+
+\subsection{实验目的}
+
+\begin{enumerate}
+    \item 编写双精度矩阵乘法基准程序，理解计算密集型任务的性能特征；
+    \item 测试并记录个人计算机能够处理的最大矩阵规模，分析时间和内存瓶颈；
+    \item 探讨不同操作系统/配置对单进程内存使用的限制与可见性（RSS vs USS）。
+\end{enumerate}
+
+\subsection{实现方法}
+
+本实验采用以下实现与测量策略：
+
+\begin{itemize}
+    \item \textbf{矩阵存储}：行主序，使用单个连续的 \mintinline{c++}`std::vector<double>` 存放元素，按索引计算偏移；
+    
+    \item \textbf{矩阵类型}：\mintinline{c++}`Matrix` 类，构造函数 \mintinline{c++}`Matrix(size_t rows, size_t cols)`，提供 \mintinline{c++}`operator()(i, j)` 和 \mintinline{c++}`operator*` 进行矩阵乘法；
+    
+    \item \textbf{乘法算法}：朴素三重循环实现，返回新的 \mintinline{c++}`Matrix` 对象；
+    
+    \item \textbf{性能测量}：使用 C++ 高精度时钟记录每次乘法所耗时间（秒），每个 \mintinline{c++}`N` 重复至少 $3$ 次取平均；
+    
+    \item \textbf{内存测量}：使用 POSIX \mintinline{c++}`getrusage(RUSAGE_SELF)` 获取进程峰值 RSS（Resident Set Size，单位 KB，报告中转换为 MB）。
+\end{itemize}
+
+\subsection{项目结构}
+
+代码在本实验目录下：
+\begin{itemize}
+    \item \mintinline{text}`src/matrix.h`：\mintinline{c++}`Matrix` 类声明；
+    \item \mintinline{text}`src/matrix.cpp`：\mintinline{c++}`Matrix` 类实现（\mintinline{c++}`operator*`、\mintinline{c++}`operator()` 等）；
+    \item \mintinline{text}`src/main.cpp`：基准运行器，接受参数 \mintinline{text}`START END STEP REPEATS OUTPUT_CSV`，生成 CSV；
+    \item \mintinline{text}`src/plot.py`：读取 CSV，生成图像 \mintinline{text}`time_vs_n.png`、\mintinline{text}`mem_vs_n.png`、\mintinline{text}`comparison.png`。
+\end{itemize}
+
+\subsection{运行结果}
+
+使用 \mintinline{bash}`g++ -O0 -std=c++20 main.cpp matrix.cpp -o matrix_bench` 编译项目，随后运行 \mintinline{bash}`./matrix_bench 100 2400 100 3 results.csv`，在 \mintinline{text}`results.csv` 中得到如下数据：
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l r r}
+        \hline
+        \mintinline{c++}`N` & \mintinline{c++}`avg_time_s` & \mintinline{c++}`peak_rss_MB` \\
+        \hline
+        100 & 0.00 & 7.63 \\
+        200 & 0.01 & 7.63 \\
+        300 & 0.03 & 7.63 \\
+        400 & 0.08 & 8.89 \\
+        500 & 0.15 & 11.64 \\
+        600 & 0.26 & 15.02 \\
+        700 & 0.42 & 18.82 \\
+        800 & 0.61 & 23.25 \\
+        900 & 0.87 & 28.35 \\
+        1000 & 1.18 & 34.23 \\
+        1100 & 1.57 & 40.71 \\
+        1200 & 2.03 & 47.65 \\
+        1300 & 2.58 & 55.23 \\
+        1400 & 3.21 & 63.50 \\
+        1500 & 3.94 & 72.44 \\
+        1600 & 4.79 & 81.92 \\
+        1700 & 5.75 & 91.89 \\
+        1800 & 6.84 & 102.48 \\
+        1900 & 8.07 & 113.84 \\
+        2000 & 9.47 & 125.75 \\
+        2100 & 11.07 & 138.40 \\
+        2200 & 12.95 & 151.32 \\
+        2300 & 14.87 & 165.04 \\
+        2400 & 17.05 & 179.50 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+由 \mintinline{bash}`python3 plot.py results.csv` 生成的图像：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/time_vs_n.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/mem_vs_n.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/comparison.png}
+\end{figure}
+
+\section{数据分析与讨论}
+
+\subsection{性能标度}
+
+理论上，朴素矩阵乘法的时间复杂度为 $\mathcal{O}\left(N^3\right)$；从实验数据可通过对数拟合检验时间随 $N^3$ 增长的趋势。对于小规模（L1 / L2 缓存可容纳）矩阵，缓存命中使实际常数显著更小；当问题规模超过缓存并进入内存访问瓶颈时，时间增长速率加剧。
+
+\subsection{内存限制与崩溃点}
+
+峰值 RSS 反映的是进程在系统可见的物理内存占用（包含共享库占用）；如果进程分配失败会抛出 \mintinline{c++}`std::bad_alloc`，程序会在 CSV 中记录崩溃前的最大 N。
+
+\subsection{潜在优化}
+
+\begin{itemize}
+    \item 使用块矩阵乘法（blocking / tiling）减少缓存未命中；
+    \item 利用多线程（OpenMP）或调用高性能 BLAS（例如 OpenBLAS / Intel MKL）；
+    \item 避免在基准中频繁分配临时矩阵，可使用预分配输出矩阵并实现 \mintinline{c++}`multiply_to` 接口以排除分配开销对时间测量的影响。
+\end{itemize}
+
+\subsection{结论}
+
+本实验提供了一个简单、可重复的矩阵乘法基准框架，满足作业要求：使用双精度、记录时间与峰值内存、给出 CSV 原始数据并绘制对比图表。基准结果显示时间复杂度接近 $\mathcal{O}\left(N^3\right)$，内存消耗按 $\mathcal{O}\left(N^2\right)$ 增长。要进一步提高性能或扩展测试，可采用阻塞、并行或调用 BLAS 实现。
+
+\appendix
+
+\section{完整代码}
+
+
+\subsection{\mintinline{text}`matrix.h`}
+
+\inputminted{c++}{../src/matrix.h}
+
+\subsection{\mintinline{text}`matrix.cpp`}
+
+\inputminted{c++}{../src/matrix.cpp}
+
+\subsection{\mintinline{text}`main.cpp`}
+
+\inputminted{c++}{../src/main.cpp}
+
+\subsection{\mintinline{text}`plot.py`}
+
+\inputminted{python}{../src/plot.py}
+
+\end{document}
