@@ -1,0 +1,214 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{graphicx}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{siunitx}
+
+\begin{document}
+    
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 计算机网络 & \textit{Computer Networking} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{交换机部署及配置} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2025 年 11 月 24 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验目的}
+
+本实验旨在掌握 IPMininet 仿真网络的启动方法，熟悉 Open vSwitch 的基础操作；掌握主机IP地址的配置流程，理解交换机模式切换（Secure 模式与普通模式）对数据转发的影响；深入理解交换机 CAM 表的工作原理，包括 MAC 地址与端口的映射学习过程及数据流转发逻辑；通过网络连通性测试与CAM表分析，强化对二层交换网络通信机制的认知。
+
+\section{实验内容简要描述}
+
+\begin{enumerate}
+    \item \textbf{启动 IPMininet 仿真网络}：启动 Open vSwitch 服务，通过 \mintinline{bash}`mn` 命令创建包含 1 台交换机、2 台主机的基础仿真网络；
+    
+    \item \textbf{配置主机IP地址}：打开主机终端，查看初始 IP 配置，修改主机网卡的 IP 地址与子网掩码至实验要求网段；
+    
+    \item \textbf{配置交换机}：打开交换机终端，查看交换机模式，退出 Secure 模式以启用普通二层交换功能；
+    
+    \item \textbf{分析CAM表及数据流}：通过 \mintinline{text}`ping` 命令测试主机间连通性，查看交换机 CAM 表，分析 MAC 地址与端口的映射关系及数据流转发过程。
+\end{enumerate}
+
+\section{实验步骤与结果分析}
+
+\subsection{启动 IPMininet 仿真网络}
+
+右键打开终端，执行以下命令启动 Open vSwitch 服务（指定 pid 文件并后台运行）：
+
+\begin{minted}{bash}
+ovs-vswitchd --pidfile --detach
+\end{minted}
+
+在终端中执行以下命令，启动包含 1 台交换机（s1）、2 台主机（h1、h2）的 IPMininet 仿真网络：
+
+\begin{minted}{bash}
+sudo mn --controller=remote
+\end{minted}
+
+终端输出显示网络创建过程（添加控制器、主机、交换机、链路），说明网络创建完成。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0000.png}
+\end{figure}
+
+\subsection{配置主机 IP 地址}
+
+打开主机 h1 的终端：
+
+\begin{minted}{bash}
+xterm h1
+\end{minted}
+
+在 h1 的终端中查看初始 IP 配置：
+
+\begin{minted}{bash}
+sudo ifconfig
+\end{minted}
+
+输出显示 h1 的 \mintinline{text}`h1-eth0` 网卡初始 IP 为 \mintinline{text}`10.0.0.1`，子网掩码为 \mintinline{text}`255.0.0.0`，不符合实验要求。
+
+在 h1 的终端中，执行以下命令配置 IP 与子网掩码：
+
+\begin{minted}{bash}
+sudo ifconfig h1-eth0 10.0.0.2
+sudo ifconfig h1-eth0 netmask 255.255.255.0
+\end{minted}
+
+再次执行 \mintinline{text}`sudo ifconfig` 验证，确认 \mintinline{text}`h1-eth0` 的 IP 已更新为 \mintinline{text}`10.0.0.2/24`。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0001.png}
+\end{figure}
+
+打开 h2 的终端：
+
+\begin{minted}{bash}
+xterm h2
+\end{minted}
+
+在 h2 的终端中执行以下命令，配置 IP 为 \mintinline{text}`10.0.0.3/24`：
+
+\begin{minted}{bash}
+sudo ifconfig h2-eth0 10.0.0.3
+sudo ifconfig h2-eth0 netmask 255.255.255.0
+\end{minted}
+
+执行 \mintinline{text}`sudo ifconfig` 验证，确认配置符合实验要求。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0002.png}
+\end{figure}
+
+\subsection{配置交换机}
+
+打开交换机 s1 的终端：
+
+\begin{minted}{bash}
+xterm s1
+\end{minted}
+
+在 s1 的终端中查看交换机信息：
+
+\begin{minted}{bash}
+ovs-vsctl show
+\end{minted}
+
+输出显示交换机的 \mintinline{text}`fail_mode` 为 \mintinline{text}`secure`，说明需依赖 SDN 控制器才能转发数据。
+
+在 s1 的终端中，执行以下命令退出 Secure 模式：
+
+\begin{minted}{bash}
+ovs-vsctl del-fail-mode s1
+\end{minted}
+
+再次执行 \mintinline{text}`ovs-vsctl show` 验证，\mintinline{text}`fail_mode` 字段消失，说明交换机已切换为普通二层交换模式。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0003.png}
+\end{figure}
+
+\subsection{分析 CAM 表及数据流}
+
+在 h1 的终端中，测试与 h2 的连通性（发送 4 个 ICMP 包）：
+
+\begin{minted}{bash}
+ping 10.0.0.3 -c 4
+\end{minted}
+
+输出显示 4 个包均成功接收，丢包率为 0\%，说明 h1 与 h2 连通正常。
+
+在 h2 的终端中，测试与 h1 的连通性：
+
+\begin{minted}{bash}
+ping 10.0.0.2 -c 4
+\end{minted}
+
+输出显示连通正常，丢包率为 0\%。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0004.png}
+\end{figure}
+
+在 s1 的终端中，执行以下命令查看 CAM 表（MAC 地址表）：
+
+\begin{minted}{bash}
+ovs-appctl fdb/show s1
+\end{minted}
+
+输出显示 CAM 表包含两条记录：端口 1 对应 h1 的 MAC 地址，端口 2 对应 h2 的MAC地址，说明交换机已学习到主机 MAC 与端口的映射关系。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0005.png}
+\end{figure}
+
+\section{实验中遇到的问题及体会}
+
+在启动 ovs-vswitchd 服务时，因未使用 sudo 权限导致命令执行失败，意识到 Open vSwitch 服务需要管理员权限；配置主机 IP 时，误将网卡名称写为 ``eth0'' 而非 mininet 中的 ``h1-eth0''，导致配置不生效，这让我注意到 mininet 中主机网卡的命名规则。
+
+通过本次实验，我直观认知了二层交换网络的工作机制：交换机通过学习数据包源 MAC 构建 CAM 表，再根据目的 MAC 查询表项转发数据，实现精准转发而非广播；Secure 模式体现了 SDN 的集中管控特性，普通模式则回归传统交换机的自主转发逻辑。
+
+IPMininet 为网络实验提供了低成本、可重复的环境，通过终端操作，我将 ``MAC 地址学习'' ``数据转发'' 等理论与实践结合，深化了对二层网络的理解。后续实验需更关注命令细节与组件命名规则，提升配置准确性与故障排查效率。
+
+\end{document}
