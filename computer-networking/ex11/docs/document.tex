@@ -1,0 +1,222 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{graphicx}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{siunitx}
+
+\begin{document}
+    
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 计算机网络 & \textit{Computer Networking} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{路由器部署及配置} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2025 年 12 月 1 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验目的}
+
+本实验旨在掌握 IPMininet 仿真网络的启动方法，理解其对原生 Mininet 在网络层路由器仿真功能的扩展；掌握主机网卡 IP 地址、路由器接口 IP 的配置流程；熟悉路由器路由表的查看方式与主机默认网关的配置方法；验证路由器的路由转发功能，理解不同网段主机间通过路由器实现通信的基本原理。
+
+\section{实验内容简要描述}
+
+\begin{enumerate}
+    \item \textbf{启动 IPMininet 仿真网络}：通过命令启动 Open vSwitch 服务，进入 IPMininet 的示例目录，利用扩展模块创建包含 1 台路由器、2 台主机的自定义网络拓扑，并启动该仿真网络；
+    
+    \item \textbf{配置主机IP地址}：在 IPMininet 环境中打开主机终端，通过 \mintinline{bash}`ifconfig` 命令查看主机初始 IP 信息，将其修改为实验规划的网段地址；
+    
+    \item \textbf{配置路由器}：查看路由器的初始路由表与网卡端口信息，配置路由器双网卡的 IP 地址，再设置两台主机的默认网关；
+    
+    \item \textbf{验证路由器功能}：在两台主机上执行 \mintinline{bash}`ping` 命令测试跨网段连通性，通过 \mintinline{bash}`tcpdump` 命令抓取路由器数据包，验证路由转发过程。
+\end{enumerate}
+
+\section{实验步骤与结果分析}
+
+\subsection{启动 IPMininet 仿真网络}
+
+右键打开终端，执行以下命令启动 Open vSwitch 服务：
+
+\begin{minted}{bash}
+ovs-vswitchd --pidfile --detach
+\end{minted}
+
+进入 IPMininet 主目录（\mintinline{text}`/home/headless/ipmininet`），右键打开终端，执行命令启动目标拓扑的仿真网络：
+
+\begin{minted}{bash}
+sudo python3 -m ipmininet.examples --topo=simple_router_network
+\end{minted}
+
+终端显示 ``添加主机 / 路由器 / 链路'' ``配置 IP'' 等过程，最终启动 CLI 界面，说明仿真网络已成功启动。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0000.png}
+\end{figure}
+
+\subsection{配置主机 IP 地址}
+
+在 IPMininet 的 CLI 界面中，执行如下命令分别打开主机 h1、h2 的终端：
+
+\begin{minted}{bash}
+xterm h1
+xterm h2
+\end{minted}
+
+在 h1 终端执行 \mintinline{bash}`sudo ifconfig`，发现初始 IP 与实验规划的 \mintinline{text}`192.168.0.0/24` 网段不符，执行命令配置 IP：
+
+\begin{minted}{bash}
+sudo ifconfig h1-eth0 192.168.0.2
+\end{minted}
+
+在 h2 终端执行类似操作，配置 IP 为 \mintinline{text}`10.0.0.2`：
+
+\begin{minted}{bash}
+sudo ifconfig h2-eth0 10.0.0.2
+\end{minted}
+
+配置后主机 IP 符合实验规划网段，为跨网段通信奠定基础。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0001.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0002.png}
+\end{figure}
+
+\subsection{配置路由器}
+
+在 IPMininet CLI 中执行命令 \mintinline{bash}`r1 route` 查看路由器 r1 的初始路由表。随后执行 \mintinline{text}`xterm r1` 打开路由器终端，执行 \mintinline{text}`ifconfig` 可见其包含两块网卡（r1-eth0、r1-eth1），初始 IP 与实验规划不符。
+
+在 r1 终端执行命令，将两块网卡 IP 配置为实验规划地址：
+
+\begin{minted}{bash}
+ifconfig r1-eth0 192.168.0.1/24
+ifconfig r1-eth1 10.0.0.1/24
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0003.png}
+\end{figure}
+
+再次在 IPMininet CLI 中执行 \mintinline{text}`r1 route`，可见路由表已更新为直连网段路由。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0004.png}
+\end{figure}
+
+在 h1 终端添加默认网关（路由器 r1-eth0 的 IP）：
+
+\begin{minted}{bash}
+sudo route add default gw 192.168.0.1
+\end{minted}
+
+在 h2 终端添加默认网关（路由器 r1-eth1 的 IP）：
+
+\begin{minted}{bash}
+sudo route add default gw 10.0.0.1
+\end{minted}
+
+执行 \mintinline{text}`route -n` 可见默认网关配置成功。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0005.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0006.png}
+\end{figure}
+
+\subsection{验证路由器功能}
+
+在 h1 终端执行 \mintinline{text}`ping` 命令测试与 h2 的连通性：
+
+\begin{minted}{bash}
+ping 10.0.0.2
+\end{minted}
+
+在 h2 终端执行 \mintinline{text}`ping` 命令测试与 h1 的连通性：
+
+\begin{minted}{bash}
+ping 192.168.0.2
+\end{minted}
+
+两次测试均返回连续响应包，丢包率为 $0\%$，说明跨网段主机已成功连通。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0007.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0008.png}
+\end{figure}
+
+在 r1 终端执行命令，抓取 r1-eth0 接口的数据包：
+
+\begin{minted}{bash}
+tcpdump -i r1-eth0
+\end{minted}
+
+主机 ping 过程中，可观察到 ICMP 请求 / 响应包在路由器接口间的转发，验证了路由功能的正确性。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0009.png}
+\end{figure}
+
+\section{实验中遇到的问题及体会}
+
+在启动 IPMininet 时，我最初遗漏了前置的 Open vSwitch 服务启动步骤，导致网络启动失败。重新执行 \mintinline{bash}`ovs-vswitchd --pidfile --detach` 后才解决问题，这让我认识到：网络仿真环境中基础服务的前置准备是实验成功的必要条件。
+
+配置 IP 时，我曾误将路由器接口 IP 输为 \mintinline{text}`192.168.1.1` 而非 \mintinline{text}`192.168.0.1`，导致 ping 测试失败。通过重新检查并修正 IP 配置，最终实现连通 —— 这体现了 ``网段一致性'' 在网络配置中的核心地位：IP 与子网掩码的匹配是设备通信的基础。
+
+本次实验让我直观理解了默认网关的作用：未配置网关时，主机仅能与本网段设备通信；配置网关（路由器接口 IP）后，跨网段数据包会被转发至路由器，再由路由表指引转发至目标网段，清晰展现了路由器 ``网络层转发'' 的核心功能。
+
+此外，我体会到 IPMininet 对原生 Mininet 的扩展价值：原生 Mininet 仅支持数据链路层的交换机仿真，而 IPMininet 通过自定义拓扑与路由器配置，实现了网络层的路由仿真，让实验更贴近实际网络的分层架构。
+
+最后，tcpdump 工具的使用让我从 ``数据包层面'' 验证了路由功能 —— 可以清晰看到 ICMP 包在路由器不同接口间的转发过程，这不仅验证了实验结果，更加深了我对 ``网络通信是数据包转发过程'' 的理解。
+
+\end{document}
