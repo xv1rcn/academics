@@ -1,0 +1,203 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{graphicx}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{siunitx}
+
+\begin{document}
+    
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 计算机网络 & \textit{Computer Networking} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{RIP 路由协议验证} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2025 年 12 月 15 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验目的}
+
+本实验旨在掌握 IPMininet 仿真网络的启动方法，理解其对原生 Mininet 在网络层路由器仿真功能的扩展；掌握主机网卡与路由器接口的 IPv6 地址配置流程；熟悉 RIP 路由协议下路由器 IPv6 路由表的查看方式，区分直连路由与 RIP 动态学习的路由条目；验证不同网段主机间通过 RIP 路由实现的连通性，掌握利用 \mintinline{bash}`tcpdump` 抓取 RIP 协议交互数据包的方法，理解 RIP 协议的路由信息交换过程。
+
+\section{实验内容简要描述}
+
+\begin{enumerate}
+    \item \textbf{启动 IPMininet 仿真网络}：启动 Open vSwitch 服务，进入 IPMininet 示例目录，通过自定义的 \mintinline{text}`simple_rip_network` 拓扑创建包含 2 台路由器、2 台主机的 IPv6 仿真网络，并启动该网络；
+    
+    \item \textbf{配置主机与路由器 IPv6 地址}：在 IPMininet CLI 中查看主机、路由器的 IPv6 地址，确认其符合实验规划的 \mintinline{text}`fc00::/48` 网段配置；
+    
+    \item \textbf{查看 RIP 路由表}：在路由器终端查看 IPv6 路由表，识别直连路由与 RIP 协议学习到的路由条目；
+    
+    \item \textbf{验证网络连通性与 RIP 交互}：在跨网段主机间执行 \mintinline{bash}`ping6` 测试连通性，通过 \mintinline{bash}`tcpdump` 抓取路由器接口的 RIP 协议数据包，验证 RIP 路由信息的交互与路由转发功能。
+\end{enumerate}
+
+\section{实验步骤与结果分析}
+
+\subsection{启动 IPMininet 仿真网络}
+
+右键打开终端，首先执行命令启动 Open vSwitch 服务：
+
+\begin{minted}{bash}
+ovs-vswitchd --pidfile --detach
+\end{minted}
+
+进入 IPMininet 主目录（\mintinline{text}`/home/headless/ipmininet`），右键打开终端，执行命令启动目标拓扑的仿真网络：
+
+\begin{minted}{bash}
+sudo python3 -m ipmininet.examples --topo=simple_rip_network
+\end{minted}
+
+终端依次显示 ``添加主机 h1 / h2''、``添加路由器 r1 / r2'' 等过程，最终启动 Mininet CLI 界面，说明仿真网络已成功启动。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0000.png}
+\end{figure}
+
+\subsection{配置主机与路由器 IPv6 地址}
+
+在 IPMininet CLI 中，执行如下命令分别查看主机与路由器的 IPv6 地址：
+
+\begin{minted}{bash}
+h1 ip -6 address
+h2 ip -6 address
+r1 ip -6 address
+r2 ip -6 address
+\end{minted}
+
+查看结果显示所有设备地址均符合实验规划的 \mintinline{bash}`fc00::/48` 网段：
+
+\begin{itemize}
+    \item 主机 h1：\mintinline{text}`fc00::1/48`（h1-eth0 接口）；
+
+    \item 主机 h2：\mintinline{text}`fc00:0:2::1/48`（h2-eth0 接口）；
+
+    \item 路由器 r1：\mintinline{text}`fc00::1/48`（r1-eth0，连 h1）、\mintinline{text}`fc00:0:1::2/48`（r1-eth1，连 r2）；
+
+    \item 路由器 r2：\mintinline{text}`fc00:0:1::1/48`（r2-eth0，连 r1）、\mintinline{text}`fc00::2/48`（r2-eth1，连 h2）。
+\end{itemize}
+
+无需手动修改地址，为后续实验奠定基础。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0001.png}
+\end{figure}
+
+\subsection{查看 RIP 路由表}
+
+在 IPMininet CLI 中，执行命令查看路由器 r1 的 IPv6 路由表：
+
+\begin{minted}{bash}
+r1 route -6
+\end{minted}
+
+路由表包含两类条目：
+
+\begin{itemize}
+    \item 直连路由：\mintinline{text}`fc00::/48`（r1-eth0 接口）、\mintinline{text}`fc00:0:1::/48`（r1-eth1 接口），标志为 ``U''（路由可用）；
+
+    \item RIP 学习路由：\mintinline{text}`fc00::2/48`（h2 网段），下一跳为 r2 的接口地址 \mintinline{text}`fe80::74d0:56ff:fe9a:986f`，标志为 ``UG''（路由可用且为网关路由）。
+\end{itemize}
+
+同理，执行 \mintinline{bash}`r2 route -6` 可看到 r2 学习到的 h1 网段路由，说明 RIP 协议已完成动态路由学习。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0002.png}
+\end{figure}
+
+\subsection{验证网络连通性}
+
+在 IPMininet CLI 中打开主机终端：
+
+\begin{minted}{bash}
+xterm h1
+xterm h2
+\end{minted}
+
+在 h1 终端测试与 h2 的连通性：
+
+\begin{minted}{bash}
+ping6 fc00:0:2::1
+\end{minted}
+
+在 h2 终端测试与 h1 的连通性：
+
+\begin{minted}{bash}
+ping6 fc00::2
+\end{minted}
+
+两次测试均返回连续的 ICMPv6 请求 / 响应包，丢包率为 $0\%$，说明跨网段主机通过 RIP 路由实现了成功连通。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0003.png}
+\end{figure}
+
+\subsection{抓取 RIP 交互数据包}
+
+在 IPMininet CLI 中打开路由器 r1 的终端：
+
+\begin{minted}{bash}
+xterm r1
+\end{minted}
+
+在 r1 终端执行 \mintinline{bash}`tcpdump` 抓取 r1-eth0 接口的数据包：
+
+\begin{minted}{bash}
+tcpdump -i r1-eth0 -v
+\end{minted}
+
+这验证了 RIP 路由信息交互与路由器转发功能的正确性。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0004.png}
+\end{figure}
+
+\section{实验中遇到的问题及体会}
+
+查看路由表时，我曾混淆 ``U''（直连路由）与``UG''（RIP 学习路由）的标志，通过对比 r1、r2 的路由表并结合 RIP 原理，才明确 ``UG'' 路由是动态学习的非直连网段条目，体现了动态路由 ``自动适配网络变化'' 的优势，相比静态路由减少了手动配置成本。
+
+本次实验让我直观理解了 RIPng 在 IPv6 环境中的作用：路由器通过 RIP 包交换路由信息，自动生成跨网段路由，实现主机连通。同时，IPv6 地址的网段规划（如 \mintinline{text}`fc00::/48`）更贴合实际网络的地址结构，补充了我对 IPv6 配置的认知。
+
+此外，\mintinline{bash}`tcpdump` 工具的使用让我从 ``数据包层面'' 验证了 RIP 交互：清晰看到 RIP 请求 / 响应包的传输，以及 ICMP 包的转发过程，这不仅验证了实验结果，更让我理解了 ``网络通信是数据包逐跳转发'' 的本质。
+
+最后，IPMininet 对原生 Mininet 的扩展价值让我印象深刻：原生 Mininet 仅支持链路层交换机仿真，而 IPMininet 实现了网络层路由器与动态路由协议的仿真，让实验更贴近实际网络的分层架构，为理解网络层转发逻辑提供了直观的实践环境。
+
+\end{document}
