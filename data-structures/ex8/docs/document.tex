@@ -1,0 +1,184 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{graphicx}
+\usepackage{siunitx}
+
+\begin{document}
+
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 数据结构 & \textit{Data Structures} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{二叉排序树} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2025 年 12 月 16 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+Ubuntu 24.04.3 LTS x86\_64，Linux 6.14.0-36-generic，AMD Ryzen 7 7700 (16) @ 5.3GHz，DDR5。
+
+\subsection{编程工具}
+
+NeoVim v0.12.0-dev，gcc 13.3.0。
+
+\subsection{其他工具}
+
+\LaTeX{} (\TeX\textit{studio})。
+
+\section{实验目的}
+
+\begin{enumerate}
+    \item 理解二叉排序树（BST）的定义、性质，与线性表、一般二叉树的区别；
+    \item 掌握 BST 的插入、查找（递归 / 非递归）与中序遍历的实现，理解中序与有序性的关系；
+    \item 学习平均查找长度（ASL）的计算方法，分析树形态对查找性能的影响，比较退化链表与平衡情形的复杂度差异。
+\end{enumerate}
+
+\section{实验内容及其完成情况}
+
+\begin{enumerate}
+    \item 从无序整数序列构建 BST：设计节点结构，按输入顺序插入，验证中序遍历为升序；
+    \item 查找操作：实现迭代查找并返回路径，同时暴露指向存储元素的指针；
+    \item 性能指标：通过一次遍历统计各节点深度，计算 ASL；
+    \item 输入 / 输出：支持从文件或标准输入读取，交互式查询任意键值，异常输入报错。
+\end{enumerate}
+
+\subsection{数据结构}
+
+\begin{itemize}
+    \item 模板 BST：\mintinline{c++}`template <typename T> class bst`，节点含键值与左右子指针；
+    \item 查找结果：\mintinline{c++}`find_result`，包含 \mintinline{c++}`ptr`（指向存储元素，未命中为空）与比较路径 \mintinline{c++}`path`；
+    \item 遍历辅助：\mintinline{c++}`traverse(Fn &&)`，向回调传递键与深度，用于一次遍历计算 ASL。
+\end{itemize}
+
+\subsection{程序实现}
+
+首行整数 $n$，其后 $n$ 个整数（用空格/换行分隔）。传入 \mintinline{text}`-` 时从标准输入读取。
+
+\begin{minted}{c++}
+template <typename T>
+class bst {
+public:
+    struct find_result { const T *ptr{nullptr}; std::vector<T> path; };
+    void insert(const T &key) { insert(root_, key); }
+    void build(const std::vector<T> &keys) { for (const T &v : keys) insert(v); }
+    std::vector<T> inorder() const { std::vector<T> out; inorder(root_, out); return out; }
+    find_result find(const T &key) const {
+        std::vector<T> path; const node *cur = root_.get();
+        while (cur) {
+            path.push_back(cur->key);
+            if (key == cur->key) return {&cur->key, std::move(path)};
+            cur = (key < cur->key) ? cur->left.get() : cur->right.get();
+        }
+        return {nullptr, std::move(path)};
+    }
+    bool empty() const { return !root_; }
+    template <typename Fn>
+    void traverse(Fn &&fn) const { traverse(root_.get(), 1, std::forward<Fn>(fn)); }
+};
+
+template <typename T>
+double compute_avg_path(const bst<T> &tree) {
+    if (tree.empty()) return 0.0;
+    long long sum = 0, cnt = 0;
+    tree.traverse([&](const T &, int depth) { sum += depth; ++cnt; });
+    return cnt ? static_cast<double>(sum) / cnt : 0.0;
+}
+
+std::vector<int> load_data(const std::string& path);
+
+int main(int argc, char **argv) {
+    std::vector<int> data = load_data(argv[1]);
+    bst<int> tree; tree.build(data);
+}
+\end{minted}
+
+\subsection{编译与运行示例}
+
+在 \mintinline{text}`src` 目录下编译：
+
+\begin{minted}{bash}
+g++ -std=c++17 -O2 main.cpp -o bst
+\end{minted}
+
+使用示例数据 \mintinline{text}`res/sample.txt`，从文件读取后可继续交互查询：
+
+\begin{minted}{bash}
+./bst ../res/sample.txt
+\end{minted}
+
+或使用标准输入：
+
+\begin{minted}{bash}
+cat ../res/sample.txt | ./bst -
+\end{minted}
+
+\subsection{样例输入输出}
+
+输入文件 \mintinline{text}`res/sample.txt`：
+
+\inputminted{text}{../res/sample.txt}
+
+运行示例（节选）：
+
+\begin{minted}{text}
+In-order traversal (ascending): 10 12 23 34 45 50 56 67 78 89
+Average successful search length (ASL): 2.9
+Search key (q to quit): 50
+Path: 45 -> 78 -> 56 -> 50
+Found key 50
+Search key (q to quit): 13
+Path: 45 -> 12 -> 34 -> 23
+Key 13 not found
+Search key (q to quit): q
+\end{minted}
+
+\subsection{复杂度分析}
+
+\begin{itemize}
+    \item 构建：插入 $n$ 个元素，时间 $\mathcal{O}\left(n\cdot h\right)$，最坏退化 $\mathcal{O}\left(n^2\right)$，平均 / 平衡约 $\mathcal{O}\left(n\log n\right)$；空间 $\mathcal{O}\left(n\right)$；
+    \item 查找：时间 $\mathcal{O}\left(h\right)$，最坏 $\mathcal{O}\left(n\right)$，平衡 $\mathcal{O}\left(\log n\right)$；
+    \item ASL 统计：一次遍历 $\mathcal{O}\left(n\right)$ 时间，$\mathcal{O}\left(1\right)$ 额外空间（递归深度按树高计）。
+\end{itemize}
+
+\section{结论}
+
+完成了 BST 的构建、迭代查找与路径输出，基于一次遍历计算 ASL，支持文件/标准输入与交互查询。实验验证中序遍历有序性，演示了查找路径与命中情况，并分析了平衡与退化形态下的复杂度差异。
+
+\end{document}
