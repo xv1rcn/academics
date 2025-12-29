@@ -1,0 +1,289 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{graphicx}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{siunitx}
+
+\begin{document}
+    
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 计算机网络 & \textit{Computer Networking} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{BGP 路由协议验证} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2025 年 12 月 29 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验目的}
+
+本实验旨在掌握基于 IPMininet 的 BGP 路由协议配置方法，理解 BGP 作为域间动态路由协议的工作原理（包括自治系统（AS）标识、邻居建立、网络前缀通告等核心机制）；通过 IPMininet 搭建包含 2 台路由器、2 台主机的跨 AS 网络拓扑，完成设备 IP 地址配置、路由器 BGP 协议部署及跨 AS 网络连通性测试，强化对 BGP 在不同自治系统间路由自动化管理作用的认知，同时熟悉 IPMininet 仿真工具在域间路由实验中的应用流程。
+
+\section{实验内容简要描述}
+
+\begin{enumerate}
+    \item \textbf{IPMininet 仿真网络启动}：在 Linux 环境中启动 Open vSwitch 服务，进入 IPMininet 示例目录，查看自定义 BGP 网络拓扑文件并启动包含 2 个 AS（AS 100、AS 200）的仿真网络；
+    
+    \item \textbf{主机与路由器 IP 配置}：配置主机网卡的 IP 地址及默认网关，配置路由器双网卡的 IP 地址以实现 AS 内部及 AS 间网段互联；
+    
+    \item \textbf{路由器 BGP 协议配置}：通过 \mintinline{bash}`telnet` 连接 BGP 进程，进入配置模式设置自治系统号、添加 BGP 邻居、通告本地 AS 的网络前缀，完成 BGP 协议的部署；
+    
+    \item \textbf{BGP 协议验证}：测试跨 AS 主机的 \mintinline{bash}`ping` 连通性，查看路由器路由表及 BGP 邻居 / 路由信息，验证 BGP 域间动态路由的生效状态。
+\end{enumerate}
+
+\section{实验步骤与结果分析}
+
+\subsection{IPMininet 仿真网络启动}
+
+右键打开 Linux 终端，执行命令启动 OVS 服务（为 IPMininet 提供交换功能支持）：
+
+\begin{minted}{bash}
+ovs-vswitchd --pidfile --detach
+\end{minted}
+
+进入 IPMininet 主目录（\mintinline{text}`/home/headless/ipmininet`），右键打开终端，执行命令启动目标拓扑的仿真网络：
+
+\begin{minted}{bash}
+sudo python3 -m ipmininet.examples --topo=simple_bgp4_network
+\end{minted}
+
+终端依次显示设备添加日志，最终进入 Mininet CLI 界面，确认网络启动完成。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0000.png}
+\end{figure}
+
+\subsection{主机与路由器 IP 配置}
+
+在 Mininet CLI 中打开 h1 终端：
+
+\begin{minted}{bash}
+xterm h1
+\end{minted}
+
+执行 \mintinline{bash}`ifconfig` 查看默认 IP（与实验规划不符），执行命令将 h1 的网卡 IP 配置为 AS 100 网段（\mintinline{text}`10.0.0.2`）：
+
+\begin{minted}{bash}
+sudo ifconfig h1-eth0 10.0.0.2
+\end{minted}
+
+在 Mininet CLI 中打开 h2 终端：
+
+\begin{minted}{bash}
+xterm h2
+\end{minted}
+
+同理，执行命令将 h2 的网卡 IP 配置为 AS 200 网段（\mintinline{text}`192.168.0.2`）：
+
+\begin{minted}{bash}
+sudo ifconfig h2-eth0 192.168.0.2
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0001.png}
+\end{figure}
+
+在 Mininet CLI 中打开路由器 r1（属于 AS 100）终端：
+
+\begin{minted}{bash}
+xterm r1
+\end{minted}
+
+执行 \mintinline{bash}`ifconfig` 查看网卡信息，配置双网卡 IP（\mintinline{text}`10.0.0.1/24` 为 AS 100 内部网段，\mintinline{text}`10.0.5.1/24` 为 AS 间互联网段）：
+
+\begin{minted}{bash}
+sudo ifconfig r1-eth0 10.0.0.1/24
+sudo ifconfig r1-eth1 10.0.5.1/24
+\end{minted}
+
+在 Mininet CLI 中打开路由器 r2（属于 AS 200）终端，配置双网卡 IP：
+
+\begin{minted}{bash}
+sudo ifconfig r2-eth0 10.0.5.2/24
+sudo ifconfig r2-eth1 192.168.0.1/24
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0002.png}
+\end{figure}
+
+在 h1 终端中添加默认网关（指向 r1 的 AS 内部接口）：
+
+\begin{minted}{bash}
+sudo route add default gw 10.0.0.1
+\end{minted}
+
+在 h2 终端中添加默认网关（指向 r2 的 AS 内部接口）：
+
+\begin{minted}{bash}
+sudo route add default gw 192.168.0.1
+\end{minted}
+
+执行 \mintinline{bash}`route -n` 确认配置生效：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0003.png}
+\end{figure}
+
+\subsection{配置路由器 BGP 协议}
+
+在 Mininet CLI 中查看 r1 路由表，发现无跨 AS 网段路由：
+
+\begin{minted}{bash}
+r1 route
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0004.png}
+\end{figure}
+
+在 r1 终端中通过 \mintinline{bash}`telnet` 连接 BGP 进程（默认密码：\mintinline{text}`zebra`）：
+
+\begin{minted}{bash}
+telnet localhost bgpd
+\end{minted}
+
+进入 BGP 配置模式，设置 AS 号为 100，并添加 BGP 邻居（r2 的 AS 间接口 IP \mintinline{text}`10.0.5.2`，对应 AS 200）：
+
+\begin{minted}{bash}
+enable
+configure terminal
+router bgp 100
+no bgp ebgp-requires-policy
+neighbor 10.0.5.2 remote-as 200
+neighbor 10.0.5.2 description "router 2"
+write
+\end{minted}
+
+执行 \mintinline{bash}`show ip bgp summary` 查看 BGP 邻居状态（初始为 active，表示正在建立邻居）。
+
+在 r2 终端中重复上述步骤，配置 BGP（AS 号为 200，邻居为 r1 的 AS 间接口 IP \mintinline{text}`10.0.5.1`，对应 AS 100）：
+
+\begin{minted}{bash}
+enable
+configure terminal
+router bgp 200
+no bgp ebgp-requires-policy
+neighbor 10.0.5.1 remote-as 100
+neighbor 10.0.5.1 description "router 1"
+write
+\end{minted}
+
+查看 r2 的 BGP 邻居中间状态：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0005.png}
+\end{figure}
+
+从结果可见，BGP 邻居处于 active 或 connect 状态（正在建立连接），BGP 路由表为空，无任何网络前缀信息，这是未通告本地网段时的中间状态。
+
+返回 r1 的 BGP 终端，重新进入配置模式，添加本地 AS 网段通告并保存配置：
+
+\begin{minted}{bash}
+configure terminal
+router bgp 100
+network 10.0.0.0/24
+write
+\end{minted}
+
+再次查看 r1 的 BGP 状态，确认网段已通告及邻居状态变化：
+
+\begin{minted}{bash}
+show ip bgp summary
+\end{minted}
+
+在 r2 终端中重新进入 BGP 配置模式，补充通告 AS 200 本地网段并保存配置：
+
+\begin{minted}{bash}
+configure terminal
+router bgp 200
+network 192.168.0.0/24
+write
+\end{minted}
+
+查看 r2 的 BGP 邻居状态，显示 Up 表示邻居建立成功，且已识别本地通告网段：
+
+\begin{minted}{bash}
+show ip bgp summary
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0006.png}
+\end{figure}
+
+\subsection{验证 BGP 协议}
+
+在 h1 终端中 ping h2 的 IP（跨 AS 通信），结果显示连通（无丢包）：
+
+\begin{minted}{bash}
+ping 192.168.0.2
+\end{minted}
+
+在 Mininet CLI 中查看 r1、r2 的路由表，可见 BGP 学习到的跨 AS 动态路由（标志 UG 表示网络可达且邻居为网关）：
+
+\begin{minted}{bash}
+r1 route
+r2 route
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0007.png}
+\end{figure}
+
+\section{实验中遇到的问题及体会}
+
+在启动 IPMininet 时，因未提前启动 OVS 服务，终端提示 “交换设备不可用” 错误。执行 \mintinline{text}`ovs-vswitchd --pidfile --detach` 启动服务后，网络成功启动 —— 这让我认识到 IPMininet 依赖 OVS 提供交换能力，环境准备是实验的前提。
+
+配置 BGP 邻居时，最初遗漏 \mintinline{text}`no bgp ebgp-requires-policy` 命令，导致邻居始终无法建立。查阅资料后得知，该命令用于关闭 BGP 的策略检查限制（实验环境下需临时关闭），执行后邻居状态转为 Up —— 这体现了 BGP 协议的安全性设计，同时也说明实验配置需适配工具的默认规则。
+
+本次实验分两步配置 BGP 协议（先配邻居看中间状态，再通告网段），让我清晰观察到 BGP 配置的阶段性效果：未通告网段时，邻居仅处于连接建立阶段，路由表为空，无法实现跨 AS 通信；补充网段通告后，BGP 才会将本地网段传递给邻居，进而生成跨 AS 路由。这种分步操作的方式，帮助我更直观地理解了 BGP 邻居建立与网段通告的独立关联性，而非一次性配置的黑盒操作。
+
+通过本次实验，我直观体会到 BGP 作为域间路由协议的核心作用：不同 AS 间无需手动配置静态路由，仅需建立 BGP 邻居并通告本地网段，即可自动学习跨 AS 路由。相比 OSPF（域内路由），BGP 更注重 “自治系统间的路由协商”，这与 AS 的管理边界特性相匹配。
+
+实验也深化了 “跨域路由协同” 的认知：从 AS 号的区分、AS 间互联网段的规划，到 BGP 邻居的建立与网段通告，每一步都需严格匹配双方配置，任何一处参数（如 AS 号、邻居 IP）错误都会导致跨域通信失效。这种 “域间协同” 的逻辑，是互联网跨自治系统通信的基础。
+
+最后，IPMininet 的虚拟环境为 BGP 实验提供了低成本的实践载体，可快速搭建跨 AS 拓扑并反复调试配置。这一过程不仅提升了我的 Linux 命令与 BGP 配置熟练度，更培养了从路由表、BGP 邻居状态倒推故障的排查思维，为后续复杂域间路由技术的学习奠定了基础。
+
+\end{document}
