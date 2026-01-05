@@ -1,0 +1,197 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{graphicx}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{siunitx}
+
+\begin{document}
+    
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 计算机网络 & \textit{Computer Networking} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{VLAN 及 VLAN 间路由选择} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2026 年 1 月 5 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验目的}
+
+本实验旨在掌握基于 IPMininet 的 VLAN（虚拟局域网）配置方法，理解 VLAN 实现二层网络隔离、同 VLAN 主机互通的核心原理；通过 IPMininet 搭建 ``1 台交换机 + 3 台主机'' 的网络拓扑，完成主机 IP 子网掩码配置、Open vSwitch（OVS）交换机安全模式调整、VLAN 端口标签划分，以及验证不同 VLAN 下主机的连通性，同时熟悉 IPMininet 仿真工具与 OVS 命令在虚拟网络实验中的操作流程。
+
+\section{实验内容简要描述}
+
+\begin{enumerate}
+    \item \textbf{IPMininet 仿真网络启动}：在 Linux 环境启动 Open vSwitch 服务，通过 \mintinline{bash}`mn` 命令启动包含 1 台交换机、3 台主机的单拓扑仿真网络；
+    
+    \item \textbf{主机与交换机配置}：打开各主机终端，调整网卡的子网掩码至实验规划的 \mintinline{text}`255.255.255.0`，匹配网段要求；打开交换机终端，查看 OVS 状态并退出安全模式，确保交换机具备独立转发能力；
+    
+    \item \textbf{VLAN 配置}：通过 OVS 命令查看主机与交换机端口的 MAC 映射关系，为交换机端口配置 VLAN 标签（划分 VLAN 100、200）；
+    
+    \item \textbf{主机连通性验证}：测试同 VLAN、不同 VLAN 主机的 \mintinline{bash}`ping` 连通性，验证 VLAN 的二层隔离效果。
+\end{enumerate}
+
+\section{实验步骤与结果分析}
+
+\subsection{IPMininet 仿真网络启动}
+
+右键打开 Linux 终端，执行命令启动 OVS 服务（为交换机提供交换功能支持）：
+
+\begin{minted}{bash}
+ovs-vswitchd --pidfile --detach
+\end{minted}
+
+在终端中执行命令启动包含 1 台交换机（s1）、3 台主机（h1、h2、h3）的仿真网络：
+
+\begin{minted}{bash}
+sudo mn --topo=single,3 --controller=remote
+\end{minted}
+
+终端依次显示 ``Creating network'' ``Adding hosts'' ``Adding switches'' 等日志，最终进入 Mininet CLI 界面，确认网络启动完成。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0000.png}
+\end{figure}
+
+\subsection{主机与交换机配置}
+
+在 Mininet CLI 中打开 h1 的终端：
+
+\begin{minted}{bash}
+xterm h1
+\end{minted}
+
+执行 \mintinline{bash}`sudo ifconfig` 查看默认 IP 信息，发现 eth0 网卡的子网掩码为 \mintinline{text}`255.0.0.0`（不符合实验规划），执行命令修改子网掩码为 \mintinline{text}`255.255.255.0`：
+
+\begin{minted}{bash}
+sudo ifconfig h1-eth0 netmask 255.255.255.0
+\end{minted}
+
+执行 \mintinline{bash}`sudo ifconfig` 确认配置生效（h1-eth0 的 netmask 显示为 \mintinline{text}`255.255.255.0`）：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0001.png}
+\end{figure}
+
+同理，在 Mininet CLI 中打开 h2、h3 的终端，执行相同命令修改子网掩码：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0002.png}
+\end{figure}
+
+在 Mininet CLI 中打开交换机 s1 的终端：
+
+\begin{minted}{bash}
+xterm s1
+\end{minted}
+
+执行 \mintinline{bash}`ovs-vsctl show` 查看交换机状态，发现 fail\_mode 为 ``secure''（表示交换机依赖 SDN 控制器转发，需退出该模式）。
+
+执行命令退出安全模式：
+
+\begin{minted}{bash}
+ovs-vsctl del-fail-mode s1
+\end{minted}
+
+再次执行 \mintinline{bash}`ovs-vsctl show`，确认 fail\_mode 已移除，交换机切换为普通转发模式：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0003.png}
+\end{figure}
+
+\subsection{VLAN 配置}
+
+在 s1 的终端中，执行命令查看交换机端口与主机 MAC 的映射关系：
+
+\begin{minted}{bash}
+ovs-appctl fdb/show s1
+\end{minted}
+
+结合各主机终端中 \mintinline{bash}`sudo ifconfig` 显示的 MAC 地址，确认端口对应关系：s1-eth1 连接 h1、s1-eth2 连接 h2、s1-eth3 连接 h3。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0004.png}
+\end{figure}
+
+执行命令为交换机端口配置 VLAN 标签（h1、h2 划入 VLAN 100，h3 划入 VLAN 200）：
+
+\begin{minted}{bash}
+ovs-vsctl set port s1-eth1 tag=100
+\end{minted}
+
+\begin{minted}{bash}
+ovs-vsctl set port s1-eth2 tag=100
+\end{minted}
+
+\begin{minted}{bash}
+ovs-vsctl set port s1-eth3 tag=200
+\end{minted}
+
+执行 \mintinline{bash}`ovs-vsctl show` 确认端口 VLAN 标签配置生效（端口后显示 ``tag: 100'' 或 ``tag: 200''）：
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0005.png}
+\end{figure}
+
+\subsection{主机连通性验证}
+
+在 Mininet CLI 中打开 h1 的终端，执行 \mintinline{bash}`ping 10.0.0.2` 命令 ping 同 VLAN 的 h2：终端显示 ``64 bytes from 10.0.0.2'' 的回复，丢包率为 0\%，说明同 VLAN 主机互通。
+
+继续在 h1 终端中 ping 不同 VLAN 的 h3：终端显示 ``Destination Host Unreachable''，丢包率为 100\%，说明不同 VLAN 主机隔离。
+
+同理，在 h2 终端中 ping h3，结果同样显示无法连通，进一步验证了 VLAN 的二层隔离作用。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/screenshot_0006.png}
+\end{figure}
+
+\section{实验中遇到的问题及体会}
+
+通过本次实验，我直观理解了 VLAN 的核心作用：在二层网络中划分逻辑网段，实现同 VLAN 互通、不同 VLAN 隔离，避免广播域过大的问题。同时，OVS 作为虚拟交换机的配置方式（如端口标签、模式调整），让我熟悉了软件定义交换的基本操作。
+
+实验也深化了 ``二层隔离'' 的认知：VLAN 是在数据链路层对流量进行划分，即使主机处于同一 IP 网段，不同 VLAN 的主机也无法直接通信，这与三层路由的网段互通逻辑形成了区别。这种分层隔离的设计，是网络安全与性能优化的常用手段。
+
+最后，IPMininet 的虚拟环境提供了低成本的 VLAN 实践载体，可快速调整拓扑与配置、反复验证效果。这一过程不仅提升了我的 Linux 命令与 OVS 配置熟练度，更培养了从端口标签、连通性结果倒推 VLAN 配置错误的排查思维，为后续 VLAN 间路由等高级技术的学习奠定了基础。
+
+\end{document}
