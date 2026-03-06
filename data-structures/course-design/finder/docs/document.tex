@@ -1,0 +1,312 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{graphicx}
+\usepackage{siunitx}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+
+\begin{document}
+
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 数据结构 & \textit{Data Structures} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{文本的查找与替换} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2026 年 3 月 6 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\tableofcontents
+\newpage
+
+本实验的核心目标并不仅仅是 ``做出一个可以替换文本的程序''，而是把题目要求抽象为一个可维护、可扩展、可稳定运行的命令行工具。围绕这一目标，项目将任务拆解为四个层面：第一层是算法层，要求在 ``固定字符串匹配'' 和 ``正则表达式匹配'' 之间提供清晰分工，使程序既能覆盖基础需求，也能处理复杂模式；第二层是工程层，要求通过模块解耦实现清晰职责边界，避免主函数堆积逻辑导致后续迭代困难；第三层是交互层，要求命令行语义明确、参数关系合理、错误提示可读，以便在实验演示时能快速定位误用；第四层是可靠性层，要求原地写回过程具备容错性，避免出现部分写入导致的数据破坏。
+
+在课程设计语境下，这样的目标设定体现了 ``算法与工程并重'' 的训练导向：既要解释为什么选择 KMP 与 Regex 双引擎，也要解释为何需要颜色控制、差异显示、退出码语义、临时文件原子替换等工程细节的设计。
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+Ubuntu 24.04.3 LTS，Linux 6.14.0-36-generic，AMD Ryzen 7 7700 (16) @ 5.3GHz，DDR5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.109.5，NVIM v0.12.0-dev，cmake 3.28.3，gcc 13.3.0。
+
+\subsection{依赖库}
+
+CLI11（\href{https://github.com/CLIUtils/CLI11}{\textit{https://github.com/CLIUtils/CLI11}}）、rang（\href{https://github.com/agauniyal/rang}{\textit{https://github.com/agauniyal/rang}}）。
+
+\subsection{其他工具}
+
+\LaTeX{} (\TeX\textit{studio})。
+
+\section{算法思想描述}
+
+\subsection{数据生成与问题建模}
+
+本实验的目标是实现 ``从文件 A 读取文本，对模式 $s$ 完成查找与替换，再输出到文件 B'' 的完整链路。为了验证程序在不同输入条件下都能稳定工作，测试数据不采用单一文本，而是按功能点分层构造：
+
+\begin{itemize}
+    \item 基础文本：覆盖普通英文单词、重复词和无命中行；
+    \item 大小写混合文本：验证 \mintinline{text}{-i} 忽略大小写行为；
+    \item 结构化文本：包含日期、日志等级、编号等，便于正则分组替换；
+    \item 边界文本：空行、仅符号行、文件末尾无换行等特殊情况。
+\end{itemize}
+
+从输入输出角度，单行处理模型可表示为：
+$$L_i \xrightarrow{\text{匹配引擎}} R_i \xrightarrow{\text{替换策略}} L'_i$$
+其中 $L_i$ 为第 $i$ 行原文本，$R_i$ 为命中区间集合，$L'_i$ 为替换后结果。该模型便于统一实现查找、计数、仅输出命中片段和替换写回等不同功能。
+
+\subsection{匹配与替换算法}
+
+本项目采用 ``双引擎匹配 + 分层替换'' 的策略。
+
+\subsubsection{字面量匹配：KMP}
+
+字面量模式下采用 KMP 算法。通过预处理模式串构建 LPS 数组，主串扫描时避免回退，最坏复杂度为 $\mathcal{O}\left(n+m\right)$。相较朴素匹配，KMP 在长文本、多次命中场景下更稳定。
+
+\subsubsection{正则匹配：\mintinline{cpp}{std::regex}}
+
+复杂模式下采用 C++23 STL 正则引擎，支持 ECMAScript 与 Extended 语法，以及捕获组反向引用替换。该方案表达能力强，适用于 ``格式化替换'' ``批量规范化'' 等任务。
+
+\subsubsection{替换实现策略}
+
+在字面量模式中，先得到所有命中区间，再按 ``游标前进 + 分段拼接'' 构造结果字符串，避免边替换边搜索导致的偏移错位；在正则模式中复用 \mintinline{cpp}{std::regex_replace} 语义，统一由标准库处理转义与分组替换细节。
+
+\subsection{文件读取与写入}
+
+\subsubsection{流式读取}
+
+程序按行读取输入流（文件或标准输入），避免将全文一次性载入内存。该设计有两个优势：
+
+\begin{enumerate}
+    \item 对大文件更友好，内存占用稳定；
+    \item 便于直接输出带行号与高亮的逐行结果。
+\end{enumerate}
+
+\subsubsection{安全写回}
+
+原地替换时采用 ``临时文件 + 原子重命名'' 两阶段提交：先完整写入 \mintinline{text}{target.tmp}，确认写入状态后再执行 \mintinline{cpp}{std::filesystem::rename}。若失败则删除临时文件并返回错误。该策略可以避免直接覆盖带来的 ``部分写入损坏''。
+
+\section{程序结构}
+
+\subsection{主函数流程}
+
+项目采用 ``薄入口、厚应用'' 的组织方式：\mintinline{text}{main.cpp} 仅调用 \mintinline{cpp}{app::run(argc, argv)}。主流程集中在应用层，整体步骤如下：
+
+\begin{enumerate}
+    \item 解析命令行参数并做约束校验；
+    \item 根据参数选择 KMP 或 Regex 引擎；
+    \item 初始化输入输出通道（\mintinline{text}{stdin} 或文件）；
+    \item 按行执行匹配，按选项决定显示、计数或替换；
+    \item 若启用原地模式，执行原子写回；
+    \item 返回统一退出码（0 / 1 / 2）用于脚本集成。
+\end{enumerate}
+
+这种流程划分让 ``参数处理'' ``算法执行'' ``输出渲染'' ``写回提交'' 彼此解耦，降低维护成本。
+
+\subsection{辅助函数设计}
+
+辅助函数按职责分成四组：
+
+\begin{itemize}
+    \item 参数与模式辅助：完成参数互斥、依赖、位置参数归一化；
+    \item 匹配辅助：提供 \mintinline{cpp}{find_all_kmp_ranges}、\mintinline{cpp}{find_all_regex_ranges} 等统一接口；
+    \item 渲染辅助：负责行号拼接、命中高亮、差异展示，避免污染主循环；
+    \item IO 辅助：处理输入打开、临时文件写入、原子替换与错误回滚。
+\end{itemize}
+
+该拆分策略的核心价值是 ``主流程可读、辅助函数可复用''。当后续新增目录递归或批量文件时，通常只需扩展 IO 与调度层，而无需重写匹配引擎。
+
+\section{测试结果}
+
+\subsection{测试环境}
+
+构建命令如下：
+
+\begin{minted}{bash}
+cd finder
+cmake -S . -B build
+cmake --build build -j
+\end{minted}
+
+\subsection{测试数据}
+
+为覆盖题目要求及常见边界，设计如下样例 \mintinline{text}{res/log.txt}：
+
+\inputminted{text}{../res/log.txt}
+
+并额外准备无命中文本、空文件、末尾无换行文本，用于验证退出码与写回稳定性。
+
+\subsection{测试过程}
+
+\subsubsection{基础字面量替换测试}
+
+\begin{minted}{bash}
+./build/finder "error" -i -r "warning" res/log.txt > res/log_kmp.txt
+\end{minted}
+
+\inputminted{text}{../res/log_kmp.txt}
+
+\mintinline{text}{Error} / \mintinline{text}{error} 均被替换为 \mintinline{text}{warning}；其他行保持不变；输出写入 B 文件。
+
+\subsubsection{正则分组替换测试}
+
+\begin{minted}{bash}
+./build/finder -e "(INFO|WARN|ERROR):" -i -r "[LOG:\$1]" res/log.txt > res/log_regex.txt
+\end{minted}
+
+\inputminted{text}{../res/log_regex.txt}
+
+日志级别前缀按分组替换，分组内容保留。
+
+\subsubsection{仅匹配输出与计数测试}
+
+\begin{minted}{bash}
+./build/finder -o -e "[0-9]{4}-[0-9]{2}-[0-9]{2}" res/log.txt
+./build/finder -c "error" -i res/log.txt
+\end{minted}
+
+\inputminted{text}{../res/log_date.txt}
+
+\inputminted{text}{../res/log_count.txt}
+
+\mintinline{text}{-o} 仅输出匹配片段，\mintinline{text}{-c} 仅输出命中行数量。
+
+\subsubsection{原地写回稳定性测试}
+
+\begin{minted}{bash}
+cp res/log.txt res/log_replaced.txt
+./build/finder "user_" -r "account_" -p res/log_replaced.txt -d
+\end{minted}
+
+\inputminted{text}{../res/log_replaced.txt}
+
+\mintinline{text}{log_replaced.txt} 被完整替换，未出现截断、乱码或半写入状态。
+
+\subsection{测试结论}
+
+综合各组测试可得：
+\begin{enumerate}
+    \item 程序完整满足 ``读取 A、替换、输出 B'' 的题目目标；
+    \item 字面量模式在效率和稳定性上表现良好，正则模式在表达能力上优势明显；
+    \item 参数互斥与依赖关系有效降低误用概率；
+    \item 原地写回策略在异常场景下具备较好的数据安全性。
+\end{enumerate}
+
+\section{收获与体会}
+
+\subsection{技术收获}
+
+本次实验让我更清晰地理解了 ``算法正确'' 与 ``工程可用'' 之间的差异。KMP 与 Regex 解决的是匹配能力问题，而参数契约、错误码语义、原子写回解决的是工具可交付问题。只有两者结合，程序才能在真实使用中稳定运行。
+
+\subsection{问题与解决}
+
+开发过程中主要遇到三类问题：
+
+\begin{itemize}
+    \item 参数歧义：通过 CLI11 的互斥与依赖约束提前拦截；
+    \item 输出可读性不足：引入按需颜色和 only-matching 逐命中输出；
+    \item 写回风险：采用临时文件加原子替换，并在失败时回滚。
+\end{itemize}
+
+这些改进使程序从 ``能完成任务'' 提升为 ``行为可预期、结果可验证''。
+
+\subsection{未来展望}
+
+后续可继续从三个方向完善：
+
+\begin{itemize}
+    \item 增加目录递归与多文件批处理能力；
+    \item 增加更完整的 Unicode 大小写折叠与编码兼容支持；
+    \item 增加自动化回归测试与性能基准，形成持续验证流程。
+\end{itemize}
+
+\appendix
+
+\section{程序源码}
+
+\subsection{帮助文档}
+
+\subsubsection{\mintinline{text}{./build/finder --help}}
+\inputminted{text}{../res/help.txt}
+
+\subsection{构建系统}
+
+\subsubsection{\mintinline{text}{CMakeLists.txt}}
+\inputminted{cmake}{../CMakeLists.txt}
+
+\subsection{\mintinline{text}{src}}
+
+\subsubsection{\mintinline{text}{src/main.cpp}}
+\inputminted{cpp}{../src/main.cpp}
+
+\subsubsection{\mintinline{text}{src/app.cpp}}
+\inputminted{cpp}{../src/app.cpp}
+
+\subsubsection{\mintinline{text}{src/cli.cpp}}
+\inputminted{cpp}{../src/cli.cpp}
+
+\subsubsection{\mintinline{text}{src/kmp.cpp}}
+\inputminted{cpp}{../src/kmp.cpp}
+
+\subsubsection{\mintinline{text}{src/regex.cpp}}
+\inputminted{cpp}{../src/regex.cpp}
+
+\subsection{\mintinline{text}{include}}
+
+\subsubsection{\mintinline{text}{include/app.hpp}}
+\inputminted{cpp}{../include/app.hpp}
+
+\subsubsection{\mintinline{text}{include/cli.hpp}}
+\inputminted{cpp}{../include/cli.hpp}
+
+\subsubsection{\mintinline{text}{include/kmp.hpp}}
+\inputminted{cpp}{../include/kmp.hpp}
+
+\subsubsection{\mintinline{text}{include/regex.hpp}}
+\inputminted{cpp}{../include/regex.hpp}
+
+\subsubsection{\mintinline{text}{include/common_types.hpp}}
+\inputminted{cpp}{../include/common_types.hpp}
+
+\end{document}

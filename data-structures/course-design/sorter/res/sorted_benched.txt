@@ -1,0 +1,16 @@
+Generated random input file: runs/run_20260306_150341_8cecd7/data_input.txt
+Random data size: 10000
+Run directory: runs/run_20260306_150341_8cecd7
+Input file: runs/run_20260306_150341_8cecd7/data_input.txt
+Input count: 10000
+Sorting with algorithm count: 4
+Sorted by Shell Sort -> output: res/sorted_benched_shell.txt
+Sorted by Quick Sort -> output: res/sorted_benched_quick.txt
+Sorted by Heap Sort -> output: res/sorted_benched_heap.txt
+Sorted by Merge Sort -> output: res/sorted_benched_merge.txt
+Benchmark summary:
+  - Shell Sort | time(us): 3594 | memory_delta_kb: 0
+  - Quick Sort | time(us): 2957 | memory_delta_kb: 0
+  - Heap Sort | time(us): 3869 | memory_delta_kb: 0
+  - Merge Sort | time(us): 4887 | memory_delta_kb: 0
+Benchmark report saved: res/sorted_benched.csv

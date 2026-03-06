@@ -1,0 +1,4 @@
+Run directory: runs/run_20260306_150406_85db91
+Input file: res/sorted_shell.txt
+Input count: 10000
+Verify input order: PASS

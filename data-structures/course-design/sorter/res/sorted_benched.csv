@@ -1,0 +1,5 @@
+algorithm_id,algorithm_name,output_file,sorted,duration_us,memory_delta_kb
+shell,Shell Sort,res/sorted_benched_shell.txt,true,3594,0
+quick,Quick Sort,res/sorted_benched_quick.txt,true,2957,0
+heap,Heap Sort,res/sorted_benched_heap.txt,true,3869,0
+merge,Merge Sort,res/sorted_benched_merge.txt,true,4887,0

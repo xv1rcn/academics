@@ -1,0 +1,10 @@
+Generated random input file: runs/run_20260306_150322_1b8e4b/data_input.txt
+Random data size: 10000
+Run directory: runs/run_20260306_150322_1b8e4b
+Input file: runs/run_20260306_150322_1b8e4b/data_input.txt
+Input count: 10000
+Sorting with algorithm count: 4
+Sorted by Shell Sort -> output: res/sorted_shell.txt
+Sorted by Quick Sort -> output: res/sorted_quick.txt
+Sorted by Heap Sort -> output: res/sorted_heap.txt
+Sorted by Merge Sort -> output: res/sorted_merge.txt

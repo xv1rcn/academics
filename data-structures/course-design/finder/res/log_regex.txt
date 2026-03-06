@@ -1,0 +1,4 @@
+[LOG:Error] disk full
+[LOG:error] retry failed
+[LOG:INFO] ignore this line
+user_1024 logged in at 2026-03-06

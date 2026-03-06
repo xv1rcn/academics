@@ -1,0 +1,595 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, escapeinside=||, fontsize=\small, frame=lines,
+    mathescape=$$, numbers=none, style=bw, tabsize=4
+}
+
+\usepackage{graphicx}
+\usepackage{siunitx}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+
+\begin{document}
+
+\pagestyle{empty}
+
+\tableofcontents
+\newpage
+
+\pagestyle{plain}
+\setcounter{page}{1}
+
+\section{数据生成、排序与验证}
+
+本实验旨在实现一个集数据生成、排序与结果验证于一体的命令行工具。项目不仅关注四种经典排序算法（希尔、快速、堆、归并）的正确实现，更强调工程层面的模块化设计与流程解耦。通过将数据生成、文件读写、算法调度、结果校验等功能分离，系统实现了可复用的输入、独立的输出、可追溯的实验过程，以及便于扩展的参数机制。命令行交互设计简洁明了，支持多算法批量执行、基准采集与结果导出，确保实验过程可复现、结果可解释。整体结构体现了 ``算法实现'' 与 ``实验系统实现'' 并重的课程设计理念，为后续算法扩展与性能对比提供了坚实基础。
+
+\subsection{实验环境}
+
+\subsubsection{操作系统}
+
+Ubuntu 24.04.3 LTS，Linux 6.14.0-36-generic，AMD Ryzen 7 7700 (16) @ 5.3GHz，DDR5。
+
+\subsubsection{编程工具}
+
+Visual Studio Code 1.109.5，NVIM v0.12.0-dev，cmake 3.28.3，gcc 13.3.0。
+
+\subsubsection{依赖库}
+
+CLI11（\href{https://github.com/CLIUtils/CLI11}{\textit{https://github.com/CLIUtils/CLI11}}）。
+
+\subsubsection{其他工具}
+
+\LaTeX{} (\TeX\textit{studio})。
+
+\subsection{算法思想描述}
+
+\subsubsection{数据生成}
+
+本实验首先解决 ``可重复输入'' 的问题。排序算法性能对输入分布高度敏感，因此程序将数据生成从排序逻辑中独立出来，通过 \mintinline{cpp}{DataIo::generateRandomDataFile()} 在运行开始阶段统一生成随机数据文件。默认规模为 10000 条 \texttt{long long}，并支持通过参数调整规模与写入路径。
+
+这种设计有三点工程意义：
+
+\begin{enumerate}
+    \item 输入可复用：同一批数据可被多算法共享，保证横向对比公平；
+    \item 过程可追溯：输入文件可留档，便于复现实验与排查异常；
+    \item 逻辑可维护：生成、读取、排序职责分离，降低主流程复杂度。
+\end{enumerate}
+
+此外，程序同时支持 \mintinline{text}{--no-random}，允许直接读取已有输入文件，这使实验既可做 ``随机基准''，也可做 ``特定分布对照''（如近有序、逆序、重复值密集）。
+
+\subsubsection{排序算法}
+
+题目要求实现并调用四种算法：希尔排序、快速排序、堆排序、归并排序。工程中通过 \mintinline{cpp}{AlgoRegistry} 统一注册，再由 \mintinline{cpp}{Sorter} 按参数选择执行，保证 ``算法实现'' 和 ``算法调度'' 解耦。
+
+\paragraph{希尔排序（Shell Sort）}
+
+希尔排序通过逐步缩小增量序列，将 ``远距离逆序'' 提前消化。其优点是实现简单、对中等规模数据通常优于直接插入排序；缺点是理论最坏复杂度不如 $\mathcal{O}\left(n\log n\right)$ 级算法稳定。
+
+\paragraph{快速排序（Quick Sort）}
+
+本实现使用末尾元素作为 \mintinline{cpp}{pivot}，通过分区把数组划分为 ``$\leq \text{\mintinline{cpp}{pivot}}$'' 与 ``$> \text{\mintinline{cpp}{pivot}}$'' 两部分后递归处理。平均复杂度为 $\mathcal{O}\left(n\log n\right)$，在随机输入上通常有较优常数表现。
+
+\paragraph{堆排序（Heap Sort）}
+
+堆排序先构建大根堆，再反复将堆顶最大值交换到末尾并重建堆。复杂度稳定在 $\mathcal{O}\left(n\log n\right)$，额外空间开销较小，适合对最坏情况性能有要求的场景。
+
+\paragraph{归并排序（Merge Sort）}
+
+归并排序采用分治策略，先递归拆分，再线性合并。其时间复杂度稳定为 $\mathcal{O}\left(n\log n\right)$，且天然稳定；代价是需要额外辅助空间，这在内存指标上通常高于原地排序算法。
+
+\subsubsection{文件读取与写入}
+
+\paragraph{文件读取}
+
+读取阶段使用 \mintinline{cpp}{DataIo::readDataFile()}，采用 ``分块读取 + Token 拼接 + 数值解析'' 的策略，而不是一次性将文件全部读入。该方法能降低大文件场景下的峰值内存压力，并避免 Token 被分块边界截断导致的解析错误。
+
+\paragraph{文件写入}
+
+每个算法均写入独立输出文件。路径通过 \mintinline{text}{--output} 模板与 \mintinline{text}{{algo}} 占位符解析，或通过 \mintinline{text}{--output-map} 为特定算法覆写路径。该设计可避免多算法结果互相覆盖，并便于后续逐文件校验。
+
+\subsection{程序结构}
+
+\subsubsection{主函数流程}
+
+程序主流程集中在 \mintinline{cpp}{App::run()}，可概括为：
+
+\begin{enumerate}
+    \item 解析命令行参数并完成合法性校验；
+    \item 根据配置决定是否生成随机输入文件；
+    \item 从文件读取输入数据；
+    \item 根据算法列表创建算法实例；
+    \item 逐算法执行排序、记录结果与基准信息；
+    \item 将排序输出写回文件，并在需要时导出 CSV 基准。
+\end{enumerate}
+
+该流程体现 ``薄入口、强调度'' 的结构：主函数关注业务时序，具体算法细节交给各模块实现。
+
+\subsubsection{辅助函数}
+
+辅助逻辑主要分为四类：
+
+\begin{itemize}
+    \item 参数辅助：算法 ID 归一化、去重、\mintinline{text}{all} 语义处理、非法参数拦截；
+    \item 算法辅助：\mintinline{cpp}{AlgoRegistry::create()} 工厂构建、\mintinline{cpp}{Sorter::selectAlgorithms()} 选择策略；
+    \item I/O 辅助：随机数据生成、分块读取、结果写出、路径模板替换；
+    \item 校验与基准辅助：有序性检查、耗时采集、RSS 差值统计、CSV 持久化。
+\end{itemize}
+
+这些辅助函数将 ``易变逻辑'' 从主流程抽离出来，使系统在新增算法、扩展参数时仍保持较低改动范围。
+
+\subsection{测试结果}
+
+\subsubsection{测试环境}
+
+构建命令如下：
+
+\begin{minted}{bash}
+cd sorter
+cmake -S . -B build
+cmake --build build -j
+\end{minted}
+
+\subsubsection{测试数据}
+
+本次测试主数据集为 10000 条随机 \mintinline{cpp}{long long}。为保证可重复性，程序先将输入落盘，再由各算法从同一输入文件读取。除主数据集外，还准备了近有序与重复值较多的数据，用于对照观察算法行为差异。
+
+\subsubsection{测试过程}
+
+\paragraph{完成题目要求的四算法排序}
+
+\begin{minted}{bash}
+./build/sorter \
+  -n 10000 \
+  -a shell,quick,heap,merge \
+  -m sort \
+  -o res/sorted_{algo}.txt
+\end{minted}
+
+\inputminted{text}{../sorter/res/sorted.txt}
+
+该步骤验证三件事：是否成功生成输入文件、四种算法是否全部执行、结果是否分别写入独立文件。
+
+\paragraph{开启基准并保存 CSV}
+
+\begin{minted}{bash}
+./build/sorter \
+  -n 10000 \
+  -a shell,quick,heap,merge \
+  -m sort \
+  -tMs -b res/sorted_benched.csv \
+  -o res/sorted_benched_{algo}.txt
+\end{minted}
+
+\inputminted{text}{../sorter/res/sorted_benched.txt}
+
+该步骤用于记录耗时与内存净增量，并形成可直接纳入报告的数据文件。
+
+\paragraph{对输出文件做排序正确性复查}
+
+\begin{minted}{bash}
+./build/sorter \
+  -N -i res/sorted_shell.txt \
+  -m verify
+\end{minted}
+
+\inputminted{text}{../sorter/res/verify.txt}
+
+同样方式可对其它输出文件逐一验证，确保结果文件可独立通过有序性检查。
+
+\subsubsection{测试结论}
+
+测试结果表明：
+
+\begin{enumerate}
+    \item 四种算法均可在 10000 条随机数据上完成排序并正确写回文件；
+    \item 结果文件相互独立，路径模板机制有效避免覆盖；
+    \item 在本次样本中，快速排序耗时最优，堆排序与希尔排序居中，归并排序相对较慢；
+    \item \mintinline{cpp}{memory_delta_kb} 为前后净差值，出现 0 不代表无内存使用，仅表示采样时净增量不明显。
+\end{enumerate}
+
+\subsection{收获与体会}
+
+\subsubsection{技术收获}
+
+本实验最重要的技术收获是理解 ``算法实现'' 与 ``实验系统实现'' 的区别：前者关注排序过程本身，后者还必须处理参数契约、批量执行、文件落盘、结果校验与性能归档。通过模块化设计，四种算法得以在统一框架下对比，实验结论的可信度显著提升。
+
+\subsubsection{问题与解决}
+
+开发过程中的主要问题与应对如下：
+
+\begin{itemize}
+    \item 算法参数易写错：在 CLI 解析阶段做 ID 合法性校验，错误前置；
+    \item 多算法输出易覆盖：引入 \mintinline{text}{{algo}} 模板与 \mintinline{text}{--output-map}；
+    \item 数据规模增大后读取稳定性下降：采用分块读取与残留 Token 拼接；
+    \item 内存指标不易解释：明确区分 ``RSS 净增量'' 与 ``峰值内存''。
+\end{itemize}
+
+这些处理使系统从 ``能跑通'' 提升到 ``可复现、可解释、可扩展''。
+
+\subsubsection{未来展望}
+
+后续可以继续完善以下方向：
+
+\begin{itemize}
+    \item 增加多轮重复实验与统计聚合（均值、方差、分位数）；
+    \item 增加更多输入分布（逆序、近有序、重复密集）并自动生成对照图表；
+    \item 增加峰值内存采样通道，与现有 RSS 差值形成互补；
+    \item 增加回归测试用例，确保新增算法不破坏既有流程。
+\end{itemize}
+
+\section{文本的查找与替换}
+
+本实验的核心目标并不仅仅是 ``做出一个可以替换文本的程序''，而是把题目要求抽象为一个可维护、可扩展、可稳定运行的命令行工具。围绕这一目标，项目将任务拆解为四个层面：第一层是算法层，要求在 ``固定字符串匹配'' 和 ``正则表达式匹配'' 之间提供清晰分工，使程序既能覆盖基础需求，也能处理复杂模式；第二层是工程层，要求通过模块解耦实现清晰职责边界，避免主函数堆积逻辑导致后续迭代困难；第三层是交互层，要求命令行语义明确、参数关系合理、错误提示可读，以便在实验演示时能快速定位误用；第四层是可靠性层，要求原地写回过程具备容错性，避免出现部分写入导致的数据破坏。
+
+在课程设计语境下，这样的目标设定体现了 ``算法与工程并重'' 的训练导向：既要解释为什么选择 KMP 与 Regex 双引擎，也要解释为何需要颜色控制、差异显示、退出码语义、临时文件原子替换等工程细节的设计。
+
+\subsection{实验环境}
+
+\subsubsection{操作系统}
+
+Ubuntu 24.04.3 LTS，Linux 6.14.0-36-generic，AMD Ryzen 7 7700 (16) @ 5.3GHz，DDR5。
+
+\subsubsection{编程工具}
+
+Visual Studio Code 1.109.5，NVIM v0.12.0-dev，cmake 3.28.3，gcc 13.3.0。
+
+\subsubsection{依赖库}
+
+CLI11（\href{https://github.com/CLIUtils/CLI11}{\textit{https://github.com/CLIUtils/CLI11}}）、rang（\href{https://github.com/agauniyal/rang}{\textit{https://github.com/agauniyal/rang}}）。
+
+\subsubsection{其他工具}
+
+\LaTeX{} (\TeX\textit{studio})。
+
+\subsection{算法思想描述}
+
+\subsubsection{数据生成与问题建模}
+
+本实验的目标是实现 ``从文件 A 读取文本，对模式 $s$ 完成查找与替换，再输出到文件 B'' 的完整链路。为了验证程序在不同输入条件下都能稳定工作，测试数据不采用单一文本，而是按功能点分层构造：
+
+\begin{itemize}
+    \item 基础文本：覆盖普通英文单词、重复词和无命中行；
+    \item 大小写混合文本：验证 \mintinline{text}{-i} 忽略大小写行为；
+    \item 结构化文本：包含日期、日志等级、编号等，便于正则分组替换；
+    \item 边界文本：空行、仅符号行、文件末尾无换行等特殊情况。
+\end{itemize}
+
+从输入输出角度，单行处理模型可表示为：
+$$L_i \xrightarrow{\text{匹配引擎}} R_i \xrightarrow{\text{替换策略}} L'_i$$
+其中 $L_i$ 为第 $i$ 行原文本，$R_i$ 为命中区间集合，$L'_i$ 为替换后结果。该模型便于统一实现查找、计数、仅输出命中片段和替换写回等不同功能。
+
+\subsubsection{匹配与替换算法}
+
+本项目采用 ``双引擎匹配 + 分层替换'' 的策略。
+
+\paragraph{字面量匹配：KMP}
+
+字面量模式下采用 KMP 算法。通过预处理模式串构建 LPS 数组，主串扫描时避免回退，最坏复杂度为 $\mathcal{O}\left(n+m\right)$。相较朴素匹配，KMP 在长文本、多次命中场景下更稳定。
+
+\paragraph{正则匹配：\mintinline{cpp}{std::regex}}
+
+复杂模式下采用 C++23 STL 正则引擎，支持 ECMAScript 与 Extended 语法，以及捕获组反向引用替换。该方案表达能力强，适用于 ``格式化替换'' ``批量规范化'' 等任务。
+
+\paragraph{替换实现策略}
+
+在字面量模式中，先得到所有命中区间，再按 ``游标前进 + 分段拼接'' 构造结果字符串，避免边替换边搜索导致的偏移错位；在正则模式中复用 \mintinline{cpp}{std::regex_replace} 语义，统一由标准库处理转义与分组替换细节。
+
+\subsubsection{文件读取与写入}
+
+\paragraph{流式读取}
+
+程序按行读取输入流（文件或标准输入），避免将全文一次性载入内存。该设计有两个优势：
+
+\begin{enumerate}
+    \item 对大文件更友好，内存占用稳定；
+    \item 便于直接输出带行号与高亮的逐行结果。
+\end{enumerate}
+
+\paragraph{安全写回}
+
+原地替换时采用 ``临时文件 + 原子重命名'' 两阶段提交：先完整写入 \mintinline{text}{target.tmp}，确认写入状态后再执行 \mintinline{cpp}{std::filesystem::rename}。若失败则删除临时文件并返回错误。该策略可以避免直接覆盖带来的 ``部分写入损坏''。
+
+\subsection{程序结构}
+
+\subsubsection{主函数流程}
+
+项目采用 ``薄入口、厚应用'' 的组织方式：\mintinline{text}{main.cpp} 仅调用 \mintinline{cpp}{app::run(argc, argv)}。主流程集中在应用层，整体步骤如下：
+
+\begin{enumerate}
+    \item 解析命令行参数并做约束校验；
+    \item 根据参数选择 KMP 或 Regex 引擎；
+    \item 初始化输入输出通道（\mintinline{text}{stdin} 或文件）；
+    \item 按行执行匹配，按选项决定显示、计数或替换；
+    \item 若启用原地模式，执行原子写回；
+    \item 返回统一退出码（0 / 1 / 2）用于脚本集成。
+\end{enumerate}
+
+这种流程划分让 ``参数处理'' ``算法执行'' ``输出渲染'' ``写回提交'' 彼此解耦，降低维护成本。
+
+\subsubsection{辅助函数设计}
+
+辅助函数按职责分成四组：
+
+\begin{itemize}
+    \item 参数与模式辅助：完成参数互斥、依赖、位置参数归一化；
+    \item 匹配辅助：提供 \mintinline{cpp}{find_all_kmp_ranges}、\mintinline{cpp}{find_all_regex_ranges} 等统一接口；
+    \item 渲染辅助：负责行号拼接、命中高亮、差异展示，避免污染主循环；
+    \item IO 辅助：处理输入打开、临时文件写入、原子替换与错误回滚。
+\end{itemize}
+
+该拆分策略的核心价值是 ``主流程可读、辅助函数可复用''。当后续新增目录递归或批量文件时，通常只需扩展 IO 与调度层，而无需重写匹配引擎。
+
+\subsection{测试结果}
+
+\subsubsection{测试环境}
+
+构建命令如下：
+
+\begin{minted}{bash}
+cd finder
+cmake -S . -B build
+cmake --build build -j
+\end{minted}
+
+\subsubsection{测试数据}
+
+为覆盖题目要求及常见边界，设计如下样例 \mintinline{text}{res/log.txt}：
+
+\inputminted{text}{../finder/res/log.txt}
+
+并额外准备无命中文本、空文件、末尾无换行文本，用于验证退出码与写回稳定性。
+
+\subsubsection{测试过程}
+
+\paragraph{基础字面量替换测试}
+
+\begin{minted}{bash}
+./build/finder "error" -i -r "warning" res/log.txt > res/log_kmp.txt
+\end{minted}
+
+\inputminted{text}{../finder/res/log_kmp.txt}
+
+\mintinline{text}{Error} / \mintinline{text}{error} 均被替换为 \mintinline{text}{warning}；其他行保持不变；输出写入 B 文件。
+
+\paragraph{正则分组替换测试}
+
+\begin{minted}{bash}
+./build/finder -e "(INFO|WARN|ERROR):" -i -r "[LOG:\$1]" res/log.txt > res/log_regex.txt
+\end{minted}
+
+\inputminted{text}{../finder/res/log_regex.txt}
+
+日志级别前缀按分组替换，分组内容保留。
+
+\paragraph{仅匹配输出与计数测试}
+
+\begin{minted}{bash}
+./build/finder -o -e "[0-9]{4}-[0-9]{2}-[0-9]{2}" res/log.txt
+./build/finder -c "error" -i res/log.txt
+\end{minted}
+
+\inputminted{text}{../finder/res/log_date.txt}
+
+\inputminted{text}{../finder/res/log_count.txt}
+
+\mintinline{text}{-o} 仅输出匹配片段，\mintinline{text}{-c} 仅输出命中行数量。
+
+\paragraph{原地写回稳定性测试}
+
+\begin{minted}{bash}
+cp res/log.txt res/log_replaced.txt
+./build/finder "user_" -r "account_" -p res/log_replaced.txt -d
+\end{minted}
+
+\inputminted{text}{../finder/res/log_replaced.txt}
+
+\mintinline{text}{log_replaced.txt} 被完整替换，未出现截断、乱码或半写入状态。
+
+\subsubsection{测试结论}
+
+综合各组测试可得：
+\begin{enumerate}
+    \item 程序完整满足 ``读取 A、替换、输出 B'' 的题目目标；
+    \item 字面量模式在效率和稳定性上表现良好，正则模式在表达能力上优势明显；
+    \item 参数互斥与依赖关系有效降低误用概率；
+    \item 原地写回策略在异常场景下具备较好的数据安全性。
+\end{enumerate}
+
+\subsection{收获与体会}
+
+\subsubsection{技术收获}
+
+本次实验让我更清晰地理解了 ``算法正确'' 与 ``工程可用'' 之间的差异。KMP 与 Regex 解决的是匹配能力问题，而参数契约、错误码语义、原子写回解决的是工具可交付问题。只有两者结合，程序才能在真实使用中稳定运行。
+
+\subsubsection{问题与解决}
+
+开发过程中主要遇到三类问题：
+
+\begin{itemize}
+    \item 参数歧义：通过 CLI11 的互斥与依赖约束提前拦截；
+    \item 输出可读性不足：引入按需颜色和 only-matching 逐命中输出；
+    \item 写回风险：采用临时文件加原子替换，并在失败时回滚。
+\end{itemize}
+
+这些改进使程序从 ``能完成任务'' 提升为 ``行为可预期、结果可验证''。
+
+\subsubsection{未来展望}
+
+后续可继续从三个方向完善：
+
+\begin{itemize}
+    \item 增加目录递归与多文件批处理能力；
+    \item 增加更完整的 Unicode 大小写折叠与编码兼容支持；
+    \item 增加自动化回归测试与性能基准，形成持续验证流程。
+\end{itemize}
+
+\appendix
+
+\section{sorter 程序源码}
+
+\subsection{帮助文档}
+
+\subsubsection{\mintinline{text}{./build/sorter --help}}
+\inputminted{text}{../sorter/res/help.txt}
+
+\subsection{构建系统}
+
+\subsubsection{\mintinline{text}{CMakeLists.txt}}
+\inputminted{cmake}{../sorter/CMakeLists.txt}
+
+\subsection{\mintinline{text}{src}}
+
+\subsubsection{\mintinline{text}{src/main.cpp}}
+\inputminted{cpp}{../sorter/src/main.cpp}
+
+\subsubsection{\mintinline{text}{src/app.cpp}}
+\inputminted{cpp}{../sorter/src/app.cpp}
+
+\subsubsection{\mintinline{text}{src/cli.cpp}}
+\inputminted{cpp}{../sorter/src/cli.cpp}
+
+\subsubsection{\mintinline{text}{src/io.cpp}}
+\inputminted{cpp}{../sorter/src/io.cpp}
+
+\subsubsection{\mintinline{text}{src/algo}}
+
+\paragraph{\mintinline{text}{src/algo/shell.cpp}}
+\inputminted{cpp}{../sorter/src/algo/shell.cpp}
+
+\paragraph{\mintinline{text}{src/algo/quick.cpp}}
+\inputminted{cpp}{../sorter/src/algo/quick.cpp}
+
+\paragraph{\mintinline{text}{src/algo/heap.cpp}}
+\inputminted{cpp}{../sorter/src/algo/heap.cpp}
+
+\paragraph{\mintinline{text}{src/algo/merge.cpp}}
+\inputminted{cpp}{../sorter/src/algo/merge.cpp}
+
+\paragraph{\mintinline{text}{src/algo/introsort.cpp}}
+\inputminted{cpp}{../sorter/src/algo/introsort.cpp}
+
+\paragraph{\mintinline{text}{src/algo/insertion.cpp}}
+\inputminted{cpp}{../sorter/src/algo/insertion.cpp}
+
+\paragraph{\mintinline{text}{src/algo/selection.cpp}}
+\inputminted{cpp}{../sorter/src/algo/selection.cpp}
+
+\paragraph{\mintinline{text}{src/algo/bubble.cpp}}
+\inputminted{cpp}{../sorter/src/algo/bubble.cpp}
+
+\paragraph{\mintinline{text}{src/algo/memory_hog.cpp}}
+\inputminted{cpp}{../sorter/src/algo/memory_hog.cpp}
+
+\paragraph{\mintinline{text}{src/algo/std_sort.cpp}}
+\inputminted{cpp}{../sorter/src/algo/std_sort.cpp}
+
+\paragraph{\mintinline{text}{src/algo/stable_sort.cpp}}
+\inputminted{cpp}{../sorter/src/algo/stable_sort.cpp}
+
+\paragraph{\mintinline{text}{src/algo/cocktail.cpp}}
+\inputminted{cpp}{../sorter/src/algo/cocktail.cpp}
+
+\paragraph{\mintinline{text}{src/algo/comb.cpp}}
+\inputminted{cpp}{../sorter/src/algo/comb.cpp}
+
+\subsubsection{\mintinline{text}{src/sort.cpp}}
+\inputminted{cpp}{../sorter/src/sort.cpp}
+
+\subsection{\mintinline{text}{include}}
+
+\subsubsection{\mintinline{text}{include/app.hpp}}
+\inputminted{cpp}{../sorter/include/app.hpp}
+
+\subsubsection{\mintinline{text}{include/cli.hpp}}
+\inputminted{cpp}{../sorter/include/cli.hpp}
+
+\subsubsection{\mintinline{text}{include/io.hpp}}
+\inputminted{cpp}{../sorter/include/io.hpp}
+
+\subsubsection{\mintinline{text}{include/algo.hpp}}
+\inputminted{cpp}{../sorter/include/algo.hpp}
+
+\subsubsection{\mintinline{text}{include/sort.hpp}}
+\inputminted{cpp}{../sorter/include/sort.hpp}
+
+\subsubsection{\mintinline{text}{include/config.hpp}}
+\inputminted{cpp}{../sorter/include/config.hpp}
+
+\subsubsection{\mintinline{text}{include/common.hpp}}
+\inputminted{cpp}{../sorter/include/common.hpp}
+
+\section{finder 程序源码}
+
+\subsection{帮助文档}
+
+\subsubsection{\mintinline{text}{./build/finder --help}}
+\inputminted{text}{../finder/res/help.txt}
+
+\subsection{构建系统}
+
+\subsubsection{\mintinline{text}{CMakeLists.txt}}
+\inputminted{cmake}{../finder/CMakeLists.txt}
+
+\subsection{\mintinline{text}{src}}
+
+\subsubsection{\mintinline{text}{src/main.cpp}}
+\inputminted{cpp}{../finder/src/main.cpp}
+
+\subsubsection{\mintinline{text}{src/app.cpp}}
+\inputminted{cpp}{../finder/src/app.cpp}
+
+\subsubsection{\mintinline{text}{src/cli.cpp}}
+\inputminted{cpp}{../finder/src/cli.cpp}
+
+\subsubsection{\mintinline{text}{src/kmp.cpp}}
+\inputminted{cpp}{../finder/src/kmp.cpp}
+
+\subsubsection{\mintinline{text}{src/regex.cpp}}
+\inputminted{cpp}{../finder/src/regex.cpp}
+
+\subsection{\mintinline{text}{include}}
+
+\subsubsection{\mintinline{text}{include/app.hpp}}
+\inputminted{cpp}{../finder/include/app.hpp}
+
+\subsubsection{\mintinline{text}{include/cli.hpp}}
+\inputminted{cpp}{../finder/include/cli.hpp}
+
+\subsubsection{\mintinline{text}{include/kmp.hpp}}
+\inputminted{cpp}{../finder/include/kmp.hpp}
+
+\subsubsection{\mintinline{text}{include/regex.hpp}}
+\inputminted{cpp}{../finder/include/regex.hpp}
+
+\subsubsection{\mintinline{text}{include/common_types.hpp}}
+\inputminted{cpp}{../finder/include/common_types.hpp}
+
+\end{document}

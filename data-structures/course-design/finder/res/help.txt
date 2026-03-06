@@ -1,0 +1,31 @@
+finder - stream-oriented pattern search and replacement utility
+Usage: ./finder [OPTIONS] [args(0x)]
+
+Positionals:
+  args TEXT                   Positional arguments: [PATTERN [FILE]] in literal mode, or [FILE] in --regexp mode.
+
+Options:
+  -h,--help                   Print this help message and exit
+  -e,--regexp TEXT Excludes: --literal
+                              Use PATTERN as a regular expression (regex mode). Mutually exclusive with --literal and positional PATTERN.
+  -l,--literal Excludes: --regexp
+                              Treat PATTERN as a fixed literal string (KMP mode), similar to grep --fixed-strings.
+  -i,--ignore-case            Ignore ASCII case distinctions while matching (equivalent to case-insensitive regex matching).
+  -n,--line-number            Prefix each output line with its 1-based line number in the input stream.
+  -c,--count Excludes: --replace
+                              Print only the number of selected input lines; suppress normal line output.
+  -v,--invert-match Excludes: --only-matching --replace
+                              Select non-matching lines instead of matching lines.
+  -o,--only-matching Excludes: --invert-match --replace
+                              Print only the matching part of selected lines, one match per output line.
+  -q,--quiet Excludes: --replace
+                              Suppress normal output; exit immediately with status 0 on first selected line, 1 if none are selected.
+  -r,--replace TEXT Excludes: --count --invert-match --only-matching --quiet
+                              Enable replacement mode and substitute each match with REPLACEMENT (supports regex replacement syntax such as $1).
+  -p,--in-place Needs: --replace
+                              Write replacement results back to the input file in place; requires --replace and a FILE argument.
+  -d,--diff Needs: --replace  In replacement mode, print both original and replaced forms for each processed line in a diff-like format.
+  -x,--extended Needs: --regexp
+                              Use POSIX Extended Regular Expression (ERE) syntax for --regexp patterns.
+  --color TEXT:{auto,always,never}
+                              Control colorized output: auto (default), always, or never.

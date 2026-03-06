@@ -1,0 +1,41 @@
+Sort and benchmark long long integer datasets.
+Usage: ./build/sorter [OPTIONS]
+
+Options:
+  -h,--help                   Print this help message and exit
+[Option Group: Run control]
+  Options:
+    -m,--mode TEXT:{sort,verify,both} [sort] 
+                                Run mode: sort, verify, both.
+    -a,--algo,--algorithms,--algos TEXT:{quick,merge,heap,introsort,stdsort,stable,shell,insertion,selection,bubble,cocktail,comb,memhog,all} [{}]  ...
+                                Comma-separated algorithms: quick,merge,heap,introsort,stdsort,stable,shell,insertion,selection,bubble,cocktail,comb,memhog,all
+    -l,--list-algorithms,--list-algos
+                                List available algorithms and exit.
+[Option Group: Data source]
+  Options:
+    -n,--size,--random-size,--rand-size UINT:POSITIVE [10000]  Excludes: --no-random
+                                Number of random values to generate.
+    -i,--input,--input-file,--in TEXT
+                                Input file path (required with --no-random).
+    -r,--random-file,--rand-file TEXT Excludes: --no-random
+                                Path to write generated random input. Default: <runDir>/data_input.txt
+    -R,--random,--use-random,--generate Excludes: --no-random
+                                Force random input generation.
+    -N,--no-random,--input-only Needs: --input Excludes: --size --random-file --random
+                                Disable random generation and require --input.
+[Option Group: Output]
+  Options:
+    -o,--output,--output-file,--out TEXT
+                                Output file path; for multi-algo supports {algo} placeholder.
+    -O,--output-map,--out-map TEXT [{}]  ...
+                                Per-algorithm output override, repeatable: <algorithm>=<path>
+[Option Group: Benchmark]
+  Options:
+    -t,--time,--benchmark-time,--bench-time
+                                Enable timing benchmark.
+    -M,--memory,--benchmark-memory,--bench-memory,--bench-mem
+                                Enable RSS memory benchmark.
+    -s,--save-benchmark,--save-bench
+                                Save benchmark report to CSV.
+    -b,--benchmark-file,--bench-file TEXT Needs: --save-benchmark
+                                Benchmark output CSV path.
