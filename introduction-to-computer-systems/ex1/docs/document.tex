@@ -1,0 +1,129 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
+\renewcommand{\paragraph}[1]{
+    \refstepcounter{paragraph}
+    {\bfseries\theparagraph\quad#1}\par
+    \vspace{2pt}
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{minted}
+\setminted{
+    breaklines=true, fontsize=\small, frame=lines,
+    numbers=none, style=bw, tabsize=4
+}
+\usepackage{xparse}
+\NewDocumentCommand{\mil}{ O{text} m }{ %
+    \mintinline{#1}{#2} %
+}
+
+\usepackage{graphicx}
+\usepackage{siunitx}
+
+\begin{document}
+
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & 计算机系统基础 & \textit{Introduction to Computer Systems} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{实验环境安装与测试} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2026 年 3 月 28 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+NeoVim v0.11.6，Apple clang 21.0.0。
+
+\subsection{其他工具}
+
+\LaTeX{}。
+
+\section{实验目的}
+
+\begin{enumerate}
+    \item 掌握安装本实验的环境并以一简单程序 \mil{hello.c} 进行测试；
+    \item 熟悉掌握 \mil{gcc} 编译命令和 \mil{objdump} 反汇编命令。
+\end{enumerate}
+
+\section{实验内容}
+
+\subsection{环境安装}
+
+因为已经安装了 Xcode Command Line Tools，所以直接使用 \mil{gcc} 和 \mil{objdump} 进行测试。
+
+\subsection{使用 \mil{gcc} 完成简单 C 语言程序的编译和执行}
+
+准备简单 C 语言程序 \mil{hello.c}，源代码如下：
+
+\inputminted{c}{../src/hello.c}
+
+使用下列 gcc 命令将 hello.c 程序依次转换为相应的可执行文件。
+
+\begin{minted}{bash}
+gcc -E hello.c -o hello.i # 预处理
+gcc -S hello.i -o hello.s # 编译
+gcc -c hello.s -o hello.o # 汇编
+gcc hello.o -o hello # 链接
+gcc -O0 -g -no-pie -fno-pic hello.c -o hello2 # 直接编译
+\end{minted}
+
+分别执行可执行文件 \mil{hello} 和 \mil{hello2}，均输出 \mil{hello world!}。
+
+\subsection{使用 \mil{objdump} 命令实现反汇编}
+
+用 \mil{objdump} 命令对 \mil{hello.o} 和 \mil{hello} 反汇编，并保存到文本文件：
+
+\begin{minted}{bash}
+objdump -S hello.o > hello_o.asm
+objdump -S hello > hello.asm
+\end{minted}
+
+比较 \mil{hello.o} 和 \mil{hello} 的反汇编内容差异：
+
+\inputminted{text}{../res/hello_o.asm}
+
+\inputminted{text}{../res/hello.asm}
+
+用 \mil{objdump} 命令对 \mil{hello2} 反汇编：
+
+\begin{minted}{bash}
+objdump -S hello2 > hello2.asm
+\end{minted}
+
+比较 \mil{hello} 和 \mil{hello2} 的反汇编内容差异：
+
+\inputminted{text}{../res/hello2.asm}
+
+\section{结论}
+
+本实验完成了简单 C 语言程序的编译与执行流程，熟悉了从源代码到可执行文件的各个阶段，包括预处理、编译、汇编和链接。同时，利用 \mil{objdump} 工具对生成的目标文件和可执行文件进行了反汇编，深入理解了不同编译选项对生成代码的影响。实验中，对比了 \mil{hello} 和 \mil{hello2} 的反汇编结果，加深了对编译器工作原理和程序底层实现的理解。
+
+\end{document}
