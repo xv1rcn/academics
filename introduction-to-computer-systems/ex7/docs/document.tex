@@ -1,0 +1,215 @@
+\documentclass[12pt, a4paper]{academics}
+
+\academicsCourse{计算机系统基础}{Introduction to Computer Systems}
+\academicsReport{二进制炸弹拆弹实验}{2026 年 5 月 20 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.118.1，NeoVim v0.12.0，Apple clang 21.0.0。
+
+\subsection{其他工具}
+
+\LaTeX{}。
+
+\section{实验目的}
+
+\begin{enumerate}
+    \item 增强对程序机器级表示、汇编语言和调试器工具的理解；
+    \item 掌握逆向工程基本方法：反汇编分析、断点调试、数据流追踪；
+    \item 理解 x86 栈帧、函数调用、条件分支、递归、链表等底层实现机制。
+\end{enumerate}
+
+\section{实验内容}
+
+\subsection{炸弹程序概述与前期分析}
+
+二进制炸弹（binary bomb）是一个编译好的可执行程序，共包含 6 个常规阶段（phase\_1～phase\_6）和 1 个隐藏阶段（secret\_phase）。每个阶段要求输入特定字符串；若输入匹配则通过，否则炸弹爆炸（输出 \mintinline{text}{BOOM!!!}）。
+
+通过 \mintinline{text}{file} 命令确认程序格式：
+
+\begin{minted}{text}
+bomb: ELF 32-bit LSB executable, Intel 80386, not stripped
+\end{minted}
+
+使用 \mintinline{text}{objdump -d -M intel bomb} 反汇编程序，定位关键函数入口地址：
+
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+函数 & 地址 \\
+\hline
+\mintinline{text}{phase_1} & \mintinline{text}{0x08048b80} \\
+\hline
+\mintinline{text}{phase_2} & \mintinline{text}{0x08048ba4} \\
+\hline
+\mintinline{text}{explode_bomb} & \mintinline{text}{0x08049626} \\
+\hline
+\mintinline{text}{strings_not_equal} & \mintinline{text}{0x0804905f} \\
+\hline
+\end{tabular}
+\end{center}
+
+解析 ELF 文件的 \mintinline{text}{.rodata} 段（存放只读数据如字符串常量），并通过 \mintinline{text}{gdb} 的 \mintinline{text}{break} 命令在 \mintinline{text}{explode_bomb} 处设置断点，可在炸弹爆炸前捕获堆栈状态，推导拆弹密码。
+
+\subsection{Phase 1：字符串比较}
+
+该阶段调用 \mintinline{c}{strings_not_equal} 将用户输入与预设字符串逐字节比较。反汇编关键代码：
+
+\begin{minted}{asm}
+push ebp
+mov ebp, esp
+mov dword ptr [esp + 0x4], 0x8049918
+mov eax, dword ptr [ebp + 0x8]
+call strings_not_equal
+test eax, eax
+je 0x8048ba2
+call explode_bomb
+\end{minted}
+
+通过查询 \mintinline{text}{.rodata} 段地址 \mintinline{text}{0x8049918} 处的数据，提取预设字符串。
+
+\textbf{拆弹密码：}
+\begin{minted}{text}
+When I get angry, Mr. Bigglesworth gets upset.
+\end{minted}
+
+\subsection{Phase 2：循环与数组}
+
+该阶段读取 6 个整数到栈数组，循环验证后续每个数都比前一个数大 5：
+
+\[ \text{arr}[i] = \text{arr}[i-1] + 5, \quad i = 1, 2, \ldots, 5 \]
+
+\textbf{拆弹密码（示例，任意公差为5的等差数列）：}
+\begin{minted}{text}
+1 6 11 16 21 26
+\end{minted}
+
+\subsection{Phase 3：条件分支与Switch跳转表}
+
+程序读取两个整数；第一个数作为 switch 索引（0～7），每个分支预设一个目标值，第二个输入须与该分支的目标值相等。
+
+\textbf{合法密码映射表（第一个数 → 第二个数）：}
+
+\begin{center}
+\begin{tabular}{|cc|cc|cc|cc|}
+\hline
+0 & 967 & 1 & 147 & 2 & 662 & 3 & 549 \\
+\hline
+4 & 934 & 5 & 378 & 6 & 485 & 7 & 363 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{拆弹密码（任选其一）：}
+\begin{minted}{text}
+1 147
+\end{minted}
+
+\subsection{Phase 4：递归与阶乘}
+
+程序调用递归函数 \mintinline{c}{func4(n)}，实现阶乘运算。要求 \mintinline{c}{func4(n) = 3628800}。
+
+由于 $3628800 = 10!$，故输入为 \textbf{10}。
+
+第4阶段后可跟随额外字符串 \mintinline{text}{austinpowers} 来触发隐藏阶段。
+
+\textbf{拆弹密码：}
+\begin{minted}{text}
+10 austinpowers
+\end{minted}
+
+（仅输入 \mintinline{text}{10} 可通过本阶段；加后缀用于隐藏阶段触发。）
+
+\subsection{Phase 5：位操作与数组查表}
+
+该阶段要求输入长度为 6 的字符串。每个字符的低 4 位作为数组索引，查表获得值，累加后必须等于 44。
+
+\textbf{查表映射（低4位 → 值）：}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\mintinline{text}{0x0}~\mintinline{text}{0x7} & 2,10,6,1,12,16,9,3 & \mintinline{text}{0x8}~\mintinline{text}{0xF} & 4,7,14,5,11,8,15,13 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{拆弹密码（示例，低4位组合使和为44）：}
+\begin{minted}{text}
+001111
+\end{minted}
+
+\subsection{Phase 6：链表、插入排序与结构体}
+
+该阶段建立 10 个节点的链表。输入一个整数，将其作为头节点的 value 值，链表按该值进行降序插入排序，最后遍历至第 5 个节点，验证其 value 与输入值相等。
+
+\textbf{拆弹密码：}
+\begin{minted}{text}
+345
+\end{minted}
+
+\subsection{Secret Phase：隐藏阶段与二叉搜索树}
+
+通过全部 6 个阶段且第 4 关附带 \mintinline{text}{austinpowers} 后触发。程序调用二叉搜索树查找函数 \mintinline{c}{fun7}，要求返回值为 5。逆向推导得查找目标值为 47。
+
+\textbf{拆弹密码：}
+\begin{minted}{text}
+47
+\end{minted}
+
+\section{实验结果汇总}
+
+\begin{center}
+\begin{tabular}{|c|p{5cm}|c|}
+\hline
+\textbf{阶段} & \textbf{拆弹密码} & \textbf{知识点} \\
+\hline
+Phase 1 & \mintinline{text}{When I get angry, Mr. Bigglesworth gets upset.} & 字符串比较 \\
+\hline
+Phase 2 & \mintinline{text}{1 6 11 16 21 26} & 循环、数组 \\
+\hline
+Phase 3 & \mintinline{text}{1 147}（8组任选） & 条件分支、跳转表 \\
+\hline
+Phase 4 & \mintinline{text}{10 austinpowers} & 递归阶乘 \\
+\hline
+Phase 5 & \mintinline{text}{001111} & 位运算、查表 \\
+\hline
+Phase 6 & \mintinline{text}{345} & 链表、结构体、排序 \\
+\hline
+Secret & \mintinline{text}{47} & 二叉搜索树 \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{结论}
+
+本实验通过拆弹任务深入理解了程序的机器级表示与汇编执行过程。掌握了以下关键技能：
+
+\begin{enumerate}
+    \item 使用 \mintinline{text}{objdump} 反汇编二进制程序，定位函数入口与数据段；
+    \item 使用 \mintinline{text}{gdb} 设置断点、单步调试、查看寄存器与栈内容；
+    \item 逆向分析汇编代码，理解条件分支、循环、递归、链表等高级结构的底层实现；
+    \item 追踪数据流，推导隐含的约束条件，逐步缩小搜索空间，最终推导正确输入。
+\end{enumerate}
+
+通过本实验，深化了对 x86 栈帧、函数调用约定、地址寻址等计算机体系结构基础的认识，为后续学习编译原理、操作系统、安全性等领域打下坚实基础。
+
+\appendix
+\section{附录}
+
+\subsection{bomb.c}
+
+\inputminted{c}{../res/bomb.c}
+
+\end{document}

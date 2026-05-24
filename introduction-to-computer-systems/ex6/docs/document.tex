@@ -1,0 +1,182 @@
+\documentclass[12pt, a4paper]{academics}
+
+\academicsCourse{计算机系统基础}{Introduction to Computer Systems}
+\academicsReport{数据的存储}{2026 年 5 月 16 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.118.1，NeoVim v0.12.0，Apple clang 21.0.0。
+
+\subsection{其他工具}
+
+\LaTeX{}。
+
+\section{实验目的}
+
+\begin{enumerate}
+    \item 熟悉掌握数据的宽度与内存排列方式；
+    \item 巩固不同类型数据的机器数表示方法。
+\end{enumerate}
+
+\section{实验内容}
+
+\subsection{无符号 / 有符号类型比较测试}
+
+程序通过混合无符号和有符号整数进行比较，验证隐式类型转换规则。简短示例：
+
+\begin{minted}{c}
+unsigned int a = 1;
+unsigned short b = 1;
+char c = -1;
+int d;
+d = (a > c) ? 1 : 0;
+printf("%d\n", d);
+\end{minted}
+
+运行结果：
+\begin{minted}{text}
+0
+1
+\end{minted}
+
+分析与结论：
+
+\begin{enumerate}
+    \item \mintinline{text}{(a > c)?1:0} 结果为 0（假）：\mintinline{c}{unsigned int} 与 \mintinline{c}{char} 比较时，有符号的 \mintinline{c}{char -1} 隐式转换为无符号整数 \mintinline{text}{0xFFFFFFFF}，远大于 1，故结果为 0；
+    \item \mintinline{text}{(b > c)?1:0} 结果为 1（真）：\mintinline{c}{unsigned short} 与 \mintinline{c}{char} 比较时，两者都按整型提升规则转换，因此行为不同。
+\end{enumerate}
+
+\subsection{大小端判断共用体程序}
+
+通过共用体（\mintinline{c}{union}）在同一内存位置以不同类型解释数据，判断系统大小端模式。简短示例：
+
+\begin{minted}{c}
+union NUM { int a; char b; } num;
+num.a = 0x12345678;
+if (num.b == 0x78)
+    printf("Little Endian\n");
+else
+    printf("Big Endian\n");
+\end{minted}
+
+测试结果：本机采用 \textbf{小端存储方式（Little Endian）}
+
+说明：测试值 \mintinline{text}{0x12345678} 的最低字节 \mintinline{text}{0x78} 存放在低地址，符合小端规则（低字节存低地址、高字节存高地址）。
+
+\subsection{反汇编查看机器端序}
+
+使用 \mintinline{text}{objdump -S} 对编译后的二进制进行反汇编，观察 \mintinline{c}{mov} 指令的字节操作方式，可直观验证数据字节序。通过查看汇编中的内存访问模式，确认本机采用小端存储。
+
+\subsection{32 位数据多类型解析}
+
+已知数据 \(D = 0x32343538\)，起始地址 \mintinline{text}{0x0000F00C}，小端方式存放。
+
+\subsubsection{内存单元占用}
+
+占用 4 个字节单元：
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+地址 & 内容 \\
+\hline
+\mintinline{text}{0x0000F00C} & \mintinline{text}{0x38} \\
+\hline
+\mintinline{text}{0x0000F00D} & \mintinline{text}{0x35} \\
+\hline
+\mintinline{text}{0x0000F00E} & \mintinline{text}{0x34} \\
+\hline
+\mintinline{text}{0x0000F00F} & \mintinline{text}{0x32} \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{32 位无符号数}
+
+\[ D_{\text{unsigned}} = 0x32343538 = 838206776 \]
+
+\subsubsection{32 位补码有符号整数}
+
+最高位为 0，为正数，真值：\( D_{\text{signed}} = 838206776 \)
+
+\subsubsection{32 位 IEEE754 单精度浮点数}
+
+符号位 0，阶码 209，尾数对应的值约为 \( 1.135 \times 10^{24} \)
+
+\subsubsection{8421 BCD码}
+
+值：\mintinline{text}{32343538}
+
+\subsubsection{32 位 ASCII 字符串}
+
+小端字节顺序：\mintinline{text}{0x38}、\mintinline{text}{0x35}、\mintinline{text}{0x34}、\mintinline{text}{0x32}
+
+对应字符：\textbf{"8542"}
+
+\subsubsection{32 位 汉字国标码}
+
+\begin{itemize}
+    \item 第一个汉字国标码：\mintinline{text}{0x3234}
+    \item 第二个汉字国标码：\mintinline{text}{0x3538}
+\end{itemize}
+
+可按 GB2312 规则分别计算行号和列号。
+
+\subsubsection{(8) RGB 颜色分量}
+
+\begin{itemize}
+    \item $R = 0x32 = 50$
+    \item $G = 0x34 = 52$
+    \item $B = 0x35 = 53$
+\end{itemize}
+
+\subsection{各变量机器数（十六进制，32 位系统）}
+
+简短说明：以下各变量在 32 位机器上的十六进制内存表示。
+
+\begin{enumerate}
+    \item \mintinline{c}{int x = 32768}：机器数 \mintinline{text}{0x00008000}
+    \item \mintinline{c}{short y = 522}：机器数 \mintinline{text}{0x020A}
+    \item \mintinline{c}{unsigned z = 65530}：机器数 \mintinline{text}{0x0000FFFA}
+    \item \mintinline{c}{char c = '@'}：机器数 \mintinline{text}{0x40}
+    \item \mintinline{c}{float a = -1.1}：机器数 \mintinline{text}{0xBF8CCCCD}
+    \item \mintinline{c}{double b = 10.5}：机器数 \mintinline{text}{0x4025000000000000}
+\end{enumerate}
+
+\section{结论}
+
+本实验通过多个任务深入理解了数据在内存中的存储方式和机器数表示。掌握了无符号和有符号数的隐式转换规则，验证了本机的大小端存储方式，并能够将任意 32 位二进制数据按不同格式（整数、浮点、BCD 码、ASCII、汉字、颜色等）进行解析和转换。这对理解计算机系统中数据的底层表示至关重要。
+
+\appendix
+\section{附录}
+
+\subsection{task1.c}
+
+\inputminted{c}{../src/task1.c}
+
+\subsection{任务2：大小端判断程序}
+
+\subsubsection{task2\_1.c}
+
+\inputminted{c}{../src/task2_1.c}
+
+\subsubsection{task2\_2.c}
+
+\inputminted{c}{../src/task2_2.c}
+
+\subsection{task3.c}
+
+\inputminted{c}{../src/task3.c}
+
+\end{document}

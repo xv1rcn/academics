@@ -1,0 +1,162 @@
+\documentclass[12pt, a4paper]{academics}
+
+\academicsCourse{计算机系统基础}{Introduction to Computer Systems}
+\academicsReport{程序的编辑编译调试与运行}{2026 年 5 月 6 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.118.1，NeoVim v0.12.0，Apple clang 21.0.0。
+
+\subsection{其他工具}
+
+\LaTeX{}。
+
+\section{实验目的}
+
+熟悉开发环境，掌握多文件程序的编辑、编译、链接、反汇编与调试过程。
+
+\section{实验内容}
+
+\subsection{编写多文件源程序}
+
+程序由四个源文件组成：\mintinline{text}{main.c} 负责交互，\mintinline{text}{bubblesort.c} 负责排序，\mintinline{text}{add.c} 负责求和，\mintinline{text}{printarray.c} 负责打印数组。头文件用于声明函数接口，便于多文件编译。
+
+简短示例：
+\begin{minted}{c}
+#include "add.h"
+#include "bubblesort.h"
+#include "printarray.h"
+
+bubbleSort(a, 10);
+sum = add(a, 10);
+printArray(a, 10, "排序后数组为：");
+\end{minted}
+
+\subsection{编译、链接与运行}
+
+使用 \mintinline{text}{clang} 直接编译多文件生成可执行文件 \mintinline{text}{main}，然后运行程序：
+
+\begin{minted}{bash}
+cd ex5/src
+clang -std=c11 -O2 -Wall -Wextra -o main main.c bubblesort.c add.c printarray.c
+./main
+\end{minted}
+
+运行时先输入 10 个整数，再依次选择功能项。一次实际运行的输出如下：
+
+\begin{minted}{text}
+请输入 10 个整数：5 3 1 4 2 9 8 7 6 0
+1. 冒泡排序
+2. 求和
+3. 打印结果
+4. 退出
+请选择序号：1
+1. 冒泡排序
+2. 求和
+3. 打印结果
+4. 退出
+请选择序号：3
+原始数组为：    5     3     1     4     2     9     8     7     6     0
+排序后数组为：    0     1     2     3     4     5     6     7     8     9
+1. 冒泡排序
+2. 求和
+3. 打印结果
+4. 退出
+请选择序号：2
+数组求和结果为：   45
+1. 冒泡排序
+2. 求和
+3. 打印结果
+4. 退出
+请选择序号：4
+\end{minted}
+
+\subsection{objdump 反汇编}
+
+使用以下命令生成反汇编文件 \mintinline{text}{main.txt}：
+
+\begin{minted}{bash}
+objdump -S main > main.txt
+\end{minted}
+
+反汇编文件中可以直接看到 \mintinline{text}{main} 调用 \mintinline{text}{bubbleSort}、\mintinline{text}{add} 和 \mintinline{text}{printArray} 的位置，也可以看到动态链接入口。\mintinline{text}{printf} 对应的机器码不在用户程序正文里，而是在 \mintinline{text}{__TEXT,__stubs} 段中的跳转桩，例如：
+
+\begin{minted}{text}
+0000000100000880 <__stubs>:
+100000880: 90000030     adrp    x16, 0x100004000 <_scanf+0x100004000>
+100000884: f9400210     ldr     x16, [x16]
+100000888: d61f0200     br      x16
+10000088c: 90000030     adrp    x16, 0x100004000 <_scanf+0x100004000>
+100000890: f9400a10     ldr     x16, [x16, #0x10]
+100000894: d61f0200     br      x16
+\end{minted}
+
+这些桩代码负责跳转到动态库中的实际实现；在 \mintinline{text}{main.txt} 里还能看到 \mintinline{text}{main} 和 \mintinline{text}{printArray} 中对该桩的调用。
+
+\subsection{GDB 调试步骤}
+
+带调试信息编译：
+
+\begin{minted}{bash}
+clang -g -o main main.c bubblesort.c add.c printarray.c
+\end{minted}
+
+启动 gdb：
+
+\begin{minted}{bash}
+gdb main
+\end{minted}
+
+常用命令包括：设置断点 \mintinline{text}{b 行号}、运行 \mintinline{text}{run}、单步 \mintinline{text}{s}、查看寄存器 \mintinline{text}{info registers}。调试时可以在 \mintinline{text}{main} 里观察输入数组的变化，也可以在 \mintinline{text}{bubbleSort} 和 \mintinline{text}{printArray} 内查看参数与局部变量的值。
+
+\subsection{问题回答}
+
+\begin{enumerate}
+    \item 同一个源程序在不同机器上生成的可执行目标代码通常不会完全相同。首先，ISA 不同会直接导致机器指令不同，例如当前机器生成的是 arm64 Mach-O，而 x86 平台会生成不同的指令序列；其次，操作系统和目标文件格式不同，macOS 常见为 Mach-O，Linux 常见为 ELF，链接方式和动态库机制也不同；最后，编译器及其优化选项不同也会改变指令选择、寄存器分配和函数调用方式。
+    \item 可以找到，但要注意它通常不会以完整函数体的形式出现在可执行文件里。当前程序中 \mintinline{c}{printf} 的实际实现位于系统库中，\mintinline{text}{main.txt} 里看到的是 \mintinline{text}{__TEXT,__stubs} 段中的跳转桩，例如 \mintinline{text}{0x10000088c} 这样的地址就是 \mintinline{text}{main} 与 \mintinline{text}{printArray} 调用 \mintinline{c}{printf} 时经过的入口位置。
+    \item 源程序文件是面向人阅读的高级语言文本，可执行目标文件是面向机器执行的二进制文件。编译后，变量名、注释、空白、函数结构等高层信息都会被转换成机器指令、重定位信息和符号表；如果还经过链接，多个目标文件和系统库也会被合并，因此两者内容看起来完全不同。
+\end{enumerate}
+
+\section{结论}
+
+本实验完成了多文件程序的编写、编译、链接、反汇编与调试流程，理解了各源文件之间的协作关系，也认识到可执行文件与源代码在表现形式上的巨大差异。通过反汇编和调试，可以把高级语言中的函数调用、数组操作和菜单逻辑映射到具体的机器指令与地址，进一步加深了对程序执行过程的理解。
+
+\appendix
+\section{附录}
+
+\subsection{main.c}
+\inputminted{c}{../src/main.c}
+
+\subsection{add.h}
+\inputminted{c}{../src/add.h}
+
+\subsection{add.c}
+\inputminted{c}{../src/add.c}
+
+\subsection{bubblesort.h}
+\inputminted{c}{../src/bubblesort.h}
+
+\subsection{bubblesort.c}
+\inputminted{c}{../src/bubblesort.c}
+
+\subsection{printarray.h}
+\inputminted{c}{../src/printarray.h}
+
+\subsection{printarray.c}
+\inputminted{c}{../src/printarray.c}
+
+\subsection{main.txt}
+\inputminted{text}{../res/main.txt}
+
+\end{document}

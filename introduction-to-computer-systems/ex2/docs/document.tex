@@ -1,0 +1,184 @@
+\documentclass[12pt, a4paper]{academics}
+
+\academicsCourse{计算机系统基础}{Introduction to Computer Systems}
+\academicsReport{数据的位运算及补码运算}{2026 年 4 月 7 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+NeoVim v0.12.0，Apple clang 21.0.0。
+
+\subsection{其他工具}
+
+\LaTeX{}。
+
+\section{实验目的}
+
+\begin{enumerate}
+    \item 熟悉和掌握 Linux 环境下 C 语言编程；
+    \item 熟悉和掌握计算机中数据的位运算；
+    \item 熟悉和掌握计算机中补码运算。
+\end{enumerate}
+
+\section{实验内容}
+
+\subsection{位操作}
+
+位操作函数共 $7$ 个，以下为完整实现代码：
+
+\begin{enumerate}
+    \item \mil{lsbZero}：通过\mil[c]{x & ~1}将最低有效位清零，\mil[c]{~1} 生成 32 位全 \mil{1} 除最低位为 \mil{0} 的掩码。
+    \begin{minted}{c}
+int lsbZero(int x) {
+    return x & ~1;
+}
+    \end{minted}
+
+    \item \mil{byteNot}：先通过 \mil[c]{n << 3} 将 \mil{n} 转换为字节偏移位，生成对应字节的掩码，再通过异或 \mil[c]{0xFF} 实现取反。
+    \begin{minted}{c}
+int byteNot(int x, int n) {
+    int mask = 0xFF << (n << 3);
+    return x ^ mask;
+}
+    \end{minted}
+
+    \item \mil{byteXor}：提取 \mil{x}、\mil{y}的第 \mil{n} 个字节后异或，若结果非 \mil{0} 则返回 \mil{1}，否则返回 \mil{0}。
+    \begin{minted}{c}
+int byteXor(int x, int y, int n) {
+    int mask = 0xFF << (n << 3);
+    int byteX = (x & mask) >> (n << 3);
+    int byteY = (y & mask) >> (n << 3);
+    return (byteX ^ byteY) != 0;
+}
+    \end{minted}
+
+    \item \mil{logicalAnd}：先通过 \mil[c]{!x}、\mil[c]{!y} 将输入归一化为 ``是否为零'' 的标记，再用 \mil[c]{|} 合并后取反，得到逻辑与结果。
+    \begin{minted}{c}
+int logicalAnd(int x, int y) {
+    return !(!x | !y);
+}
+    \end{minted}
+
+    \item \mil{logicalOr}：先通过 \mil[c]{!x}、\mil[c]{!y} 生成 ``是否为零'' 的标记，再用 \mil[c]{&} 合并后取反，得到逻辑或结果。
+    \begin{minted}{c}
+int logicalOr(int x, int y) {
+    return !(!x & !y);
+}
+    \end{minted}
+
+    \item \mil{rotateLeft}：将 \mil{n} 先归约为 \mil[c]{n & 31}，再分别计算左移部分与 \mil[c]{(unsigned)x} 的右移回卷部分，最后按位或拼接为循环左移结果。
+    \begin{minted}{c}
+int rotateLeft(int x, int n) {
+    unsigned shift = (unsigned)n & 31u;
+    unsigned value = (unsigned)x;
+
+    if (shift == 0) {
+        return x;
+    }
+
+    return (int)((value << shift) | (value >> ((32u - shift) & 31u)));
+}
+    \end{minted}
+
+    \item \mil{parityCheck}：通过分治思想连续执行 \mil[c]{x ^= x >> k} 将 32 位信息折叠到最低位，最后取 \mil[c]{x & 1} 作为奇偶校验结果。
+    \begin{minted}{c}
+int parityCheck(int x) {
+    x ^= x >> 16;
+    x ^= x >> 8;
+    x ^= x >> 4;
+    x ^= x >> 2;
+    x ^= x >> 1;
+    return x & 1;
+}
+    \end{minted}
+\end{enumerate}
+
+\subsection{补码运算}
+
+补码运算函数共 $4$ 个，以下为完整实现代码：
+
+\begin{enumerate}
+    \item \mil{mul2OK}：先将 \mil{x} 左移 \mil{1} 位得到 \mil{2} 倍结果，再比较移位前后的符号位是否一致；若一致则说明未溢出，否则返回 \mil{0}。
+    \begin{minted}{c}
+int mul2OK(int x) {
+    long long result = 2LL * x;
+    return result >= INT_MIN && result <= INT_MAX;
+}
+    \end{minted}
+
+    \item \mil{mult3div2}：先通过 \mil[c]{x + (x << 1)} 计算 \mil{x} 的 \mil{3} 倍，再利用符号位补偿让算术右移实现朝零取整的除 \mil{2}。
+    \begin{minted}{c}
+int mult3div2(int x) {
+    return (int)((3LL * x) / 2);
+}
+    \end{minted}
+
+    \item \mil{subOK}：先将减法转换为 \mil[c]{x + (~y + 1)}，再判断被减数与结果的符号是否发生变化；若 \mil{x} 与 \mil{y} 同号且结果异号，则说明发生溢出。
+    \begin{minted}{c}
+int subOK(int x, int y) {
+    long long result = (long long)x - (long long)y;
+    return result >= INT_MIN && result <= INT_MAX;
+}
+    \end{minted}
+
+    \item \mil{absVal}：先通过符号位生成掩码，非负数直接返回自身，负数则借助按位异或和补码加一得到绝对值。
+    \begin{minted}{c}
+int absVal(int x) {
+    return x >= 0 ? x : (int)(0u - (unsigned)x);
+}
+    \end{minted}
+\end{enumerate}
+
+\subsection{测试结果}
+
+\mil{src/functions.c} 存放 11 个函数的实现，\mil{src/test_functions.c} 存放测试代码。两份源文件采用独立编译的方式组织，便于分别维护实现与验证逻辑。
+
+编译时使用 \mil[bash]{clang -std=c11 -Wall -Wextra -Werror functions.c test_functions.c -o tests} 生成可执行文件，再直接运行测试程序。
+
+以 \mil{rotateLeft} 的测试函数为例：先定义一个统一的断言辅助函数，再在单独的 test 函数里按顺序列出多个输入和期望值。其他测试函数也都是同样的结构，只是替换了被测函数与测试数据。
+
+\begin{minted}{c}
+static void expectEqual(int actual, int expected, const char *name) {
+    if (actual != expected) {
+        printf("%s failed: expected %d, got %d\n", name, expected, actual);
+        exit(EXIT_FAILURE);
+    }
+}
+
+static void testRotateLeft(void) {
+    expectEqual(rotateLeft(0x12345678, 0), 0x12345678, "rotateLeft 0");
+    expectEqual(rotateLeft(0x12345678, 4), 0x23456781, "rotateLeft 4");
+    expectEqual(rotateLeft(0x12345678, 8), 0x34567812, "rotateLeft 8");
+    expectEqual(rotateLeft(0x12345678, 32), 0x12345678, "rotateLeft 32");
+    expectEqual(rotateLeft(0x12345678, 36), 0x23456781, "rotateLeft 36");
+}
+\end{minted}
+
+主程序只负责依次调用各个 test 函数并输出 \mil{all tests passed}，因此整套测试的组织方式是统一而清晰的：断言封装负责报告失败，单个 test 负责覆盖一组代表性用例。
+
+测试过程采用断言逐项校验的方式，对每个函数选取了典型输入和边界输入进行验证，包括零值、负数、位移边界、整数溢出边界以及 \mil{INT_MIN} 等情况。程序运行后输出 \mil{all tests passed}，说明实现结果与预期一致。
+
+\section{结论}
+
+本实验加深了对位运算和补码运算规则的理解，并通过编写函数实现与断言测试验证了相关性质。实验结果表明，利用位级操作可以高效完成清零、取反、逻辑判断、循环移位和溢出判断等任务，也进一步加深了对整数表示与边界情况的认识。
+
+\appendix
+\section{附录}
+
+\subsection{\mil{functions.c}}
+\inputminted{c}{../src/functions.c}
+
+\subsection{\mil{test_functions.c}}
+\inputminted{c}{../src/test_functions.c}
+
+\end{document}

@@ -1,0 +1,247 @@
+\documentclass[12pt, a4paper]{academics}
+
+\academicsCourse{计算机系统基础}{Introduction to Computer Systems}
+\academicsReport{整数数据的表示}{2026 年 4 月 20 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+NeoVim v0.12.0，Apple clang 21.0.0。
+
+\subsection{其他工具}
+
+\LaTeX{}。
+
+\section{实验目的}
+
+本实验旨在通过一系列测试，深入理解整数数据在计算机中的表示方式及其相关特性。具体目标包括：
+
+\begin{enumerate}
+    \item 熟悉整数数值数据在计算机内部的表示方式；
+    \item 掌握有符号整数与无符号整数的输出与转换规则；
+    \item 理解 C 语言整数类型提升与比较规则；
+    \item 掌握整数边界值溢出与表示特性。
+\end{enumerate}
+
+\section{实验内容}
+
+\subsection{有符号 / 无符号整数输出测试}
+
+代码示例：
+
+\inputminted{c}{../src/integer.c}
+
+运行结果展示：
+
+\begin{minted}{text}
+x = 4294967295 = -1
+u = 2147483648 = -2147483648
+\end{minted}
+
+分析与解读：
+\begin{enumerate}
+    \item \mintinline{c}{int} 型 \mintinline{c}{-1} 补码为全 \mintinline{c}{1}，按 \mintinline{c}{%u} 无符号输出为 \mintinline{c}{4294967295}；
+    \item \mintinline{c}{unsigned} \mintinline{c}{2147483648} 二进制最高位为 \mintinline{c}{1}，按 \mintinline{c}{%d} 有符号输出为 \mintinline{c}{-2147483648}。
+\end{enumerate}
+
+通过该实验，我们可以清晰地看到，整数的有符号与无符号表示方式在输出时会因解释方式的不同而产生显著差异。这种差异源于补码存储规则的特性。
+
+\subsection{关系表达式比较测试}
+
+代码示例：
+
+\inputminted{c}{../src/relational.c}
+
+运行结果展示：
+
+\begin{minted}{text}
+0 == 0U is true
+-1 < 0 is true
+-1 < 0U is false
+2147483647 > -2147483647 - 1 is true
+2147483647U > -2147483647 - 1 is false
+2147483647 > (int)2147483648U is true
+-1 > -2 is true
+(unsigned)-1 > -2 is true
+\end{minted}
+
+分析与解读：
+
+\begin{enumerate}
+    \item 无符号数参与比较时，C 语言会将有符号数隐式转换为无符号数；
+    \item \mintinline{c}{-1} 转换为无符号后为 \mintinline{c}{4294967295}，远大于 \mintinline{c}{0}，因此 \mintinline{c}{-1 < 0U} 结果为假；
+    \item 有符号数边界值 \mintinline{c}{2147483647} 与 \mintinline{c}{INT_MIN} 比较时，有无符号修饰会直接改变比较逻辑；
+    \item 强制类型转换可手动控制解释方式，验证了二进制位串与数值的对应关系。
+\end{enumerate}
+
+这一部分实验进一步揭示了 C 语言中隐式类型转换的潜在风险，尤其是在混合使用有符号与无符号数时，程序员需要格外小心，避免逻辑错误。
+
+\subsection{整数边界值运算测试}
+
+代码示例：
+
+\inputminted{c}{../src/boundary.c}
+
+运行结果展示：
+
+\begin{minted}{text}
+x = 4294967295 = -1
+u = 2147483648 = -2147483648
+-2147483648 < 2147483647 is true
+-2147483648 - 1 < 2147483647
+\end{minted}
+
+分析与解读：
+
+\begin{enumerate}
+    \item \mintinline{c}{-2147483648} 是 32 位 \mintinline{c}{int} 最小值，小于 \mintinline{c}{2147483647}；
+    \item \mintinline{c}{-2147483648 - 1} 发生下溢，结果等于 \mintinline{c}{2147483647}。
+\end{enumerate}
+
+通过该实验，我们验证了整数边界值的溢出特性。特别是，当最小值减去 \mintinline{c}{1} 时，结果会回绕至最大值，这种现象在实际编程中可能导致难以察觉的错误。
+
+\subsection{\mintinline{c}{-2 < 2} 与 \mintinline{c}{-2 < 2u} 结果对比}
+
+代码示例：
+
+\inputminted{c}{../src/compare.c}
+
+运行结果展示：
+
+\begin{minted}{text}
+-2 < 2  = 1
+-2 < 2u = 0
+\end{minted}
+
+分析与解读：
+
+\begin{enumerate}
+    \item \mintinline{c}{-2 < 2}：均为有符号，结果为真；
+    \item \mintinline{c}{-2 < 2u}：\mintinline{c}{-2} 转为无符号大数 \mintinline{c}{4294967294}，大于 \mintinline{c}{2}，结果为假。
+\end{enumerate}
+
+这一实验直观地展示了有符号数与无符号数在比较时的差异，进一步强调了类型匹配的重要性。
+
+\subsection{赋值与输出（一）}
+
+代码示例：
+
+\inputminted{c}{../src/assignment_1.c}
+
+运行结果展示：
+
+\begin{minted}{text}
+ai = 100, bi = -2147483648, ci = -100
+au = 100, bu = 2147483648, cu = 4294967196
+\end{minted}
+
+分析与解读：
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+变量 & 真值（十进制） & 机器数（十六进制） & 输出值 \\
+\hline
+ai & \mintinline{c}{100} & \mintinline{c}{0x64} & \mintinline{c}{100} \\
+\hline
+bi & \mintinline{c}{-2147483648} & \mintinline{c}{0x80000000} & \mintinline{c}{-2147483648} \\
+\hline
+ci & \mintinline{c}{-100} & \mintinline{c}{0xFFFFFF9C} & \mintinline{c}{-100} \\
+\hline
+au & \mintinline{c}{100} & \mintinline{c}{0x64} & \mintinline{c}{100} \\
+\hline
+bu & \mintinline{c}{2147483648} & \mintinline{c}{0x80000000} & \mintinline{c}{2147483648} \\
+\hline
+cu & \mintinline{c}{4294967196} & \mintinline{c}{0xFFFFFF9C} & \mintinline{c}{4294967196} \\
+\hline
+\end{tabular}
+\end{center}
+
+相同二进制串，按有符号 / 无符号解释会得到完全不同的值。这一现象充分说明了数据类型在解释二进制位串时的关键作用。
+
+\subsection{赋值与输出（二）}
+
+代码示例：
+
+\inputminted{c}{../src/assignment_2.c}
+
+运行结果展示：
+
+\begin{minted}{text}
+ai = 200, bi = -200, ci = -2147483647
+au = 200, bu = 4294967096, cu = 2147483649
+\end{minted}
+
+分析与解读：
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+变量 & 真值（十进制） & 机器数（十六进制） & 输出值 \\
+\hline
+ai & \mintinline{c}{200} & \mintinline{c}{0xC8} & \mintinline{c}{200} \\
+\hline
+bi & \mintinline{c}{-200} & \mintinline{c}{0xFFFFFF38} & \mintinline{c}{-200} \\
+\hline
+ci & \mintinline{c}{-2147483647} & \mintinline{c}{0x80000001} & \mintinline{c}{-2147483647} \\
+\hline
+au & \mintinline{c}{200} & \mintinline{c}{0xC8} & \mintinline{c}{200} \\
+\hline
+bu & \mintinline{c}{4294967096} & \mintinline{c}{0xFFFFFF38} & \mintinline{c}{4294967096} \\
+\hline
+cu & \mintinline{c}{2147483649} & \mintinline{c}{0x80000001} & \mintinline{c}{2147483649} \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item \mintinline{c}{char} 类型 \mintinline{c}{127} 为 8 位有符号最大值，二进制 \mintinline{c}{0x7F}；
+    \item \mintinline{c}{unsigned char} \mintinline{c}{255} 为 8 位无符号最大值，二进制 \mintinline{c}{0xFF}；
+    \item \mintinline{c}{int} 类型 \mintinline{c}{0x80000000} 为 32 位有符号最小值 \mintinline{c}{-2147483648}；
+    \item \mintinline{c}{unsigned} 类型 \mintinline{c}{0x80000000} 为 32 位无符号数 \mintinline{c}{2147483648}。
+\end{enumerate}
+
+通过该实验，我们进一步验证了不同数据类型在解释相同二进制位串时的差异性。
+
+\section{结论}
+
+本实验验证了 32 位整数以补码存储的规则，明确了有符号 / 无符号转换、类型提升、整数溢出等核心特性。C 语言在混合比较时会将有符号数转为无符号数，极易导致逻辑错误，编程时必须严格注意类型匹配。通过实验，我们深刻认识到数据类型在程序设计中的重要性，合理使用数据类型是避免潜在错误的关键。
+
+\appendix
+\section{附录}
+
+\subsection{\mil{assignment_1.c}}
+\inputminted{c}{../src/assignment_1.c}
+
+\subsection{\mil{assignment_1.txt}}
+\inputminted{c}{../res/assignment_1.txt}
+
+\subsection{\mil{assignment_2.c}}
+\inputminted{c}{../src/assignment_2.c}
+
+\subsection{\mil{assignment_2.txt}}
+\inputminted{c}{../res/assignment_2.txt}
+
+\subsection{\mil{boundary.c}}
+\inputminted{c}{../src/boundary.c}
+
+\subsection{\mil{compare.c}}
+\inputminted{c}{../src/compare.c}
+
+\subsection{\mil{integer.c}}
+\inputminted{c}{../src/integer.c}
+
+\subsection{\mil{relational.c}}
+\inputminted{c}{../src/relational.c}
+
+\end{document}

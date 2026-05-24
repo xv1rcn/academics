@@ -1,0 +1,212 @@
+\documentclass[12pt, a4paper]{academics}
+
+\academicsCourse{计算机系统基础}{Introduction to Computer Systems}
+\academicsReport{浮点数的表示}{2026 年 4 月 27 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.118.1，NeoVim v0.12.0，Apple clang 21.0.0。
+
+\subsection{其他工具}
+
+\LaTeX{}。
+
+\section{实验目的}
+
+\begin{enumerate}
+    \item 熟悉浮点数值在计算机内部的表示方式；
+    \item 掌握浮点数与整型之间的转换和比较现象；
+    \item 认识正无穷、负无穷、NaN、\mintinline{c}{+0}、\mintinline{c}{-0} 和非规格化数的位级特征；
+    \item 完成 \mintinline{c}{fpower2} 函数的按位实现。
+\end{enumerate}
+
+\section{实验内容}
+
+\subsection{浮点数精度实例测试}
+
+\begin{minted}{c}
+float data[] = {61.419997f,61.419998f,61.419999f,61.42f,61.420001f};
+for (int i = 0; i < 5; i++)
+    printf("The number is:%.6f\\n", data[i]);
+\end{minted}
+
+运行结果：
+\begin{minted}{text}
+The number is:61.419998
+The number is:61.419998
+The number is:61.419998
+The number is:61.420000
+The number is:61.420002
+bits: 0x4279a6e6 0x4279a6e6 0x4279a6e6 0x4279a700 0x4279a70c
+\end{minted}
+
+分析与解读：
+\begin{enumerate}
+    \item 单精度浮点数尾数（含隐含位）约 24 位有效二进制位，因此只能表示有限的二进制分数；十进制小数通常不能精确表示为有限二进制小数，造成上面相近十进制常数被映射到相同或相邻的浮点表示。
+    \item 输出差异来自四舍五入与二进制近似，查看二进制（或十六进制机器数）可直观了解差别。
+\end{enumerate}
+
+实验过程中，在源代码中依次定义 \mintinline{c}{61.419997f}、\mintinline{c}{61.419998f}、\mintinline{c}{61.419999f}、\mintinline{c}{61.42f}、\mintinline{c}{61.420001f}，并使用 \mintinline{c}{printf("%f", ...)} 输出。观察结果可以发现，前 3 个常量在单精度下几乎落到同一个邻近值上，而后两个值则显示出可见的舍入差异，这与浮点表示的有限精度完全一致。
+
+\subsection{浮点与整型关系表达式永真性判断}
+
+\begin{minted}{c}
+int i = (1<<24);
+printf("i=%d, (int)(float)i=%d\\n", i, (int)((float)i));
+\end{minted}
+
+程序运行给出结论（排除 NaN 与无穷）：
+\begin{itemize}
+    \item \mintinline{c}{i == (int)(float)i}：不是永真（当 \mintinline{c}{i} 超过 float 的精度范围时会失真）。
+示例运行输出（在当前机器上使用默认 64 位编译并运行，输出如下）：
+    \item \mintinline{c}{i == (int)(double)i}：对 32 位 \mintinline{c}{int} 在 IEEE-754 双精度下为真（double 精度足以精确表示所有 32 位整数）。
+    \item \mintinline{c}{f == (float)(double)f}：在非 NaN 情况下一般为真（\mintinline{c}{float -> double -> float} 保持原值）。
+    \item \mintinline{c}{f == -(-f)}：在非 NaN 情况下一般为真（双重取负应恢复原值，包括 \mintinline{c}{+0} 和 \mintinline{c}{-0}）。
+\end{itemize}
+结合推导可知：第 3 条通常成立，因为双精度的有效尾数足以表示 32 位整数；第 4 条通常成立，因为先提升到 double 再降回 float 不会改变原本能表示的 float 值；第 6 条在非 NaN 情况下也应成立；第 1、2、5、7 条都可能因精度损失、截断或舍入而失败。
+
+\subsection{浮点数特殊值调试实验}
+
+\begin{minted}{c}
+float finf = 5e38f; printf("%f\n", finf);
+union { unsigned u; float f; } t; t.f = finf;
+printf("finf 0x%08x\n", t.u);
+\end{minted}
+
+运行输出：
+\begin{minted}{text}
+inf inf inf
+-inf -inf -inf
+5.000000 0.100000 
+-5.000000 -0.100000
+0.00000000000000000000000000000000000000000000000000
+-0.00000000000000000000000000000000000000000000000000
+0.000000 -0.000000
+nan nan
+inf 
+finf1 0x7f800000
+finf2 0x7f800000
+finf3 0x7f800000
+fninf1 0xff800000
+fninf2 0xff800000
+fninf3 0xff800000
+fzero 0x00000000
+fnzero 0x80000000
+fnormal1 0x40a00000
+fnormal2 0x3dcccccd
+fnnormal1 0xc0a00000
+fnnormal2 0xbdcccccd
+ffrac 0x000116c2
+fnfrac 0x800116c2
+fnan1 0x7fc00000
+fnan2 0xffc00000
+finf4 0x7f800000
+\end{minted}
+
+对应机理如下：\mintinline{c}{4e38f}、\mintinline{c}{5e38f}、\mintinline{c}{6e38f} 都超过单精度可表示范围，因此都被舍入为正无穷大；相应负数变为负无穷大。\mintinline{c}{0.1f} 和 \mintinline{c}{-0.1f} 只能近似表示，打印到 20 位小数时可以看出尾部误差。\mintinline{c}{1e-40f} 落入非规格化数范围，因此其机器数指数全 0、尾数非 0；\mintinline{c}{finf1 + fninf1} 形成 \mintinline{c}{NaN}，再取负号仍是 \mintinline{c}{NaN}。
+
+\subsection{实验填表}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+变量 & 机器数（十六进制表示） & 输出值 \\
+\hline
+finf1 & \mintinline{c}{0x7f800000} & \mintinline{c}{inf} \\
+\hline
+finf2 & \mintinline{c}{0x7f800000} & \mintinline{c}{inf} \\
+\hline
+finf3 & \mintinline{c}{0x7f800000} & \mintinline{c}{inf} \\
+\hline
+fninf1 & \mintinline{c}{0xff800000} & \mintinline{c}{-inf} \\
+\hline
+fninf2 & \mintinline{c}{0xff800000} & \mintinline{c}{-inf} \\
+\hline
+fninf3 & \mintinline{c}{0xff800000} & \mintinline{c}{-inf} \\
+\hline
+fzero & \mintinline{c}{0x00000000} & \mintinline{c}{0.000000} \\
+\hline
+fnzero & \mintinline{c}{0x80000000} & \mintinline{c}{-0.000000} \\
+\hline
+fnormal1 & \mintinline{c}{0x40a00000} & \mintinline{c}{5.000000} \\
+\hline
+fnormal2 & \mintinline{c}{0x3dcccccd} & \mintinline{c}{0.100000} \\
+\hline
+fnnormal1 & \mintinline{c}{0xc0a00000} & \mintinline{c}{-5.000000} \\
+\hline
+fnnormal2 & \mintinline{c}{0xbdcccccd} & \mintinline{c}{-0.100000} \\
+\hline
+ffrac & \mintinline{c}{0x000116c2} & \mintinline{c}{0.000000} \\
+\hline
+fnfrac & \mintinline{c}{0x800116c2} & \mintinline{c}{-0.000000} \\
+\hline
+fnan1 & \mintinline{c}{0x7fc00000} & \mintinline{c}{nan} \\
+\hline
+fnan2 & \mintinline{c}{0xffc00000} & \mintinline{c}{nan} \\
+\hline
+finf4 & \mintinline{c}{0x7f800000} & \mintinline{c}{inf} \\
+\hline
+\end{tabular}
+\end{center}
+
+表中 \mintinline{c}{ffrac} 和 \mintinline{c}{fnfrac} 的数值依赖编译器与运行平台对非规格化数的处理，但在 IEEE-754 单精度下，\mintinline{c}{1e-40f} 一般会落在非规格化区间，十六进制通常接近 \mintinline{c}{0x000116c2} 一类的小尾数形式。
+
+\subsection{实现 \mintinline{c}{fpower2} 函数}
+
+函数说明：计算 $2^{x}$ 的单精度 \mintinline{c}{float} 表示（按位构造）。
+
+\inputminted{c}{../src/fpower2.c}
+
+\begin{itemize}
+    \item 当 $x<-149$ 时下溢，返回 0.0；
+    \item 当 $-149\le x \le -127$ 时返回非规格化数，尾数按 $2^{x+149}$ 左移构造；
+    \item 当 $-126\le x \le 127$ 时返回规格化数，阶码为 $x+127$，尾数为 0；
+    \item 当 $x>127$ 时返回 +∞（阶码全 1，尾数为 0）。
+\end{itemize}
+
+结合 IEEE-754 编码规则可知，单精度浮点数由 1 位符号位、8 位阶码和 23 位尾数组成。对于 $2^x$ 而言，数值本身没有尾数，因此规格化结果的尾数部分为 0；当阶码不足以编码时，数值会进入非规格化区间；当指数过大时则直接进入无穷大。实现时采用按位拼接后再通过 \mintinline{c}{u2f} 转换，可以避免依赖运行时的浮点计算过程。
+
+\subsection{实验步骤与说明}
+
+按照实验要求，完成过程可概括为以下几步：
+
+\begin{enumerate}
+        \item 编辑源程序，分别完成精度测试、关系表达式测试、特殊值测试和 \mintinline{c}{fpower2} 实现；
+        \item 使用 \mintinline{bash}{gcc -g -o test4_3 test4_3.c} 或 \mintinline{bash}{clang -g -o test4_3 test4_3.c} 编译；
+        \item 运行程序并截图保存输出结果；
+        \item 用 \mintinline{bash}{objdump -S test4_3 > test4_3.txt} 反汇编并分析机器码；
+        \item 用 \mintinline{bash}{gdb test4_3} 进行断点调试、查看寄存器和栈帧；
+        \item 根据实验环境填写机器数表格与调试记录。
+\end{enumerate}
+
+\section{结论}
+
+本实验通过浮点数精度测试、浮点与整型关系判断、特殊值观察和 \mintinline{c}{fpower2} 函数实现，系统验证了 IEEE-754 单精度浮点数的表示规律。实验表明，十进制小数通常无法精确转化为二进制浮点数，浮点与整型混合运算时需要特别关注隐式转换和精度损失；同时，正无穷、负无穷、NaN 和非规格化数都能从机器数位型上直接识别。通过按位构造 \mintinline{c}{fpower2}，进一步加深了对阶码、尾数与边界条件的理解。
+
+\appendix
+\section{附录}
+
+\subsection{\mil{precision.c}}
+\inputminted{c}{../src/precision.c}
+
+\subsection{\mil{relations.c}}
+\inputminted{c}{../src/relations.c}
+
+\subsection{\mil{specials.c}}
+\inputminted{c}{../src/specials.c}
+
+\subsection{\mil{fpower2.c}}
+\inputminted{c}{../src/fpower2.c}
+
+\end{document}
