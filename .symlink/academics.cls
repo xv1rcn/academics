@@ -65,8 +65,8 @@
 }
 
 \RequirePackage{xparse}
-\NewDocumentCommand{\mil}{ O{text} m }{%
-    \mintinline{#1}{#2}%
+\NewDocumentCommand{\mil}{ O{text} }{%
+    \mintinline{#1}%
 }
 
 % ---- boxes ----
