@@ -108,7 +108,7 @@ Visual Studio Code 1.117.0，NeoVim v0.12.0，openjdk 21.0.10。
 \subsection{第 3 题}
 
 \paragraph{题目描述} {
-    手机系统中，蓝牙适配器只支持一个。因此在整个软件系统生命期内，只允许创建一个对象，不允许创建多个这样的对象（创建多个像蓝牙适配器对象是没有意义的）。如何确保一个类的对象只允许创建一个呢？通常程序员是通过 \mil[java]{new} 的方式创建类的对象的。请你运用面向对象的知识，设计 \mil{BlueToothAdpater} 类的 Java 代码的结构。不考虑蓝牙的功能，只考虑该类的其它内部设计，目的是：使得程序员通过 \mil[java]{new} 的方式，不能够创建 \mil{BlueToothAdpater} 类的多个对象。 请思考：该 \mil{BlueToothAdpater} 类应该怎样设计，才能使得程序员无法通过 \mil[java]{new} 的方式创建该类的多个对象？
+    手机系统中，蓝牙适配器只支持一个。因此在整个软件系统生命期内，只允许创建一个对象，不允许创建多个这样的对象（创建多个像蓝牙适配器对象是没有意义的）。如何确保一个类的对象只允许创建一个呢？通常程序员是通过 \mil[java]{new} 的方式创建类的对象的。请你运用面向对象的知识，设计 \mil{BluetoothAdapter} 类的 Java 代码的结构。不考虑蓝牙的功能，只考虑该类的其它内部设计，目的是：使得程序员通过 \mil[java]{new} 的方式，不能够创建 \mil{BluetoothAdapter} 类的多个对象。 请思考：该 \mil{BluetoothAdapter} 类应该怎样设计，才能使得程序员无法通过 \mil[java]{new} 的方式创建该类的多个对象？
 }
 
 \paragraph{程序实现} {
@@ -266,11 +266,5 @@ Visual Studio Code 1.117.0，NeoVim v0.12.0，openjdk 21.0.10。
 \paragraph{运行结果} {
     \inputminted{text}{../res/P11.out}
 }
-
-\appendix
-\section{附录}
-
-\subsection{\mil{mjr.py}}
-\inputminted{python}{../mjr.py}
 
 \end{document}
