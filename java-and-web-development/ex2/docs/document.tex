@@ -1,0 +1,276 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\paragraph}[1]{
+    \par{\bfseries#1}\quad
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{dingbat}
+\usepackage{minted}
+\setminted{
+    breakanywhere, breaklines, breakautoindent=false,
+    breaksymbolindentleft=0pt, breaksymbolindentright=0pt,
+    breaksymbolleft=\raisebox{0.8ex}{\small\reflectbox{\carriagereturn}},
+    breaksymbolright=\small\carriagereturn,
+    breaksymbolsepleft=0pt, breaksymbolsepright=0pt,
+    escapeinside=||, fontsize=\footnotesize,
+    frame=single, framesep=1em, mathescape, style=bw, tabsize=4
+}
+\usepackage{xparse}
+\NewDocumentCommand{\mil}{ O{text} m }{ %
+    \mintinline{#1}{#2} %
+}
+
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage{tikz}
+
+\begin{document}
+
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & Java 与 Web 开发 & \textit{Java and Web Development} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{实验二} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2026 年 3 月 23 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.117.0，NeoVim v0.12.0，openjdk 21.0.10。
+
+\subsection{其他工具}
+
+\LaTeX{}，\mil{mjr.py}。
+
+\section{实验内容}
+
+\subsection{第 1 题}
+
+\paragraph{题目描述} {
+    复数由实部与虚部两部分组成，如：$3+2i$。假设复数的实部与虚部都是 \mil[java]{double} 类型。两个复数可以进行相加、减、乘运算。可以按：$3.2+2.6i$ 或 $3.2-1.5i$ 或 $0.5i$ 或 $1.5$ 格式转换成字符串格式。复数是一个常对象，即：进行运算时不影响原来的两个复数对象。请按以上需求，用 Java 面向对象的知识，进行该 Java 代码的结构设计。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Complex.java]{java}{../src/P01/Complex.java}
+    \inputminted[label=Main.java]{java}{../src/P01/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P01.out}
+}
+
+\subsection{第 2 题}
+
+\paragraph{题目描述} {
+    需求：可以按任何支付方式进行一定数额的支付。对任何的支持方式，可进行正确的支付。如：现金支付、信用卡支付、代金券支付、微信方式支付、支付宝方式支付...。运用 Java 面向对象的知识，遵守 ``开——闭原则''，针对这一个软件的需求，设计一个 Java 的软件代码结构。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=PayResult.java]{java}{../src/P02/PayResult.java}
+    \inputminted[label=Payment.java]{java}{../src/P02/Payment.java}
+    \inputminted[label=CashPayment.java]{java}{../src/P02/CashPayment.java}
+    \inputminted[label=WechatPayment.java]{java}{../src/P02/WechatPayment.java}
+    \inputminted[label=Main.java]{java}{../src/P02/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P02.out}
+}
+
+\subsection{第 3 题}
+
+\paragraph{题目描述} {
+    手机系统中，蓝牙适配器只支持一个。因此在整个软件系统生命期内，只允许创建一个对象，不允许创建多个这样的对象（创建多个像蓝牙适配器对象是没有意义的）。如何确保一个类的对象只允许创建一个呢？通常程序员是通过 \mil[java]{new} 的方式创建类的对象的。请你运用面向对象的知识，设计 \mil{BlueToothAdpater} 类的 Java 代码的结构。不考虑蓝牙的功能，只考虑该类的其它内部设计，目的是：使得程序员通过 \mil[java]{new} 的方式，不能够创建 \mil{BlueToothAdpater} 类的多个对象。 请思考：该 \mil{BlueToothAdpater} 类应该怎样设计，才能使得程序员无法通过 \mil[java]{new} 的方式创建该类的多个对象？
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=BluetoothAdapter.java]{java}{../src/P03/BluetoothAdapter.java}
+    \inputminted[label=Main.java]{java}{../src/P03/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P03.out}
+}
+
+\subsection{第 4 题}
+
+\paragraph{题目描述} {
+    定义一个矩形类 \mil{Rectangle}，包含私有属性 \mil{width}（宽）和 \mil{height}（高）。提供构造方法初始化这两个属性，以及公共方法计算矩形的面积和周长。要求对属性进行封装，通过 \mil{getter} / \mil{setter} 访问和修改，并在设置宽度和高度时检查必须为正数（若为负数则设为默认值 $1$）。要求：类名：\mil{Rectangle}；属性：\mil{width}（\mil[java]{double}）、\mil{height}（\mil[java]{double}）；方法：\mil[java]{getArea()} 返回面积，\mil[java]{getPerimeter()} 返回周长，以及相应的 \mil{getter} / \mil{setter}。编写测试代码，创建一个矩形对象，输出其面积和周长。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Rectangle.java]{java}{../src/P04/Rectangle.java}
+    \inputminted[label=Main.java]{java}{../src/P04/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P04.out}
+}
+
+\subsection{第 5 题}
+
+\paragraph{题目描述} {
+    创建一个动物类 \mil{Animal}，包含一个 \mil[java]{sound()} 方法，输出 ``动物发出声音''。然后派生出两个子类：\mil{Dog} 和 \mil{Cat}，分别重写 \mil[java]{sound()} 方法，输出 ``汪汪'' 和 ``喵喵''。再创建一个 \mil{Zoo} 类，包含一个静态方法 \mil[java]{makeSound(Animal animal)}，参数为 \mil{Animal} 类型，内部调用该动物的 \mil[java]{sound()} 方法。在测试中，分别传入 \mil{Dog} 和 \mil{Cat} 对象，观察多态行为。要求：体现继承和方法重写。使用向上转型（父类引用指向子类对象）来演示多态。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Animal.java]{java}{../src/P05/Animal.java}
+    \inputminted[label=Dog.java]{java}{../src/P05/Dog.java}
+    \inputminted[label=Cat.java]{java}{../src/P05/Cat.java}
+    \inputminted[label=Zoo.java]{java}{../src/P05/Zoo.java}
+    \inputminted[label=Main.java]{java}{../src/P05/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P05.out}
+}
+
+\subsection{第 6 题}
+
+\paragraph{题目描述} {
+    定义一个抽象类 \mil{Shape}，包含一个抽象方法 \mil[java]{getArea()}。然后派生出两个具体类：\mil{Circle}（圆）和 \mil{Rectangle}（矩形）。\mil{Circle} 有私有属性半径 \mil{radius}，构造方法初始化，实现 \mil[java]{getArea()} 计算圆面积。\mil{Rectangle} 有私有属性长 \mil{length} 和宽 \mil{width}，构造方法初始化，实现 \mil[java]{getArea()} 计算矩形面积。编写测试代码，创建一个 \mil{Shape} 类型的数组，存储不同的形状对象，遍历数组输出每个形状的面积。要求：抽象类 \mil{Shape} 不能实例化。子类必须实现 \mil[java]{getArea()} 方法。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Shape.java]{java}{../src/P06/Shape.java}
+    \inputminted[label=Circle.java]{java}{../src/P06/Circle.java}
+    \inputminted[label=Rectangle.java]{java}{../src/P06/Rectangle.java}
+    \inputminted[label=Main.java]{java}{../src/P06/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P06.out}
+}
+
+\subsection{第 7 题}
+
+\paragraph{题目描述} {
+    设计一个银行账户类 \mil{BankAccount}，包含以下特性：
+    \begin{itemize}
+        \item 私有属性：账户号 \mil{accountNumber}（字符串）、账户余额 \mil{balance}（\mil[java]{double}）。
+        \item 静态属性：年利率 \mil{annualInterestRate}（\mil[java]{double}），所有账户共享。
+        \item 提供构造方法初始化账户号（余额默认为 $0$）。
+        \item 提供 \mil[java]{deposit(double amount)} 存款方法，\mil[java]{withdraw(double amount)} 取款方法（余额不足时应提示并拒绝）。
+        \item 提供 \mil[java]{getMonthlyInterest()} 方法，返回月利息（$\text{余额}\times\text{年利率}/12$）。
+        \item 提供静态方法 \mil[java]{setInterestRate(double rate)} 修改年利率。
+        \item 编写测试代码，创建两个账户，分别进行存取款操作，并输出月利息。
+    \end{itemize}
+    要求：保证数据的封装性，属性私有，通过公有方法访问。静态成员属于类而非对象。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=BankAccount.java]{java}{../src/P07/BankAccount.java}
+    \inputminted[label=Main.java]{java}{../src/P07/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P07.out}
+}
+
+\subsection{第 8 题}
+
+\paragraph{题目描述} {
+    设计一个 \mil{Employee} 类，包含私有属性：姓名 \mil{name}、部门 \mil{department}、工资 \mil{salary}。添加一个静态属性 \mil{totalEmployees} 用于统计已创建的员工对象数量。每当创建一个新的员工对象时，\mil{totalEmployees} 自动增加。提供构造方法初始化姓名、部门和工资，以及相应的 \mil{getter} / \mil{setter}。编写测试代码，创建若干个员工对象，输出总员工数。要求：静态变量在类加载时初始化。可以在构造方法中实现计数。尝试实现一个静态方法 \mil[java]{getTotalEmployees()} 返回计数。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Employee.java]{java}{../src/P08/Employee.java}
+    \inputminted[label=Main.java]{java}{../src/P08/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P08.out}
+}
+
+\subsection{第 9 题}
+
+\paragraph{题目描述} {
+    设计两个类：\mil{Book}（书）和 \mil{Library}（图书馆）。\mil{Book} 类包含私有属性：书名 \mil{title}、作者 \mil{author}、ISBN 号 \mil{isbn}。提供构造方法和 \mil{getter}。\mil{Library} 类包含私有属性：图书馆名 \mil{name} 和书籍集合（如数组或列表）。提供以下方法：
+    \begin{itemize}
+        \item \mil[java]{addBook(Book book)}：添加一本书。
+        \item \mil[java]{removeBook(String isbn)}：根据 ISBN 删除一本书。
+        \item \mil[java]{searchByTitle(String title)}：根据书名查找并返回书籍信息（可能多本）。
+        \item \mil[java]{displayBooks()}：输出图书馆内所有书籍信息。
+    \end{itemize}
+    编写测试代码，演示添加、删除、查找和显示功能。要求：体现类之间的组合关系（图书馆包含若干书籍）。注意集合的合理使用（如使用列表）。方法设计符合功能需求。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Book.java]{java}{../src/P09/Book.java}
+    \inputminted[label=Library.java]{java}{../src/P09/Library.java}
+    \inputminted[label=Main.java]{java}{../src/P09/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P09.out}
+}
+
+\subsection{第 10 题}
+
+\paragraph{题目描述} {
+    实现一个日志记录器类 \mil{Logger}，采用单例模式，确保整个程序中只有一个日志记录器实例。该类包含一个方法 \mil[java]{log(String message)}，将消息输出到控制台（可附加时间戳）。要求：构造方法私有化，防止外部创建新实例。提供一个静态方法 \mil[java]{getInstance()} 返回唯一实例。编写测试代码，在多个地方获取 \mil{Logger} 对象并调用 \mil{log} 方法，验证它们是否为同一对象。简单实现即可，重点在于只有一个实例。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Logger.java]{java}{../src/P10/Logger.java}
+    \inputminted[label=Main.java]{java}{../src/P10/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P10.out}
+}
+
+\subsection{第 11 题}
+
+\paragraph{题目描述} {
+    假设有一个支付系统，需要支持多种支付方式：支付宝、微信支付、银行卡支付。设计一个支付接口 \mil{Payment}，包含一个方法 \mil[java]{pay(double amount)}。分别实现三个类 \mil{Alipay}、\mil{WechatPay}、\mil{BankCardPay}，它们都实现 \mil{Payment} 接口，并在各自的 \mil{pay} 方法中输出相应的支付信息（如 ``使用支付宝支付...元''）。然后编写一个支付服务类 \mil{PaymentService}，包含一个方法 \mil[java]{processPayment(Payment payment, double amount)}，该方法接受一个 \mil{Payment} 对象和金额，调用其 \mil{pay} 方法。在测试中，分别创建三种支付对象，传入 \mil{processPayment} 中执行支付。要求：使用接口定义规范，实现类提供具体行为。体现面向接口编程和多态。可扩展性：未来增加新的支付方式不需要修改 \mil{PaymentService}。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Payment.java]{java}{../src/P11/Payment.java}
+    \inputminted[label=Alipay.java]{java}{../src/P11/Alipay.java}
+    \inputminted[label=WechatPay.java]{java}{../src/P11/WechatPay.java}
+    \inputminted[label=BankCardPay.java]{java}{../src/P11/BankCardPay.java}
+    \inputminted[label=PaymentService.java]{java}{../src/P11/PaymentService.java}
+    \inputminted[label=Main.java]{java}{../src/P11/Main.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P11.out}
+}
+
+\appendix
+\section{附录}
+
+\subsection{\mil{mjr.py}}
+\inputminted{python}{../mjr.py}
+
+\end{document}
