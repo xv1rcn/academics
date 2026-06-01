@@ -1,13 +1,28 @@
 % !TeX program = xelatex
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{academics}[2026/04/07 Reusable academics lab report class]
+\ProvidesClass{academics}[2026/06/01 Reusable academics lab report class]
 
+% ---- class loading ----
+
+\PassOptionsToClass{12pt, a4paper}{ctexart}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexart}}
 \ProcessOptions\relax
 \LoadClass{ctexart}
 
-\RequirePackage[margin=2cm]{geometry}
-\RequirePackage{libertine}
+% ---- page & font ----
+
+\RequirePackage[margin=1in]{geometry}
+
+\setmonofont{JetBrainsMonoNerdFont}[
+    Path           = fonts/,
+    Extension      = .ttf,
+    UprightFont    = *-Regular,
+    BoldFont       = *-Bold,
+    ItalicFont     = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+
+% ---- section & paragraph ----
 
 \RequirePackage{titlesec}
 \RequirePackage{zhnumber}
@@ -16,23 +31,37 @@
 \renewcommand{\thesubsection}{\arabic{subsection}}
 
 \setcounter{secnumdepth}{4}
-\renewcommand{\theparagraph}{\thesubsubsection.\arabic{paragraph}}
 \renewcommand{\paragraph}[1]{%
-    \refstepcounter{paragraph}%
-    {\bfseries\theparagraph\quad#1}\par
-    \vspace{2pt}%
+    \par{\bfseries#1}\quad
     \noindent
 }
 
-\RequirePackage{enumitem}	
+% ---- lists & spacing ----
+
+\RequirePackage{enumitem}
 \setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
 \setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
 \linespread{1.2}
+\setlength{\parindent}{2em}
+
+% ---- math & symbols ----
+
+\RequirePackage{dingbat}    % 必须在 amsmath / amssymb 之前，避免 \checkmark 冲突
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{indentfirst}
+
+% ---- code ----
 
 \RequirePackage{minted}
 \setminted{
-    breaklines=true, fontsize=\small, frame=lines,
-    numbers=none, style=bw, tabsize=4
+    breakanywhere, breaklines, breakautoindent=false,
+    breaksymbolindentleft=0pt, breaksymbolindentright=0pt,
+    breaksymbolleft=\raisebox{0.8ex}{\small\reflectbox{\carriagereturn}},
+    breaksymbolright=\small\carriagereturn,
+    breaksymbolsepleft=0pt, breaksymbolsepright=0pt,
+    escapeinside=||, fontsize=\footnotesize,
+    frame=single, framesep=1em, mathescape, style=bw, tabsize=4
 }
 
 \RequirePackage{xparse}
@@ -40,10 +69,32 @@
     \mintinline{#1}{#2}%
 }
 
-\RequirePackage{graphicx}
-\RequirePackage{siunitx}
+% ---- boxes ----
+
+\RequirePackage[breakable]{tcolorbox}
 
 \makeatletter
+
+\tcbset{
+    arc=0pt, boxrule=.8pt, breakable,
+    before upper={\setlength{\parindent}{2em}\par},
+    after upper={\par},
+    width=\dimexpr\linewidth+\@totalleftmargin\relax,
+    enlarge left by=-\@totalleftmargin
+}
+
+\makeatother
+
+% ---- graphics & units ----
+
+\RequirePackage{graphicx}
+\RequirePackage{siunitx}
+\RequirePackage{tikz}
+
+% ---- cover page ----
+
+\makeatletter
+
 \def\academics@coverlabel{实验报告}
 \def\academics@coursecn{}
 \def\academics@courseen{}
@@ -73,12 +124,11 @@
     \begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
         \LARGE{\textbf{\academics@coverlabel}} & \academics@coursecn & \textit{\academics@courseen} \\
     \end{tabular*}\\\\
-    \begin{tabular*}{\textwidth}{l l}
-        \textbf{报告标题: } & \textbf{\academics@reporttitle} \\
-        \textbf{日期: } & \academics@reportdate \\
-        \textbf{姓名: } & \academics@authorname \\
-        \textbf{学号: } & \academics@authorid \\
+    \begin{tabular*}{\textwidth}{@{}p{0.5\textwidth}@{}p{0.5\textwidth}@{}}
+        \textbf{标题: } \textbf{\academics@reporttitle} & \textbf{日期: } \academics@reportdate \\
+        \textbf{姓名: } \academics@authorname & \textbf{学号: } \academics@authorid \\
     \end{tabular*}\\
     \rule[2ex]{\textwidth}{2pt}
 }
+
 \makeatother
