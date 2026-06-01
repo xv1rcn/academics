@@ -7,7 +7,7 @@ public class LogTest {
         logger.warn("磁盘空间不足");
         logger.error("数据库连接失败");
 
-        logger.setAppender(new FileAppender("res/P04_FileAppender.log"));
+        logger.setAppender(new FileAppender("build/P04_FileAppender.log"));
         logger.level(LogLevel.INFO);
         logger.info("用户登录");
         logger.error("支付失败");
