@@ -1,0 +1,234 @@
+\documentclass{academics}
+
+\academicsCourse{Java 与 Web 开发}{Java and Web Development}
+\academicsReport{实验四}{2026 年 4 月 27 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.117.0，NeoVim v0.12.0，openjdk 21.0.10。
+
+\subsection{其他工具}
+
+\LaTeX{}，\mil{mjr.py}。
+
+\section{实验内容}
+
+\subsection{第 1 题}
+
+\paragraph{题目描述} {
+    编写一个 Java 程序，完成以下功能：
+    \begin{itemize}
+        \item 创建一个 \mil[java]{ArrayList<String>}，添加若干字符串元素（例如 \mil[java]{"apple"}, \mil[java]{"banana"}, \mil[java]{"apple"}, \mil[java]{"orange"}, \mil[java]{"grape"}, \mil[java]{"banana"}, \mil[java]{"apple"}）。
+        \item 删除指定元素（例如删除所有 \mil[java]{"banana"}），并输出删除后的列表。
+        \item 遍历列表，统计每个元素出现的次数，并以 \mil[java]{Map<String, Integer>} 形式输出统计结果（例如 \mil[java]{{apple=3, orange=1, grape=1}}）。
+    \end{itemize}
+    要求使用 \mil{Iterator} 或增强 for 循环遍历，并考虑删除元素时避免 \mil{ConcurrentModificationException}。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=ListAnalyzer.java]{java}{../src/P01/ListAnalyzer.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P01.out}
+}
+
+\subsection{第 2 题}
+
+\paragraph{题目描述} {
+    给定一个整数数组 \mil[java]{int[] numbers = { 5, 2, 8, 2, 5, 3, 1, 8, 9 }}。
+    \begin{itemize}
+        \item 使用 \mil{HashSet} 去除数组中的重复元素，并将去重后的元素存储到一个新的 \mil[java]{List<Integer>} 中。
+        \item 使用 \mil[java]{Collections.sort()} 对去重后的元素进行升序排序，并输出排序结果。
+        \item 要求比较使用 \mil{HashSet} 和 \mil{TreeSet} 两种方式的差异（例如排序的时机和元素的存储结构）。
+    \end{itemize}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=HashSetSort.java]{java}{../src/P02/HashSetSort.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P02.out}
+}
+
+\subsection{第 3 题}
+
+\paragraph{题目描述} {
+    从控制台输入一段英文文本（例如 \mil[java]{"hello world hello java world java programming"}），使用 \mil{Scanner} 读取一行。编写程序统计每个单词出现的次数（忽略大小写，标点符号暂不考虑），并按单词的字母顺序输出统计结果。要求：
+    \begin{itemize}
+        \item 使用 \mil[java]{HashMap<String, Integer>} 存储单词与次数。
+        \item 输出格式：每个单词一行，例如 \mil{hello: 2}。
+        \item 最后输出总单词数（不重复的单词个数）。
+    \end{itemize}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=WordCount.java]{java}{../src/P03/WordCount.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P03.out}
+}
+
+\subsection{第 4 题}
+
+\paragraph{题目描述} {
+    定义一个学生类 \mil{Student}，包含属性：学号 \mil{id}（\mil{int}）、姓名 \mil{name}（\mil{String}）、成绩 \mil{score}（\mil{double}）。
+    在 \mil{main} 方法中创建一个 \mil[java]{List<Student>}，添加若干学生对象。要求：
+    \begin{itemize}
+        \item 先按成绩降序排序（成绩高的在前），如果成绩相同则按学号升序排序。
+        \item 使用 \mil[java]{Collections.sort()} 和自定义 \mil{Comparator} 实现。
+        \item 输出排序后的学生信息（每个学生一行）。
+        \item 扩展：尝试使用 Lambda 表达式简化 \mil{Comparator} 的编写。
+    \end{itemize}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Student.java]{java}{../src/P04/Student.java}
+    \inputminted[label=StudentSort.java]{java}{../src/P04/StudentSort.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P04.out}
+}
+
+\subsection{第 5 题}
+
+\paragraph{题目描述} {
+    创建一个 \mil[java]{ArrayList<Integer>}，添加 $1$ 到 $10$ 的整数。使用 \mil{Iterator} 遍历该列表，在遍历过程中删除所有偶数元素。遍历结束后，输出剩余元素（应为奇数）。要求：
+    \begin{itemize}
+        \item 必须使用 \mil{Iterator} 的 \mil[java]{remove()} 方法，不得使用普通的 for 循环或增强 for 循环（否则会引发并发修改异常）。
+        \item 分别在删除前后输出列表内容。
+    \end{itemize}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=IteratorRemove.java]{java}{../src/P05/IteratorRemove.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P05.out}
+}
+
+\subsection{第 6 题}
+
+\paragraph{题目描述} {
+    编写一个方法 \mil[java]{public static List<Integer> arrayToList(int[] arr)}，将整数数组转换为 \mil[java]{List<Integer>}。
+    再编写一个方法 \mil[java]{public static int[] listToArray(List<Integer> list)}，将 \mil[java]{List<Integer>} 转换为 \mil[java]{int[]} 数组。
+    在 \mil{main} 方法中测试这两个方法：
+    \begin{itemize}
+        \item 创建一个 \mil[java]{int[]} 数组 \mil[java]{{ 10, 20, 30, 40, 50 }}，转换为 List 后，向 List 中添加一个新元素 $60$，然后将 List 转回数组，输出新数组内容。
+        \item 注意处理基本类型数组与包装类的转换。
+    \end{itemize}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=ArrayToList.java]{java}{../src/P06/ArrayToList.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P06.out}
+}
+
+\subsection{第 7 题}
+
+\paragraph{题目描述} {
+    有一个 \mil[java]{List<String>} 存储若干字符串，例如：\mil[java]{{"apple", "banana", "cherry", "date", "elderberry", "fig", "grape"}}。要求：
+    \begin{itemize}
+        \item 找出所有长度大于等于 $5$ 的字符串，并存入一个新的 List 中。
+        \item 找出第一个以字母 \mil{'e'} 开头的字符串，如果存在则输出，否则输出``未找到''。
+        \item 判断列表中是否所有字符串都包含字母 \mil{'a'}，并输出结果。
+    \end{itemize}
+    使用 Java 8 Stream API 或传统循环方式均可。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=ListFilter.java]{java}{../src/P07/ListFilter.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P07.out}
+}
+
+\subsection{第 8 题}
+
+\paragraph{题目描述} {
+    定义两个 \mil[java]{HashSet<Integer>}：
+    \begin{itemize}
+        \item \mil{setA} 包含元素 $\{ 1, 2, 3, 4, 5 \}$
+        \item \mil{setB} 包含元素 $\{ 4, 5, 6, 7, 8 \}$
+    \end{itemize}
+    分别计算：
+    \begin{itemize}
+        \item 并集（$A \cup B$）
+        \item 交集（$A \cap B$）
+        \item 差集（$A - B$，即属于 $A$ 但不属于 $B$ 的元素）
+        \item 对称差（$A \cup B$ 减去 $A \cap B$）
+    \end{itemize}
+    要求使用 \mil{Set} 接口提供的方法（如 \mil{addAll}, \mil{retainAll}, \mil{removeAll}）实现，并输出结果。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=SetOperations.java]{java}{../src/P08/SetOperations.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P08.out}
+}
+
+\subsection{第 9 题}
+
+\paragraph{题目描述} {
+    创建一个 \mil[java]{HashMap<String, Integer>}，放入若干键值对（例如 $5$ 个以上）。分别使用以下四种方式遍历 Map，并输出所有键值对：
+    \begin{itemize}
+        \item 方式一：使用 \mil[java]{keySet()} 遍历键，再通过键获取值。
+        \item 方式二：使用 \mil[java]{entrySet()} 遍历键值对。
+        \item 方式三：使用 \mil[java]{values()} 遍历所有值（仅输出值）。
+        \item 方式四：使用 Java 8 的 \mil{forEach} 方法（Lambda 表达式）。
+    \end{itemize}
+    在遍历过程中，统计每种方式执行的时间（使用 \mil[java]{System.nanoTime()} 大致比较），并讨论哪种方式效率最高（理论上 \mil{entrySet()} 通常较快）。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=MapTraverse.java]{java}{../src/P09/MapTraverse.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P09.out}
+}
+
+\subsection{第 10 题}
+
+\paragraph{题目描述} {
+    使用 \mil{LinkedList} 实现一个简单的队列（Queue）数据结构。要求：
+    \begin{itemize}
+        \item 创建一个 \mil[java]{Queue<String>} 对象（使用 \mil{LinkedList} 实现）。
+        \item 向队列中添加（\mil{offer}）若干个字符串元素（例如：\mil[java]{"任务1"}, \mil[java]{"任务2"}, \mil[java]{"任务3"}）。
+        \item 从队列中取出（\mil{poll}）元素并输出，直到队列为空。
+        \item 演示队列的先进先出（FIFO）特性。
+        \item 在取出元素之前，使用 \mil{peek()} 方法查看队首元素但不移除。
+        \item 输出队列的大小和是否为空的状态。
+    \end{itemize}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=QueueDemo.java]{java}{../src/P10/QueueDemo.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P10.out}
+}
+
+\end{document}

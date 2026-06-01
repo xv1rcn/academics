@@ -1,0 +1,3 @@
+删除前列表: [apple, banana, apple, orange, grape, banana, apple]
+删除后列表: [apple, apple, orange, grape, apple]
+元素频次: {orange=1, apple=3, grape=1}

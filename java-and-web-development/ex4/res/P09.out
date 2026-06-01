@@ -1,0 +1,59 @@
+=== HashMap遍历方式对比 ===
+
+1. keySet + get 遍历结果:
+  成都 -> Chengdu
+  上海 -> Shanghai
+  广州 -> Guangzhou
+  杭州 -> Hangzhou
+  武汉 -> Wuhan
+  北京 -> Beijing
+  深圳 -> Shenzhen
+  南京 -> Nanjing
+  耗时: 0.0224 ms
+
+2. entrySet 遍历结果:
+  成都 -> Chengdu
+  上海 -> Shanghai
+  广州 -> Guangzhou
+  杭州 -> Hangzhou
+  武汉 -> Wuhan
+  北京 -> Beijing
+  深圳 -> Shenzhen
+  南京 -> Nanjing
+  耗时: 0.0136 ms
+
+3. values 遍历结果(仅值):
+  Chengdu
+  Shanghai
+  Guangzhou
+  Hangzhou
+  Wuhan
+  Beijing
+  Shenzhen
+  Nanjing
+  耗时: 0.0198 ms
+
+4. Lambda forEach 遍历结果:
+  成都 -> Chengdu
+  上海 -> Shanghai
+  广州 -> Guangzhou
+  杭州 -> Hangzhou
+  武汉 -> Wuhan
+  北京 -> Beijing
+  深圳 -> Shenzhen
+  南京 -> Nanjing
+  耗时: 0.4410 ms
+
+=== 大规模遍历性能对比(50万次) ===
+
+1. keySet + get:   26.48 ms
+2. entrySet:       16.39 ms
+3. values:         14.51 ms
+4. Lambda forEach: 5.88 ms
+
+=== 效率分析 ===
+entrySet 遍历效率最高,直接访问内部Entry对象,避免额外hash查找。
+keySet+get 效率最低,因为每次get()都需重新计算hashCode并查找桶位。
+values 遍历仅访问值集合,结构最简单,仅需值时优先使用。
+Lambda forEach 语法简洁,底层基于entrySet实现,性能与entrySet接近。
+推荐:需要键值对时使用entrySet,仅需值时使用values,追求简洁使用Lambda forEach。
