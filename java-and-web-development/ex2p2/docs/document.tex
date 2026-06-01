@@ -1,0 +1,363 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage[margin=2cm]{geometry}
+\usepackage{libertine}
+
+\usepackage{titlesec}
+\usepackage{zhnumber}
+\titleformat*{\section}{\Large\bfseries\raggedright}
+\renewcommand{\thesection}{\zhnum{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\setcounter{secnumdepth}{4}
+\renewcommand{\paragraph}[1]{
+    \par{\bfseries#1}\quad
+    \noindent
+}
+
+\usepackage{enumitem}
+\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
+\linespread{1.2}
+
+\usepackage{dingbat}
+\usepackage{minted}
+\setminted{
+    breakanywhere, breaklines, breakautoindent=false,
+    breaksymbolindentleft=0pt, breaksymbolindentright=0pt,
+    breaksymbolleft=\raisebox{0.8ex}{\small\reflectbox{\carriagereturn}},
+    breaksymbolright=\small\carriagereturn,
+    breaksymbolsepleft=0pt, breaksymbolsepright=0pt,
+    escapeinside=||, fontsize=\footnotesize,
+    frame=single, framesep=1em, mathescape, style=bw, tabsize=4
+}
+\usepackage{xparse}
+\NewDocumentCommand{\mil}{ O{text} m }{ %
+    \mintinline{#1}{#2} %
+}
+
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage{tikz}
+
+\begin{document}
+
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\noindent
+\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
+    \LARGE{\textbf{实验报告}} & Java 与 Web 开发 & \textit{Java and Web Development} \\
+\end{tabular*}\\\\
+\begin{tabular*}{\textwidth}{l l}
+    \textbf{报告标题: } & \textbf{实验二\quad 第二部分} \\
+    \textbf{学号: } & 19240212 \\
+    \textbf{姓名: } & 华博文 \\
+    \textbf{日期: } & 2026 年 4 月 13 日 \\
+\end{tabular*}\\
+\rule[2ex]{\textwidth}{2pt}
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.117.0，NeoVim v0.12.0，openjdk 21.0.10。
+
+\subsection{其他工具}
+
+\LaTeX{}，\mil{mjr.py}。
+
+\section{实验内容}
+
+\subsection{第 1 题}
+
+\paragraph{题目描述} {
+    设计一个图形绘制系统，支持多种图形（如圆形、矩形、三角形）。每种图形都可以计算面积、周长，并支持绘制（输出形状信息）。系统需要能够统一处理所有图形，并支持未来扩展新的图形类型（如椭圆、菱形）。
+
+    定义一个抽象类 \mil{Shape}，包含：
+    \begin{itemize}
+        \item 抽象方法 \mil[java]{double area()}
+        \item 抽象方法 \mil[java]{double perimeter()}
+        \item 抽象方法 \mil[java]{void draw()}（输出图形名称及关键尺寸，例如 ``Circle with radius 5.0''）
+        \item 一个具体方法 \mil[java]{void printInfo()}，打印面积和周长（调用上述抽象方法）。
+    \end{itemize}
+    实现三个具体子类：\mil{Circle}（半径）、\mil{Rectangle}（宽、高）、\mil{Triangle}（三边长度，需验证是否构成三角形，不构成则抛出异常）。在 \mil{Triangle} 类中，利用构造器进行边长的合法性检查（三角形两边之和大于第三边）。
+
+    编写一个测试类 \mil{DrawingApp}，其中：创建一个 \mil{Shape} 数组，存放不同图形实例；遍历数组，调用每个图形的 \mil[java]{printInfo()} 和 \mil[java]{draw()} 方法；利用多态体现统一行为。
+
+    额外要求：为 \mil{Shape} 添加一个静态方法 \mil[java]{Shape createShape(String type, double... params)}，根据类型字符串（如 \mil{"circle"}）和参数列表返回对应的图形对象（使用简单工厂模式思想）。该方法需要处理非法类型和参数数量不匹配的情况。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Shape.java]{java}{../src/P01/Shape.java}
+    \inputminted[label=Circle.java]{java}{../src/P01/Circle.java}
+    \inputminted[label=Rectangle.java]{java}{../src/P01/Rectangle.java}
+    \inputminted[label=Triangle.java]{java}{../src/P01/Triangle.java}
+    \inputminted[label=DrawingApp.java]{java}{../src/P01/DrawingApp.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P01.out}
+}
+
+\subsection{第 2 题}
+
+\paragraph{题目描述} {
+    设计一个媒体播放器框架，支持播放不同类型的媒体文件（音频、视频）。播放器需要实现基本的播放、暂停、停止功能，同时有些高级播放器还支持字幕显示和变速播放。要求通过接口实现能力的组合，并利用接口的默认方法提供公共逻辑。
+
+    定义 \mil{Playable} 接口，包含：
+    \begin{itemize}
+        \item \mil[java]{void play()}
+        \item \mil[java]{void pause()}
+        \item \mil[java]{void stop()}
+        \item 默认方法 \mil[java]{void displayInfo()}，输出 ``Playing media''。
+    \end{itemize}
+    定义 \mil{SubtitleSupport} 接口，包含 \mil[java]{void loadSubtitle(String subtitleFile)} 和 \mil[java]{void displaySubtitle()}。
+
+    定义 \mil{SpeedControl} 接口，包含 \mil[java]{void setSpeed(double speed)}（速度因子，$1.0$ 为正常）和默认方法 \mil[java]{void doubleSpeed()}，将速度设为 $2.0$（调用 \mil[java]{setSpeed(2.0)}）。
+
+    创建两个类：\mil{AudioPlayer} 实现 \mil{Playable} 接口，重写三个播放方法（输出相应文字），不实现 \mil{SubtitleSupport} 和 \mil{SpeedControl}。\mil{VideoPlayer} 实现 \mil{Playable}、\mil{SubtitleSupport}、\mil{SpeedControl} 三个接口，并提供具体实现，额外增加一个方法 \mil[java]{void setBrightness(int level)}（\mil{VideoPlayer} 独有）。
+
+    编写测试类 \mil{MediaCenter}，其中：创建一个 \mil{Playable} 数组，包含 \mil{AudioPlayer} 和 \mil{VideoPlayer} 对象；遍历数组，调用 \mil[java]{play()}、\mil[java]{pause()}、\mil[java]{stop()} 以及 \mil[java]{displayInfo()}，观察多态行为；对于支持 \mil{SpeedControl} 的对象，利用 \mil[java]{instanceof} 判断后调用 \mil[java]{doubleSpeed()}；对于 \mil{VideoPlayer} 对象，调用其特有的 \mil[java]{setBrightness} 方法（需类型转换）。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Playable.java]{java}{../src/P02/Playable.java}
+    \inputminted[label=SubtitleSupport.java]{java}{../src/P02/SubtitleSupport.java}
+    \inputminted[label=SpeedControl.java]{java}{../src/P02/SpeedControl.java}
+    \inputminted[label=AudioPlayer.java]{java}{../src/P02/AudioPlayer.java}
+    \inputminted[label=VideoPlayer.java]{java}{../src/P02/VideoPlayer.java}
+    \inputminted[label=MediaCenter.java]{java}{../src/P02/MediaCenter.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P02.out}
+}
+
+\subsection{第 3 题}
+
+\paragraph{题目描述} {
+    某公司员工分为普通员工（\mil{Employee}）和管理者（\mil{Manager}）。所有员工都有姓名、工号、基本工资。管理者除了基本工资外，还有绩效奖金。公司需要能够计算所有员工的实际工资（普通员工 $=$ 基本工资；管理者 $=$ 基本工资 $+$ 奖金）。此外，公司要求所有员工都能提供工作描述，但描述方式不同（普通员工返回 ``doing operational tasks''，管理者返回 ``managing team''）。另外，有些员工（仅管理者）需要实现 \mil{StockOption} 接口，表示拥有股票期权。
+
+    定义抽象类 \mil{Staff}，包含：属性 \mil{name}、\mil{id}、\mil{baseSalary}；构造器、\mil{getter}/\mil{setter}；抽象方法 \mil[java]{double getActualSalary()}；抽象方法 \mil[java]{String getWorkDescription()}；具体方法 \mil[java]{void printInfo()}，打印姓名、工号和实际工资（调用抽象方法）。
+
+    定义 \mil{StockOption} 接口，包含 \mil[java]{void grantOptions(int numberOfShares)} 和 \mil[java]{int getOutstandingOptions()}。
+
+    实现子类：\mil{Employee}（普通员工）实现 \mil[java]{getActualSalary} 返回 \mil{baseSalary}，实现 \mil[java]{getWorkDescription} 返回固定描述。\mil{Manager} 继承 \mil{Staff} 并实现 \mil{StockOption} 接口，新增属性 \mil{bonus}（奖金），实现 \mil[java]{getActualSalary} 返回 $\text{\mil{baseSalary}} + \text{\mil{bonus}}$，\mil[java]{getWorkDescription} 返回管理描述，并实现 \mil{StockOption} 中的方法（记录授予的期权数）。
+
+    编写测试类 \mil{Company}，其中：创建 \mil{Staff} 数组，包含普通员工和管理者对象各若干；遍历数组，调用 \mil[java]{printInfo()} 和 \mil[java]{getWorkDescription()}，观察多态效果；对于实现了 \mil{StockOption} 的对象（通过 \mil[java]{instanceof} 判断），调用 \mil[java]{grantOptions(1000)} 并打印剩余期权数。
+
+    附加要求：在 \mil{Manager} 中重写 \mil[java]{printInfo()} 方法，先调用父类的 \mil[java]{printInfo()}，然后额外打印奖金金额。请说明方法重写的规则以及如何显式调用父类方法。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Staff.java]{java}{../src/P03/Staff.java}
+    \inputminted[label=Employee.java]{java}{../src/P03/Employee.java}
+    \inputminted[label=Manager.java]{java}{../src/P03/Manager.java}
+    \inputminted[label=StockOption.java]{java}{../src/P03/StockOption.java}
+    \inputminted[label=Company.java]{java}{../src/P03/Company.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P03.out}
+}
+
+\subsection{第 4 题}
+
+\paragraph{题目描述} {
+    系统需要支持多种日志输出方式（控制台、文件、数据库）。日志记录器可以输出不同级别（\mil{INFO}、\mil{WARN}、\mil{ERROR}）的日志，并支持格式化（如添加时间戳、线程名）。要求通过接口实现日志输出策略，并允许动态切换日志目标。
+
+    定义 \mil{LogAppender} 接口，包含 \mil[java]{void append(String message)} 方法。实现三个具体类：\mil{ConsoleAppender}（输出到 \mil{System.out}）、\mil{FileAppender}（写入指定文件，需处理 \mil{IOException}）、\mil{NullAppender}（什么都不做，用于测试）。
+
+    定义枚举 \mil{LogLevel}：\mil{INFO}、\mil{WARN}、\mil{ERROR}。
+
+    定义 \mil{Logger} 类，包含：一个 \mil{LogAppender} 引用（可组合）；一个 \mil{LogLevel} 阈值，低于此级别的日志不输出；方法 \mil[java]{void setAppender(LogAppender appender)} 支持动态切换；方法 \mil[java]{void log(LogLevel level, String message)}，根据阈值决定是否输出，输出前调用 \mil{formatMessage} 添加时间戳和级别。
+
+    提供便利方法 \mil[java]{info()}、\mil[java]{warn()}、\mil[java]{error()}。支持链式调用或构建器模式创建 \mil{Logger} 实例。
+
+    编写测试，演示切换 \mil{appender} 和级别过滤。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=LogAppender.java]{java}{../src/P04/LogAppender.java}
+    \inputminted[label=ConsoleAppender.java]{java}{../src/P04/ConsoleAppender.java}
+    \inputminted[label=FileAppender.java]{java}{../src/P04/FileAppender.java}
+    \inputminted[label=NullAppender.java]{java}{../src/P04/NullAppender.java}
+    \inputminted[label=LogLevel.java]{java}{../src/P04/LogLevel.java}
+    \inputminted[label=Logger.java]{java}{../src/P04/Logger.java}
+    \inputminted[label=LogTest.java]{java}{../src/P04/LogTest.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P04.out}
+}
+
+\subsection{第 5 题}
+
+\paragraph{题目描述} {
+    设计一个动物叫声模拟器，支持多种动物（猫、狗、牛等）。每种动物发出不同的叫声，并且可以获取动物类型。要求能够通过配置文件或简单工厂创建动物，并利用多态统一调用叫声方法。另外，需要支持动物分组（如哺乳动物、鸟类），不同分组可能有共同的行为（如哺乳动物喂奶，但叫声仍然不同）。
+
+    定义抽象类 \mil{Animal}，包含：抽象方法 \mil[java]{void makeSound()}；抽象方法 \mil[java]{String getType()}；具体方法 \mil[java]{void eat()}（输出 ``Eating...''）。
+
+    定义两个接口：\mil{Mammal} 包含 \mil[java]{void feedMilk()}；\mil{Bird} 包含 \mil[java]{void fly()}。
+
+    创建具体类：\mil{Dog} 继承 \mil{Animal} 实现 \mil{Mammal}；\mil{Cat} 继承 \mil{Animal} 实现 \mil{Mammal}；\mil{Cow} 继承 \mil{Animal} 实现 \mil{Mammal}；\mil{Sparrow} 继承 \mil{Animal} 实现 \mil{Bird}。实现 \mil[java]{makeSound} 输出不同叫声（如 ``Woof''、``Meow''、``Moo''、``Chirp''）。
+
+    实现一个简单工厂 \mil{AnimalFactory}，根据字符串参数（如 \mil{"dog"}）返回对应的 \mil{Animal} 实例。工厂方法应支持注册新动物（使用 \mil{Map} 存储创建逻辑）。
+
+    编写测试，创建一个 \mil{Animal} 列表，遍历调用 \mil[java]{makeSound}，并对实现 \mil{Mammal} 的对象调用 \mil[java]{feedMilk}（使用 \mil[java]{instanceof} 判断），对 \mil{Bird} 调用 \mil[java]{fly}。
+
+    附加：在 \mil{Animal} 中添加静态方法 \mil[java]{Animal createByName(String name)} 利用工厂方法，展示多态与工厂的结合。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Animal.java]{java}{../src/P05/Animal.java}
+    \inputminted[label=Mammal.java]{java}{../src/P05/Mammal.java}
+    \inputminted[label=Bird.java]{java}{../src/P05/Bird.java}
+    \inputminted[label=Dog.java]{java}{../src/P05/Dog.java}
+    \inputminted[label=Cat.java]{java}{../src/P05/Cat.java}
+    \inputminted[label=Cow.java]{java}{../src/P05/Cow.java}
+    \inputminted[label=Sparrow.java]{java}{../src/P05/Sparrow.java}
+    \inputminted[label=AnimalFactory.java]{java}{../src/P05/AnimalFactory.java}
+    \inputminted[label=AnimalSimulator.java]{java}{../src/P05/AnimalSimulator.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P05.out}
+}
+
+\subsection{第 6 题}
+
+\paragraph{题目描述} {
+    设计一个学生成绩管理程序。学生有姓名、学号、三科成绩（语文、数学、英语）。要求能够对学生列表按多种排序规则（总分、单科成绩、学号）进行排序，并且排序规则可以动态指定。同时需要提供一个可扩展的统计接口，能够计算平均分、最高分等。
+
+    定义 \mil{Student} 类，包含属性和构造器、\mil{getter}。实现 \mil{Comparable<Student>} 接口，使其自然排序按总分降序（高分在前）。
+
+    创建多个 \mil{Comparator<Student>} 实现：\mil{ByNameComparator} 按姓名升序；\mil{ByMathScoreComparator} 按数学成绩降序；\mil{ByTotalScoreComparator} 按总分升序（与自然排序相反）。
+
+    定义 \mil{Statistics} 接口，包含方法：\mil[java]{double averageScore(List<Student> students)}；\mil[java]{Student getHighestTotalStudent(List<Student> students)}；\mil[java]{Map<String, Double> getSubjectAverage(List<Student> students)} 返回各科平均分。
+
+    实现一个 \mil{SimpleStatistics} 类实现该接口。编写测试，创建一个学生列表，使用 \mil[java]{Collections.sort()} 分别应用不同的 \mil{Comparator} 和自然排序，打印结果。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Student.java]{java}{../src/P06/Student.java}
+    \inputminted[label=ByNameComparator.java]{java}{../src/P06/ByNameComparator.java}
+    \inputminted[label=ByMathScoreComparator.java]{java}{../src/P06/ByMathScoreComparator.java}
+    \inputminted[label=ByTotalScoreComparator.java]{java}{../src/P06/ByTotalScoreComparator.java}
+    \inputminted[label=Statistics.java]{java}{../src/P06/Statistics.java}
+    \inputminted[label=SimpleStatistics.java]{java}{../src/P06/SimpleStatistics.java}
+    \inputminted[label=StudentSystemTest.java]{java}{../src/P06/StudentSystemTest.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P06.out}
+}
+
+\subsection{第 7 题}
+
+\paragraph{题目描述} {
+    设计一个消息处理系统，消息经过一系列处理器（如验证、日志记录、加密、发送）。每个处理器可以决定是否继续传递给下一个处理器。要求通过抽象类和接口结合实现一个灵活的处理链，支持动态添加/移除处理器。
+
+    定义 \mil{Message} 类，包含 \mil{String content} 和 \mil{Map<String, Object> headers}。
+
+    定义抽象处理器类 \mil{MessageHandler}：属性 \mil{nextHandler}（类型自身）；方法 \mil[java]{void setNext(MessageHandler handler)} 返回 \mil{this}（支持链式设置）；抽象方法 \mil[java]{void handle(Message msg)}；具体方法 \mil[java]{void doNext(Message msg)}：如果 \mil{nextHandler} 不为空，调用其 \mil{handle}。
+
+    实现具体处理器：\mil{ValidationHandler} 检查消息内容非空，否则抛出异常（不再继续）；\mil{LoggingHandler} 打印消息内容和时间戳，然后调用 \mil{doNext}；\mil{EncryptionHandler} 模拟将内容反转（简易加密），然后调用 \mil{doNext}；\mil{SendingHandler} 输出 ``Sending message: xxx''，不调用 \mil{doNext}（作为末端）。
+
+    构建处理器链：\mil[java]{new ValidationHandler().setNext(new LoggingHandler()).setNext(new EncryptionHandler()).setNext(new SendingHandler())}。
+
+    测试链的处理流程，并验证异常处理（如验证失败时后续不执行）。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Message.java]{java}{../src/P07/Message.java}
+    \inputminted[label=MessageHandler.java]{java}{../src/P07/MessageHandler.java}
+    \inputminted[label=ValidationHandler.java]{java}{../src/P07/ValidationHandler.java}
+    \inputminted[label=LoggingHandler.java]{java}{../src/P07/LoggingHandler.java}
+    \inputminted[label=EncryptionHandler.java]{java}{../src/P07/EncryptionHandler.java}
+    \inputminted[label=SendingHandler.java]{java}{../src/P07/SendingHandler.java}
+    \inputminted[label=MessageChainTest.java]{java}{../src/P07/MessageChainTest.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P07.out}
+}
+
+\subsection{第 8 题}
+
+\paragraph{题目描述} {
+    电商系统支持多种支付方式（支付宝、微信、信用卡），同时每个支付方式可以应用不同的优惠策略（如满减、折扣、无优惠）。要求设计一个支付上下文，能够灵活组合支付方式和优惠策略，计算最终支付金额。
+
+    定义 \mil{PaymentMethod} 接口，包含 \mil[java]{void pay(double amount)}。实现具体支付类：\mil{Alipay}、\mil{WechatPay}、\mil{CreditCard}。每个类的 \mil{pay} 方法输出支付渠道和金额。
+
+    定义 \mil{DiscountStrategy} 接口，包含 \mil[java]{double applyDiscount(double originalAmount)}。实现多种策略：\mil{NoDiscountStrategy} 返回原价；\mil{PercentageDiscountStrategy} 按百分比折扣（如 $0.9$ 表示 $9$ 折）；\mil{FixedAmountDiscountStrategy} 固定减免金额（如减 $10$ 元，但不能为负数）；\mil{ThresholdDiscountStrategy} 满减（满 $200$ 减 $20$）。
+
+    定义 \mil{PaymentContext} 类，包含一个 \mil{PaymentMethod} 和一个 \mil{DiscountStrategy}，提供 \mil[java]{void pay(double amount)} 方法，内部先应用折扣，再调用支付。
+
+    使用枚举 \mil{DiscountType} 结合简单工厂，根据类型字符串创建相应的 \mil{DiscountStrategy}。
+
+    编写测试，演示不同组合（如支付宝 $+ 9$ 折，微信 $+$ 满减，信用卡 $+$ 无优惠）。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=PaymentMethod.java]{java}{../src/P08/PaymentMethod.java}
+    \inputminted[label=Alipay.java]{java}{../src/P08/Alipay.java}
+    \inputminted[label=WechatPay.java]{java}{../src/P08/WechatPay.java}
+    \inputminted[label=CreditCard.java]{java}{../src/P08/CreditCard.java}
+    \inputminted[label=DiscountStrategy.java]{java}{../src/P08/DiscountStrategy.java}
+    \inputminted[label=NoDiscountStrategy.java]{java}{../src/P08/NoDiscountStrategy.java}
+    \inputminted[label=PercentageDiscountStrategy.java]{java}{../src/P08/PercentageDiscountStrategy.java}
+    \inputminted[label=FixedAmountDiscountStrategy.java]{java}{../src/P08/FixedAmountDiscountStrategy.java}
+    \inputminted[label=ThresholdDiscountStrategy.java]{java}{../src/P08/ThresholdDiscountStrategy.java}
+    \inputminted[label=DiscountType.java]{java}{../src/P08/DiscountType.java}
+    \inputminted[label=PaymentContext.java]{java}{../src/P08/PaymentContext.java}
+    \inputminted[label=PaymentTest.java]{java}{../src/P08/PaymentTest.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P08.out}
+}
+
+\subsection{第 9 题}
+
+\paragraph{题目描述} {
+    设计一个角色扮演游戏的角色系统。角色可以是战士、法师、弓箭手等。每个角色有基础属性（生命值、魔法值、攻击力），可以装备武器和防具。武器有不同的攻击行为（如剑砍、法杖施法），防具提供防御值。要求通过接口实现装备的通用行为，并支持角色多态。
+
+    定义 \mil{Weapon} 接口，包含 \mil[java]{int attack()}（返回攻击力）和 \mil[java]{String getWeaponType()}。定义 \mil{Armor} 接口，包含 \mil[java]{int defend()}（返回防御力）和 \mil[java]{String getArmorType()}。
+
+    实现具体武器：\mil{Sword}（攻击力 $15$）、\mil{MagicStaff}（攻击力 $12$，额外魔法加成可忽略）、\mil{Bow}（攻击力 $10$）。实现具体防具：\mil{Helmet}（防御 $5$）、\mil{Chestplate}（防御 $10$）、\mil{Shield}（防御 $8$）。
+
+    定义抽象类 \mil{Character}：属性 \mil{name}、\mil{health}、\mil{mana}、\mil{baseAttack}、\mil{weapon}、\mil{armor}；构造器初始化基础值；方法 \mil[java]{equipWeapon(Weapon w)} 和 \mil[java]{equipArmor(Armor a)}；抽象方法 \mil[java]{void specialSkill()}；具体方法 \mil[java]{int getTotalAttack()}（基础攻击 $+$ 武器攻击力）；具体方法 \mil[java]{int getTotalDefense()}（只有防具防御力，基础防御为 $0$）；具体方法 \mil[java]{void takeDamage(int damage)} 减少生命值；具体方法 \mil[java]{void attack(Character target)}：计算伤害（攻击力 $-$ 目标防御力，最小 $1$），调用 \mil[java]{target.takeDamage}，并输出战斗信息。
+
+    实现子类：\mil{Warrior} 实现 \mil{specialSkill} 增加 $20\%$ 攻击力一回合（可简单实现为临时提升下一次攻击）；\mil{Mage} 实现 \mil{specialSkill} 消耗魔法造成额外魔法伤害；\mil{Archer} 实现 \mil{specialSkill} 增加暴击率（可简单实现为双倍伤害）。
+
+    编写测试，创建多个角色，装备武器防具，模拟战斗（互相攻击），展示多态和组合效果。
+
+    附加：保证角色生命值不能为负，并提供 \mil[java]{isAlive()} 方法。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Weapon.java]{java}{../src/P09/Weapon.java}
+    \inputminted[label=Armor.java]{java}{../src/P09/Armor.java}
+    \inputminted[label=Sword.java]{java}{../src/P09/Sword.java}
+    \inputminted[label=MagicStaff.java]{java}{../src/P09/MagicStaff.java}
+    \inputminted[label=Bow.java]{java}{../src/P09/Bow.java}
+    \inputminted[label=Helmet.java]{java}{../src/P09/Helmet.java}
+    \inputminted[label=Chestplate.java]{java}{../src/P09/Chestplate.java}
+    \inputminted[label=Shield.java]{java}{../src/P09/Shield.java}
+    \inputminted[label=Character.java]{java}{../src/P09/Character.java}
+    \inputminted[label=Warrior.java]{java}{../src/P09/Warrior.java}
+    \inputminted[label=Mage.java]{java}{../src/P09/Mage.java}
+    \inputminted[label=Archer.java]{java}{../src/P09/Archer.java}
+    \inputminted[label=BattleTest.java]{java}{../src/P09/BattleTest.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P09.out}
+}
+
+\end{document}
