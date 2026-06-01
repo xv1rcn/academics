@@ -1,0 +1,2 @@
+已将字符串 "ABCD" 的字节数据写入 build/keyboard.dat
+从 build/keyboard.dat 读取的十六进制字节: 41 42 43 44

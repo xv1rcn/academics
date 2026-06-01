@@ -1,0 +1,5 @@
+原始文本 (build/t1.txt):
+abc123def456ghi789xyz012hello345world678java901test234code567end890
+
+提取的数字 (build/t2.txt):
+123 456 789 012 345 678 901 234 567 890

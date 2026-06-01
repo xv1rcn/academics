@@ -1,0 +1,328 @@
+\documentclass{academics}
+
+\academicsCourse{Java 与 Web 开发}{Java and Web Development}
+\academicsReport{实验五}{2026 年 5 月 11 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.117.0，NeoVim v0.12.0，openjdk 21.0.10。
+
+\subsection{其他工具}
+
+\LaTeX{}，\mil{mjr.py}。
+
+\section{实验内容}
+
+\subsection{第 1 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成任意文件的复制。因为任意文件在计算机内部都是二进制形式，故应该使用字节流完成任意文件的复制。为提高性能，可使用 $2$ MB 大小的缓冲区进行复制。程序设计要求：
+    \begin{itemize}
+        \item 设计一个方法：\mil[java]{public static void copyFile(String sourceFile, String destFile)}，完成任意文件的复制。
+        \item 在 \mil{main()} 中调用该方法，完成复制功能。
+    \end{itemize}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=FileCopy.java]{java}{../src/P01/FileCopy.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P01.out}
+}
+
+\subsection{第 2 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：从键盘上输入的任何内容，都以字节方式存储到文件中。如：从键盘上输入的内容是 \mil{A1}，则文件中内容是（十六进制来看）：\mil{41}（第一个字节）\mil{30}（第 $2$ 个字节）。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=KeyboardToFile.java]{java}{../src/P02/KeyboardToFile.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P02.out}
+}
+
+\subsection{第 3 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：随机生成 $100$ 个 \mil{int} 类型的整数值写入文件中，然后再从该文件中读出 \mil{int} 值，首先在屏幕上输出这些整数值，再输出它们的总和及平均值。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=RandomIntFile.java]{java}{../src/P03/RandomIntFile.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P03.out}
+}
+
+\subsection{第 4 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：统计指定文件夹下的子文件夹的总数（递归统计所有层级）、文件总数、文件总的空间大小。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=FolderStats.java]{java}{../src/P04/FolderStats.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P04.out}
+}
+
+\subsection{第 5 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：整个文件夹的移动。如：将文件夹 \mil{c:/abc} 整体移动到文件夹 \mil{d:/def} 下，即：文件夹 \mil{abc} 移到了 \mil{def} 文件夹的下边，成为子文件夹。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=FolderMove.java]{java}{../src/P05/FolderMove.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P05.out}
+}
+
+\subsection{第 6 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：显示输出指定文件夹下的所有的隐藏文件或文件夹。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=HiddenFiles.java]{java}{../src/P06/HiddenFiles.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P06.out}
+}
+
+\subsection{第 7 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：显示输出指定文件夹下的所有的以 \mil{doc} 为扩展名的所有的文件（不是文件夹）。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=DocFiles.java]{java}{../src/P07/DocFiles.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P07.out}
+}
+
+\subsection{第 8 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：输出本平台字符流中所采用的默认的汉字字符集名称。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=DefaultCharset.java]{java}{../src/P08/DefaultCharset.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P08.out}
+}
+
+\subsection{第 9 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：将一个采用默认汉字字符集的文本文件中每一个字符在屏幕中输出。说明：在计算机的记事本中输入汉字，使用默认编码（记事本中的 ANSI）存盘成文本文件来测试。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=DefaultCharsetFile.java]{java}{../src/P09/DefaultCharsetFile.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P09.out}
+}
+
+\subsection{第 10 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：将一个采用 UTF-8 字符集的文本文件中每一个字符在屏幕中输出。说明：在计算机的记事本中输入汉字，使用 UTF-8 编码存盘成文本文件来测试。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=UTF8File.java]{java}{../src/P10/UTF8File.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P10.out}
+}
+
+\subsection{第 11 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：将一个采用默认字符集的文本文件内容在屏幕中输出，要求每次读取一个文本行，然后输出该文本行的方式进行。说明：在计算机的记事本中输入汉字，使用默认编码（记事本中的 ANSI）存盘成文本文件来测试。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=ReadLineFile.java]{java}{../src/P11/ReadLineFile.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P11.out}
+}
+
+\subsection{第 12 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：将一个采用默认字符集的文本文件中的所有的数值全部抽取出来，并存放到另个一个文本文件中。如：文本文件 \mil{t1.txt} 中内容是 \mil{g%^897HJKHjkhui897*()()89_)_l;,m67,as;l45m,l4;m 3674iJh*&*89njj90 12eas d23  45mk90}，将文件中的数值全部抽取出来，放到文本文件 \mil{t2.txt} 中：
+    \mil{897  897  89  l  67  l45  l4  3674  89  90  12   23  45    90}。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=ExtractNumbers.java]{java}{../src/P12/ExtractNumbers.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P12.out}
+}
+
+\subsection{第 13 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：学生成绩的统计。设文本文件 \mil{score.txt} 中的内容是：每一行中每个部分的含义是：学号、姓名、语文、数学，每个部分之间用至少一个或以上的空格隔开。如：
+    \begin{minted}{text}
+A001  王平  85   88
+A002  李华  80   76
+A003  蒋新民   72   65
+\end{minted}
+    要求统计出语文、数学的总平均成绩（小数点后边保留 $1$ 位）、每一位学生的总分，写入到文本文件 \mil{result.txt} 中。格式如下：
+    \begin{minted}{text}
+语文平均分：xx.x
+数学平均分：xx.x
+A001  王平  总分：xxx
+A002  李华  总分：xxx
+A003  蒋新民  总分：xxx
+\end{minted}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=ScoreStatistics.java]{java}{../src/P13/ScoreStatistics.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P13.out}
+}
+
+\subsection{第 14 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：将数 $p$ 和数 $s$ 之间的质数写入文本文件 \mil{primes.txt}，要求 $t$ 个质数一行，$p$、$s$ 和 $t$ 从键盘输入。同时计算出每行质数之和，并将这个和也在该行的行尾输出到同一个文本文件中。如：若 $p = 2$、$s = 20$、$t = 3$，则 \mil{primes.txt} 中内容是：
+    \begin{minted}{text}
+2 3 5  10
+7 11 13  31
+17 19  36
+\end{minted}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=PrimeToFile.java]{java}{../src/P14/PrimeToFile.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P14.out}
+}
+
+\subsection{第 15 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：原文件 \mil{data.txt} 内容是：每行的数据个数（即各台设备采集的数据个数）保证是相等的，但一行上的数据个数是不确定的，行的个数（即设备台数）是确定的。如：
+    \begin{minted}{text}
+12  54   67   89   16
+32  63   76   89   21
+87  32   98   56   31
+\end{minted}
+    为了插入到数据库的方便，现要求将其数据向右转 $90^{\circ}$ 后写入文本文件 \mil{data90.txt} 中，即数据变成如下方式（每一列是一台设备的采集数据）：
+    \begin{minted}{text}
+12   32  87
+54   63  32
+67   76  98
+89   89  56
+16   21  31
+\end{minted}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=MatrixTranspose.java]{java}{../src/P15/MatrixTranspose.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P15.out}
+}
+
+\subsection{第 16 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：将所有的十进制表示的三位整数中找出其平方数中有连续的三位数字就是该数本身的数。如：$250$ 的平方数是 $62500$，其 $5$ 位数字中包含 $250$ 在内，因此 $250$ 就是一个要找出的三位数。将结果写入文本文件 \mil{result.txt} 中，格式为：第一列是该数，第二列是该数的平方。
+    \begin{minted}{text}
+100    10000
+250    62500
+xxx    xxxxxx
+\end{minted}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=SquareContains.java]{java}{../src/P16/SquareContains.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P16.out}
+}
+
+\subsection{第 17 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：统计一个文本文件中每一个汉字出现的频率。文本文件 \mil{data.txt} 内容如下（例如）：
+    \begin{minted}{text}
+计算机计算真的很快
+\end{minted}
+    统计结果写入文本文件 \mil{result.txt} 中，如结果如下（按原来的汉字在文本文件中出现的次序输出）：
+    \begin{minted}{text}
+(计,2)(算,2)(机,1)(真,1)(的,1)(很,1)(快,1)
+\end{minted}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=ChineseCharCount.java]{java}{../src/P17/ChineseCharCount.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P17.out}
+}
+
+\subsection{第 18 题}
+
+\paragraph{题目描述} {
+    设计一个 Java 程序，完成：生成 $10$ 个复数对象（复数类的设计在前面作业中已做过），通过对象序列化方式，写入到文件 \mil{complex.ser} 文件中。然后再从该 \mil{complex.ser} 中读入这 $10$ 个复数对象，并在屏幕中输出这些对象。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Complex.java]{java}{../src/P18/Complex.java}
+    \inputminted[label=ComplexSerialize.java]{java}{../src/P18/ComplexSerialize.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P18.out}
+}
+
+\end{document}

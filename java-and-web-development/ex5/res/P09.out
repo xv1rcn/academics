@@ -1,0 +1,4 @@
+已创建文件 build/charset_test.txt ，写入内容：计算机真的很快
+使用FileReader默认编码逐字符读取 build/charset_test.txt ：
+计算机真的很快
+读取完成
