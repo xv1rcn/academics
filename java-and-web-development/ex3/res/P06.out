@@ -1,0 +1,13 @@
+========== 多态数组遍历：父类引用调用readFile() ==========
+--- 第1个对象: Parent ---
+父类Parent.readFile() - 读取文件，可能抛出IOException
+调用成功，无异常发生
+
+--- 第2个对象: Child1 ---
+子类Child1.readFile() - 重写后仅抛出FileNotFoundException
+调用成功，无异常发生
+
+--- 第3个对象: Child2 ---
+子类Child2.readFile() - 重写后不抛出任何异常
+调用成功，无异常发生
+
