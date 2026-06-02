@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 mjr.py : Minimal Java Runner by xv1rcn
+Last updated on Jun. 2, 2026.
 Run `mjr.py --help` for usages.
 """
 
@@ -196,17 +197,13 @@ class JavaCompiler:
         self.javac = Utils.resolve_exec(javac_cmd)
 
     def compile(
-        self, source_files: List[Path], build_dir: Path, sourcepath: Path
+        self, source_files: List[Path], build_dir: Path, sourcepath: Path, classpath: str = ""
     ) -> Optional[str]:
-        cmd = [
-            self.javac,
-            "-encoding",
-            "UTF-8",
-            "-d",
-            str(build_dir),
-            "-sourcepath",
-            str(sourcepath),
-        ] + [str(f) for f in source_files]
+        cmd = [self.javac, "-encoding", "UTF-8"]
+        if classpath:
+            cmd += ["-cp", classpath]
+        cmd += ["-d", str(build_dir), "-sourcepath", str(sourcepath)]
+        cmd += [str(f) for f in source_files]
 
         proc = subprocess.run(
             cmd, check=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
@@ -223,9 +220,12 @@ class JavaRunner:
         self.java = Utils.resolve_exec(java_cmd)
 
     def run(
-        self, main_class: str, classpath: Path, out_path: Optional[Path] = None
+        self, main_class: str, classpath: Path, out_path: Optional[Path] = None, extra_cp: str = ""
     ) -> int:
-        command = [self.java, "-cp", str(classpath), main_class]
+        cp = str(classpath)
+        if extra_cp:
+            cp = cp + ":" + extra_cp
+        command = [self.java, "-cp", cp, main_class]
         return self._pty_run(command, out_path)
 
     @staticmethod
@@ -388,7 +388,7 @@ class Application:
                 Utils.rel_path(f, project.root),
                 Utils.rel_path(class_file, project.root),
             )
-        compile_output = compiler.compile(java_files, build_dir, project.root)
+        compile_output = compiler.compile(java_files, build_dir, project.root, args.cp)
         if compile_output:
             sys.stderr.write(compile_output)
         Output.blank()
@@ -397,7 +397,7 @@ class Application:
         runner = JavaRunner(java_path)
         out_file = self._resolve_out_path(args.out_path)
         Output.run_start(main_class)
-        exit_code = runner.run(main_class, build_dir, out_file)
+        exit_code = runner.run(main_class, build_dir, out_file, args.cp)
         Output.run_end(exit_code, out_file)
         Output.blank()
 
@@ -442,6 +442,7 @@ class Application:
         )
         parser.add_argument("--javac", default="javac", help="javac command or path")
         parser.add_argument("--java", default="java", help="java command or path")
+        parser.add_argument("--cp", default="", help="Extra classpath JARs (colon-separated)")
         return parser.parse_args(argv)
 
     @staticmethod
