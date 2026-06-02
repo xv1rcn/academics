@@ -9,10 +9,10 @@ public class Account {
 
     public synchronized void withdraw(double amount) {
         if (amount > balance) {
-            System.out.printf("余额不足%n");
+            System.out.printf("账户%s 余额不足%n", accountNo);
         } else {
             balance -= amount;
-            System.out.printf("取款成功，当前余额：%.0f%n", (double) balance);
+            System.out.printf("账户%s 取款成功，当前余额：%.0f%n", accountNo, (double) balance);
         }
     }
 
