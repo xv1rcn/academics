@@ -1,0 +1,30 @@
+\begin{tikzpicture}[
+    tnode/.style={
+        circle, thick, draw=gray!60, fill=white,
+        minimum size=24pt, inner sep=0pt,
+        font=\bfseries\footnotesize
+    },
+    ledge/.style={thick},
+    redge/.style={thick},
+    scale=1.1,
+]
+
+% dx = 0.7, dy = 1.2
+\node [tnode] (A) at (0.0, 0.0) {A};
+\node [tnode] (B) at (-0.7,-1.2) {B};
+\node [tnode] (C) at ( 0.7,-1.2) {C};
+\node [tnode] (D) at (-1.4,-2.4) {D};
+\node [tnode] (E) at ( 0.0,-2.4) {E};
+\node [tnode] (F) at ( 1.4,-2.4) {F};
+\node [tnode] (G) at (-0.7,-3.6) {G};
+\node [tnode] (H) at ( 2.1,-3.6) {H};
+
+\draw[ledge] (A) -- (B);
+\draw[redge] (A) -- (C);
+\draw[ledge] (B) -- (D);
+\draw[ledge] (C) -- (E);
+\draw[redge] (C) -- (F);
+\draw[ledge] (E) -- (G);
+\draw[redge] (F) -- (H);
+
+\end{tikzpicture}
