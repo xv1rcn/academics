@@ -1,0 +1,14 @@
+已创建 build/index.html
+服务器已启动，监听端口 8080
+=== 客户端请求测试 ===
+请求: GET /
+HTTP/1.1 200 OK
+Content-Type: text/plain
+
+<h1>欢迎</h1>
+
+请求: GET /nonexist.html
+HTTP/1.1 404 Not Found
+
+404 Not Found
+

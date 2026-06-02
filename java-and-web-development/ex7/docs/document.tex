@@ -1,0 +1,192 @@
+\documentclass{academics}
+
+\academicsCourse{Java 与 Web 开发}{Java and Web Development}
+\academicsReport{实验七}{2026 年 5 月 25 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.117.0，NeoVim v0.12.0，openjdk 21.0.10。
+
+\subsection{其他工具}
+
+\LaTeX{}，\mil{mjr.py}。
+
+\section{实验内容}
+
+\subsection{第 1 题}
+
+\paragraph{题目描述} {
+    实现一个基于 TCP 的简单回显服务：客户端向服务器发送字符串，服务器原样返回（回显）该字符串。要求：
+    \begin{itemize}
+        \item 服务器端：创建 \mil{ServerSocket} 监听指定端口（例如 $8888$）。当客户端连接后，从输入流读取一行字符串，然后通过输出流将同一字符串写回客户端。持续处理直到客户端发送 \mil{"bye"}（不区分大小写），此时关闭当前连接。
+        \item 客户端：连接服务器，从控制台读取用户输入，发送给服务器，并接收回显结果打印到控制台。当用户输入 \mil{"bye"} 时结束会话并关闭连接。
+        \item 要求使用 \mil{BufferedReader} 和 \mil{PrintWriter} 进行文本读写，注意异常处理。
+    \end{itemize}
+    启动服务器，启动多个客户端，验证不同客户端能独立回显，输入 \mil{"bye"} 能正常退出。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=TcpEcho.java]{java}{../src/P01/TcpEcho.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P01.out}
+}
+
+\subsection{第 2 题}
+
+\paragraph{题目描述} {
+    实现基于 UDP 的简单通信：
+    \begin{itemize}
+        \item 服务器端：创建 \mil{DatagramSocket} 绑定指定端口（例如 $9876$）。循环接收客户端发来的数据报，提取内容并打印，然后向客户端回复一个包含 \mil{"ACK"} 的确认数据报。
+        \item 客户端：向服务器发送一条消息（例如 \mil{"Ping"}），记录发送时间。接收服务器的回复，计算并输出往返时间（RTT，单位毫秒）。如果超过 $3$ 秒未收到回复，输出``请求超时''。
+        \item 要求客户端连续发送 $5$ 次，每次间隔 $1$ 秒。
+    \end{itemize}
+    启动服务器后再启动客户端，观察 RTT 输出；停止服务器后，客户端应能处理超时。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=UdpPing.java]{java}{../src/P02/UdpPing.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P02.out}
+}
+
+\subsection{第 3 题}
+
+\paragraph{题目描述} {
+    编写一个多线程 TCP 服务器，可以同时处理多个客户端连接。每个客户端连接后，服务器为该客户端创建一个独立线程，负责与该客户端通信。通信内容为：
+    \begin{itemize}
+        \item 客户端发送一行字符串，服务器将其转换为大写后返回。
+        \item 当客户端发送 \mil{"quit"} 时，关闭该连接。
+    \end{itemize}
+    服务器需要记录当前在线客户端数量，并在控制台输出连接/断开信息。
+    同时启动多个客户端，验证每个客户端都能独立转换大写，且服务器能正确管理连接数。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=MultiTcpServer.java]{java}{../src/P03/MultiTcpServer.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P03.out}
+}
+
+\subsection{第 4 题}
+
+\paragraph{题目描述} {
+    实现一个简单的文件传输系统：
+    \begin{itemize}
+        \item 服务器端：启动后等待客户端命令。命令格式为 \mil{UPLOAD filename} 或 \mil{DOWNLOAD filename}。
+        \begin{itemize}
+            \item 上传：接收客户端发来的文件内容，保存到服务器指定目录（如 \mil{./server\_files/}）。
+            \item 下载：读取服务器指定目录下的文件，发送给客户端。
+        \end{itemize}
+        \item 客户端：通过控制台输入命令，向服务器发送文件或从服务器接收文件。要求支持文件名的合法性检查（文件存在/可写等），并显示传输进度（百分比或字节数）。
+    \end{itemize}
+    使用 \mil{DataInputStream} 和 \mil{DataOutputStream} 传输文件名和文件长度，然后传输文件内容。分别测试上传和下载功能。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=FileTransfer.java]{java}{../src/P04/FileTransfer.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P04.out}
+}
+
+\subsection{第 5 题}
+
+\paragraph{题目描述} {
+    实现一个基于 TCP 的多人聊天室：
+    \begin{itemize}
+        \item 服务器：维护一个客户端 \mil{Socket} 列表。当某个客户端发送消息时，服务器将消息广播给所有其他客户端。消息格式 \mil{[昵称]: 内容}。当客户端退出时，从列表中移除。
+        \item 客户端：启动后首先输入昵称，然后即可发送消息（从控制台输入）。同时独立线程负责接收服务器广播的消息并打印。
+        \item 要求处理客户端意外断开（如网络异常），服务器能正确移除并通知其他用户。
+    \end{itemize}
+    启动多个客户端，验证广播功能；关闭一个客户端，其他客户端应收到下线通知。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=ChatRoom.java]{java}{../src/P05/ChatRoom.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P05.out}
+}
+
+\subsection{第 6 题}
+
+\paragraph{题目描述} {
+    实现一个简化版的 HTTP 服务器，能够处理 GET 请求并返回静态文件或简单响应。要求：
+    \begin{itemize}
+        \item 监听端口（例如 $8080$），接收客户端（浏览器）的 HTTP 请求。
+        \item 解析请求行，获取请求的资源路径（如 \mil{/index.html}）。
+        \item 如果请求路径为 \mil{/}，默认返回 \mil{index.html} 文件内容；如果请求文件存在，返回 \mil{HTTP/1.1 200 OK}，并附带文件内容和正确 \mil{Content-Type}；如果文件不存在，返回 \mil{404 Not Found}。
+        \item 只支持文本文件（如 html、txt、css），且响应头需包含必要的字段。
+    \end{itemize}
+    使用 \mil{ServerSocket} 和 \mil{Socket}，手动构造响应头。在浏览器中访问，应看到 \mil{index.html} 内容；访问不存在的文件，应看到 $404$ 页面。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=HttpServer.java]{java}{../src/P06/HttpServer.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P06.out}
+}
+
+\subsection{第 7 题}
+
+\paragraph{题目描述} {
+    编写一个端口扫描程序，扫描指定主机的 TCP 端口开放情况。要求：
+    \begin{itemize}
+        \item 用户输入目标 IP 地址（或域名）和端口范围（如 $20$--$100$）。
+        \item 程序尝试连接每个端口（使用 \mil{Socket} 连接，设置超时时间 $200$ ms），如果能连接成功，则认为端口开放，记录并输出。
+        \item 采用多线程提高扫描效率，但需控制并发数，避免占用过多资源（可使用线程池，限制最大线程数）。
+        \item 扫描结束后，输出所有开放端口的列表。
+    \end{itemize}
+    扫描本地主机（如 \mil{127.0.0.1}）的常用端口，验证结果是否正确。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=PortScanner.java]{java}{../src/P07/PortScanner.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P07.out}
+}
+
+\subsection{第 8 题}
+
+\paragraph{题目描述} {
+    实现一个 UDP 时间服务器和客户端：
+    \begin{itemize}
+        \item 服务器：接收客户端发送的空数据报（或任意数据），回复当前系统时间（格式 \mil{yyyy-MM-dd HH:mm:ss}）的字符串。
+        \item 客户端：每秒向服务器发送一个请求，接收并打印服务器返回的时间，计算每次请求的往返时间（RTT）。连续运行 $10$ 次后停止。
+    \end{itemize}
+    要求：使用 \mil{DatagramSocket}，注意处理丢包和超时（客户端设置超时时间 $2$ 秒）。
+    服务器返回时间是否正确；模拟网络延迟（如休眠）观察 RTT 变化。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=UdpTimeServer.java]{java}{../src/P08/UdpTimeServer.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P08.out}
+}
+
+\end{document}

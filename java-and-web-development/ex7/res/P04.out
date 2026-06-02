@@ -1,0 +1,11 @@
+文件传输服务器启动，监听端口 9001
+客户端已创建测试文件: build/test.txt
+服务器收到命令: UPLOAD test.txt
+客户端上传文件成功
+服务器已保存文件: test.txt (29 字节)
+服务器收到命令: DOWNLOAD test.txt
+服务器已发送文件: test.txt (29 字节)
+客户端下载文件成功: build/downloaded.txt
+下载内容: hello文件传输测试内容
+验证成功：上传文件与下载文件内容一致
+文件传输完成
