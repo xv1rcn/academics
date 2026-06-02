@@ -1,0 +1,21 @@
+=== 使用PreparedStatement安全查询 ===
+查询年龄在20到25之间的学生:
+  Student{id=3, name='王五', age=21}
+  Student{id=4, name='赵六', age=24}
+
+=== SQL注入测试(不安全方式 - Statement拼接) ===
+尝试注入 "20 OR 1=1" 作为参数:
+  Student{id=1, name='张三', age=16}
+  Student{id=2, name='李四', age=19}
+  Student{id=3, name='王五', age=21}
+  Student{id=4, name='赵六', age=24}
+  Student{id=5, name='孙七', age=28}
+警告: Statement拼接方式返回了所有学生,查询条件被绕过!
+
+=== SQL注入测试(安全方式 - PreparedStatement) ===
+PreparedStatement使用参数化查询,将输入作为数值处理:
+调用 findStudentsByAge(20, 25) 时,?占位符只能接收数值,
+无法注入SQL代码,查询结果严格限制在20到25岁之间.
+  Student{id=3, name='王五', age=21}
+  Student{id=4, name='赵六', age=24}
+PreparedStatement有效防止了SQL注入攻击!

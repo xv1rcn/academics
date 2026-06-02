@@ -1,0 +1,164 @@
+\documentclass{academics}
+
+\academicsCourse{Java 与 Web 开发}{Java and Web Development}
+\academicsReport{实验八}{2026 年 5 月 25 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{编程工具}
+
+Visual Studio Code 1.117.0，NeoVim v0.12.0，openjdk 21.0.10。
+
+\subsection{其他工具}
+
+\LaTeX{}，\mil{mjr.py}，\mil{h2.jar}。
+
+\section{实验内容}
+
+\subsection{第 1 题}
+
+\paragraph{题目描述} {
+    编写一个 Java 程序，使用 JDBC 连接数据库。实现以下功能：
+    \begin{itemize}
+        \item 加载数据库驱动（可省略，新版本 JDBC 自动加载）。
+        \item 使用 \mil{DriverManager} 获取数据库连接，参数包括 URL、用户名、密码。
+        \item 创建一个 \mil{Statement} 对象，执行查询语句 \mil{SELECT * FROM student}（假设存在 \mil{student} 表，包含 \mil{id}、\mil{name}、\mil{age} 等字段）。
+        \item 遍历 \mil{ResultSet} 结果集，输出每一行记录（例如：\mil{id: 1, name: 张三, age: 20}）。
+        \item 在 \mil{finally} 块中正确关闭所有资源（\mil{ResultSet}、\mil{Statement}、\mil{Connection}），确保资源释放。
+    \end{itemize}
+    程序能正确连接数据库并输出所有学生信息，无资源泄漏。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=JdbcQuery.java]{java}{../src/P01/JdbcQuery.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P01.out}
+}
+
+\subsection{第 2 题}
+
+\paragraph{题目描述} {
+    定义一个 \mil{Student} 类（属性：\mil{int id}, \mil{String name}, \mil{int age}），并编写一个方法 \mil{public List<Student> findStudentsByAge(int minAge, int maxAge)}，使用 \mil{PreparedStatement} 查询年龄在 \mil{[minAge, maxAge]} 之间的学生信息。要求：
+    \begin{itemize}
+        \item 方法返回满足条件的学生列表。
+        \item 使用预编译语句防止 SQL 注入。
+        \item 在测试类中调用该方法，传入年龄范围（例如 $20$ 到 $25$），打印查询结果。
+    \end{itemize}
+    验证 SQL 注入防护（例如传入特殊字符串不会破坏 SQL），查询结果正确。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Student.java]{java}{../src/P02/Student.java}
+    \inputminted[label=PreparedQuery.java]{java}{../src/P02/PreparedQuery.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P02.out}
+}
+
+\subsection{第 3 题}
+
+\paragraph{题目描述} {
+    模拟银行转账操作：从账户 $A$ 向账户 $B$ 转账一定金额。数据库中有 \mil{account} 表（字段：\mil{id}, \mil{name}, \mil{balance}），假设已有两条记录。要求：
+    \begin{itemize}
+        \item 编写方法 \mil{public void transfer(int fromId, int toId, double amount)}。
+        \item 使用事务，确保扣减 \mil{from} 账户余额和增加 \mil{to} 账户余额两个操作要么都成功，要么都失败。
+        \item 在转账前检查 \mil{from} 账户余额是否充足，若不足则抛出异常并回滚。
+        \item 演示转账成功和余额不足导致回滚的情况，并输出最终余额。
+    \end{itemize}
+    事务的原子性，转账前后余额总和不变；异常时数据回滚。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=BankTransfer.java]{java}{../src/P03/BankTransfer.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P03.out}
+}
+
+\subsection{第 4 题}
+
+\paragraph{题目描述} {
+    给定一个包含大量学生对象的列表（例如 $10000$ 个学生），使用 JDBC 批处理功能一次性插入到数据库中。要求：
+    \begin{itemize}
+        \item 使用 \mil{PreparedStatement} 的 \mil{addBatch()} 和 \mil{executeBatch()} 方法。
+        \item 每 $1000$ 条提交一次批处理，最后统计插入总耗时。
+        \item 与普通循环逐条插入（每次执行 \mil{executeUpdate()}）进行性能对比，分别输出两种方式的耗时。
+    \end{itemize}
+    批处理能显著提高插入效率，代码正确执行批量插入且无异常。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=BatchInsert.java]{java}{../src/P04/BatchInsert.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P04.out}
+}
+
+\subsection{第 5 题}
+
+\paragraph{题目描述} {
+    实现一个分页查询功能：给定页码 \mil{pageNo} 和每页大小 \mil{pageSize}，查询 \mil{student} 表，返回当前页的数据，并同时获取总记录数以计算总页数。要求：
+    \begin{itemize}
+        \item 编写方法 \mil{public PageResult<Student> getStudentsByPage(int pageNo, int pageSize)}，返回一个自定义 \mil{PageResult} 对象（包含当前页数据列表、总记录数、总页数等）。
+        \item 使用 \mil{LIMIT ?, ?} 数据库分页语法。
+        \item 需要先执行 \mil{SELECT COUNT(*) FROM student} 获取总记录数。
+    \end{itemize}
+    分页结果正确，例如第 $2$ 页每页 $5$ 条应返回第 $6$--$10$ 条记录。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=PageResult.java]{java}{../src/P05/PageResult.java}
+    \inputminted[label=PageQuery.java]{java}{../src/P05/PageQuery.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P05.out}
+}
+
+\subsection{第 6 题}
+
+\paragraph{题目描述} {
+    使用 DAO（数据访问对象）模式设计学生表的 CRUD 操作：
+    \begin{itemize}
+        \item 定义 \mil{Student} 实体类（\mil{id}, \mil{name}, \mil{age}）。
+        \item 定义 \mil{StudentDAO} 接口，包含方法：
+        \begin{itemize}
+            \item \mil{void insert(Student student)}
+            \item \mil{void update(Student student)}
+            \item \mil{void delete(int id)}
+            \item \mil{Student findById(int id)}
+            \item \mil{List<Student> findAll()}
+        \end{itemize}
+        \item 实现 \mil{StudentDAOImpl} 类，使用 JDBC 完成上述操作，并采用连接池管理数据库连接。
+        \item 在测试类中演示每个方法的功能，确保增删改查正确。
+    \end{itemize}
+    代码结构清晰，符合 DAO 模式；连接池配置正确；所有 CRUD 操作正常。
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Student.java]{java}{../src/P06/Student.java}
+    \inputminted[label=StudentDAO.java]{java}{../src/P06/StudentDAO.java}
+    \inputminted[label=StudentDAOImpl.java]{java}{../src/P06/StudentDAOImpl.java}
+    \inputminted[label=SimpleConnectionPool.java]{java}{../src/P06/SimpleConnectionPool.java}
+    \inputminted[label=StudentDaoTest.java]{java}{../src/P06/StudentDaoTest.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P06.out}
+}
+
+\end{document}
