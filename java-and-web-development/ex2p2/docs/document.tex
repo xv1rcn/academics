@@ -1,60 +1,13 @@
-\documentclass[12pt, a4paper]{ctexart}
-\usepackage[margin=2cm]{geometry}
-\usepackage{libertine}
+% !TeX program = xelatex
+\documentclass{academics}
 
-\usepackage{titlesec}
-\usepackage{zhnumber}
-\titleformat*{\section}{\Large\bfseries\raggedright}
-\renewcommand{\thesection}{\zhnum{section}}
-\renewcommand{\thesubsection}{\arabic{subsection}}
-
-\setcounter{secnumdepth}{4}
-\renewcommand{\paragraph}[1]{
-    \par{\bfseries#1}\quad
-    \noindent
-}
-
-\usepackage{enumitem}
-\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
-\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
-\linespread{1.2}
-
-\usepackage{dingbat}
-\usepackage{minted}
-\setminted{
-    breakanywhere, breaklines, breakautoindent=false,
-    breaksymbolindentleft=0pt, breaksymbolindentright=0pt,
-    breaksymbolleft=\raisebox{0.8ex}{\small\reflectbox{\carriagereturn}},
-    breaksymbolright=\small\carriagereturn,
-    breaksymbolsepleft=0pt, breaksymbolsepright=0pt,
-    escapeinside=||, fontsize=\footnotesize,
-    frame=single, framesep=1em, mathescape, style=bw, tabsize=4
-}
-\usepackage{xparse}
-\NewDocumentCommand{\mil}{ O{text} m }{ %
-    \mintinline{#1}{#2} %
-}
-
-\usepackage{graphicx}
-\usepackage{siunitx}
-\usepackage{tikz}
+\academicsCourse{Java 与 Web 开发}{Java and Web Development}
+\academicsReport{实验二\quad 第二部分}{2026 年 4 月 13 日}
+\academicsArthur{华博文}{19240212}
 
 \begin{document}
 
-\pagestyle{plain}
-\thispagestyle{empty}
-
-\noindent
-\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
-    \LARGE{\textbf{实验报告}} & Java 与 Web 开发 & \textit{Java and Web Development} \\
-\end{tabular*}\\\\
-\begin{tabular*}{\textwidth}{l l}
-    \textbf{报告标题: } & \textbf{实验二\quad 第二部分} \\
-    \textbf{学号: } & 19240212 \\
-    \textbf{姓名: } & 华博文 \\
-    \textbf{日期: } & 2026 年 4 月 13 日 \\
-\end{tabular*}\\
-\rule[2ex]{\textwidth}{2pt}
+\makeacademicscover
 
 \section{实验环境}
 

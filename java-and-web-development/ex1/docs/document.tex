@@ -1,164 +1,256 @@
-\documentclass[12pt, a4paper]{ctexart}
-\usepackage[margin=2cm]{geometry}
-\usepackage{libertine}
+\documentclass{academics}
 
-\usepackage{titlesec}
-\usepackage{zhnumber}
-\titleformat*{\section}{\Large\bfseries\raggedright}
-\renewcommand{\thesection}{\zhnum{section}}
-\renewcommand{\thesubsection}{\arabic{subsection}}
-
-\setcounter{secnumdepth}{4}
-\renewcommand{\paragraph}[1]{
-    \par{\bfseries#1}\quad
-    \vspace{2pt}
-    \noindent
-}
-\newcommand{\question}[3]{
-    \paragraph{题目描述} #1
-    \paragraph{程序实现} \inputminted{java}{#2}
-    \paragraph{运行结果} \inputminted{text}{#3}
-}
-
-\usepackage{enumitem}
-\setlist[enumerate]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
-\setlist[itemize]{itemsep=2pt, parsep=0pt, partopsep=0pt, topsep=2pt}
-\linespread{1.2}
-
-\usepackage{minted}
-\setminted{
-    breaklines=true, fontsize=\small, frame=lines,
-    numbers=none, style=bw, tabsize=4
-}
-\usepackage{xparse}
-\NewDocumentCommand{\mil}{ O{text} m }{ %
-  \mintinline{#1}{#2} %
-}
-
-\usepackage{graphicx}
-\usepackage{siunitx}
-\usepackage{tikz}
+\academicsCourse{Java 与 Web 开发}{Java and Web Development}
+\academicsReport{实验一}{2026 年 3 月 9 日}
+\academicsArthur{华博文}{19240212}
 
 \begin{document}
 
-\pagestyle{plain}
-\thispagestyle{empty}
-
-\noindent
-\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
-    \LARGE{\textbf{实验报告}} & Java 与 Web 开发 & \textit{Java and Web Development} \\
-\end{tabular*}\\\\
-\begin{tabular*}{\textwidth}{l l}
-    \textbf{报告标题: } & \textbf{实验一} \\
-    \textbf{学号: } & 19240212 \\
-    \textbf{姓名: } & 华博文 \\
-    \textbf{日期: } & 2026 年 3 月 9 日 \\
-\end{tabular*}\\
-\rule[2ex]{\textwidth}{2pt}
+\makeacademicscover
 
 \section{实验环境}
 
 \subsection{操作系统}
 
-Ubuntu 24.04.3 LTS x86\_64，Linux 6.17.0-14-generic，AMD Ryzen 7 7700 (16) @ 5.3GHz，DDR5。
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
 
 \subsection{编程工具}
 
-NeoVim v0.12.0-dev，openjdk 21.0.10。
+NeoVim v0.12.0，openjdk 21.0.10。
 
 \subsection{其他工具}
 
-\LaTeX{}。
+\LaTeX{}，\mil{mjr.py}。
 
 \section{实验内容}
 
-\subsection{第一部分：基本程序设计（必做题）}
+\subsection{第 1 题}
 
-\subsubsection{第 1 题}
-\question{
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：在屏幕上输出 ``九九乘法表''。
-}{../src/A01/Solution.java}{../res/A01.out}
+}
 
-\subsubsection{第 2 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P01/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P01.out}
+}
+
+\subsection{第 2 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：从键盘上输入 \mil{n} $\left(1\leq\text{n}\leq10\right)$，\mil{t} $\left(4\leq\text{t}\leq8\right)$ 及输入一个字符 \mil{ch}，然后输出一个 ``树'' 形图形。
-}{../src/A02/Solution.java}{../res/A02.out}
+}
 
-\subsubsection{第 3 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P02/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P02.out}
+}
+
+\subsection{第 3 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：已知四个 \mil[java]{byte} 类型的变量 \mil{b1}、\mil{b2}、\mil{b3}、\mil{b4}，它们的值分别是（例如）\mil{0xaa}、\mil{0xbb}、\mil{0xcc}、\mil{0xdd}；现要求将它们拼接成一个 \mil[java]{int} 类型的值（$4$ 个字节），按次序 $b4b3b2b1$ 拼装后，放到 \mil[java]{int i} 变量中，最后打出 \mil[java]{i} 的值。
-}{../src/A03/Solution.java}{../res/A03.out}
+}
 
-\subsubsection{第 4 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[escapeinside=, label=Solution.java]{java}{../src/P03/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P03.out}
+}
+
+\subsection{第 4 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：$1+3+5+\dots+n$ 之和。若 $n$ 是偶数，只加到 $n-1$。若 $n$ 是奇数，则正好加到 $n$ 为止。
-}{../src/A04/Solution.java}{../res/A04.out}
+}
 
-\subsubsection{第 5 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P04/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P04.out}
+}
+
+\subsection{第 5 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：$i+\left(i+1\right)+\left(i+2\right)+\dots+j$ 之和。
-}{../src/A05/Solution.java}{../res/A05.out}
+}
 
-\subsubsection{第 6 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P05/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P05.out}
+}
+
+\subsection{第 6 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：$i+\left(i+k\right)+\left(i+2k\right)+\left(i+3k\right)+\dots+j$ 之和。
-}{../src/A06/Solution.java}{../res/A06.out}
+}
 
-\subsubsection{第 7 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P06/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P06.out}
+}
+
+\subsection{第 7 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：输出 $i\sim j$ 之间所有的质数，每行 $k$ 个。
-}{../src/A07/Solution.java}{../res/A07.out}
+}
 
-\subsubsection{第 8 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P07/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P07.out}
+}
+
+\subsection{第 8 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：输出前 $n$ 个质数，每行 $k$ 个。
-}{../src/A08/Solution.java}{../res/A08.out}
+}
 
-\subsubsection{第 9 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P08/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P08.out}
+}
+
+\subsection{第 9 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：输入正整数 $n$，计算 $$1-\frac{1}{2}+\frac{1}{3}-\frac{1}{4}+\frac{1}{5}-\frac{1}{6}+\dots\pm\frac{1}{n}$$
-}{../src/A09/Solution.java}{../res/A09.out}
+}
 
-\subsection{第二部分：竞赛预备基础题（提高题）}
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P09/Solution.java}
+}
 
-\subsubsection{第 1 题}
-\question{
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P09.out}
+}
+
+\subsection{第 10 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：输入两个正整数 $a$ 和 $b$，输出它们的最大公约数。
-}{../src/B01/Solution.java}{../res/B01.out}
+}
 
-\subsubsection{第 2 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P10/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P10.out}
+}
+
+\subsection{第 11 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：输出所有的形如 $\overline{aabb}$ 的四位平方数 （即前两位数字相等、后两位数字相等、且是平方数）。
-}{../src/B02/Solution.java}{../res/B02.out}
+}
 
-\subsubsection{第 3 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P11/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P11.out}
+}
+
+\subsection{第 12 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：大数计算，求阶乘之和。输入整数 $n$ $\left(n<10^6\right)$，求出 $s=1!+2!+\dots+n!$ 这个很大的和的末 $6$ 位。
-}{../src/B03/Solution.java}{../res/B03.out}
+}
 
-\subsubsection{第 4 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P12/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P12.out}
+}
+
+\subsection{第 13 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：队伍人数。一支队伍，若 $3$ 个一排，则队尾有 $a$ 人 $\left(a<3\right)$，若 $5$ 个一排，则队尾有 $b$ 个 $\left(b<5\right)$，若 $7$ 个一排，则队尾有 $c$ 人 $\left(c<7\right)$。现从键盘上输入 $a$、$b$、$c$ 的值，输出满足该要求的总人数的最小值，或者报告 ``无解''。已知总人数大于等于 $10$ 但小于 $100$。
-}{../src/B04/Solution.java}{../res/B04.out}
+}
 
-\subsubsection{第 5 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P13/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P13.out}
+}
+
+\subsection{第 14 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：用 $1,2,3,\dots,9$ 组成 $3$ 个 $3$ 位数：$\overline{abc}$、$\overline{def}$、$\overline{ghi}$。要求每个数字恰好使用了一次，且 $\overline{abc}:\overline{def}:\overline{ghi}=1:2:3$。输出所有的解。
-}{../src/B05/Solution.java}{../res/B05.out}
+}
 
-\subsubsection{第 6 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P14/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P14.out}
+}
+
+\subsection{第 15 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：输入整数 $n$，输出对应的 ``康特数''。康特数的排列如下：
     \begin{figure}[h]
         \centering\input{cantor_diagram}
     \end{figure}
-}{../src/B06/Solution.java}{../res/B06.out}
+}
 
-\subsubsection{第 7 题}
-\question{
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P15/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P15.out}
+}
+
+\subsection{第 16 题}
+
+\paragraph{题目描述} {
     设计一个 Java 程序，完成：有一群海盗（不多于 $20$ 人）在船上比拼酒量。过程如下：打开一瓶酒，所有在场的人平分喝下，有几个人倒下了；再打开一瓶酒平分，又有倒下的；再次重复，直到开了第 $4$ 瓶酒，坐着的已经所剩无几，海盗船长也在其中。当第 $4$ 瓶酒平分喝下后，大家都倒下了。
-    
+
     等船长醒来，发现海盗船搁浅了。他在航海日志中写道：``昨天，我正好喝了一瓶...奉劝大家，开船不喝酒，喝酒不开船。'' 请你根据这些信息，推断开始有多少人，每一轮喝下来还剩多少人。如果有多个可能的答案，请列出所有答案，每个答案占一行。
-}{../src/B07/Solution.java}{../res/B07.out}
+}
+
+\paragraph{程序实现} {
+    \inputminted[label=Solution.java]{java}{../src/P16/Solution.java}
+}
+
+\paragraph{运行结果} {
+    \inputminted{text}{../res/P16.out}
+}
 
 \end{document}
