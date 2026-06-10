@@ -1,0 +1,1 @@
+../../../.symlink/academics.cls
