@@ -19,7 +19,8 @@
     UprightFont    = *-Regular,
     BoldFont       = *-Bold,
     ItalicFont     = *-Italic,
-    BoldItalicFont = *-BoldItalic
+    BoldItalicFont = *-BoldItalic,
+    Scale          = 0.9
 ]
 
 % ---- section & paragraph ----
@@ -65,8 +66,8 @@
 }
 
 \RequirePackage{xparse}
-\NewDocumentCommand{\mil}{ O{text} }{%
-    \mintinline{#1}%
+\NewDocumentCommand{\mil}{ O{text} m }{%
+    \mintinline[fontsize=auto]{#1}{#2}%
 }
 
 % ---- boxes ----
