@@ -10,6 +10,8 @@ stages:
 mirror-to-github:
   stage: mirror
   image: alpine:latest
+  variables:
+    GIT_DEPTH: 0
   before_script:
     - apk add --no-cache git git-lfs
     - git lfs install
