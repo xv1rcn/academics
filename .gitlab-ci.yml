@@ -3,7 +3,7 @@ stages:
 
 # Mirror HEAD -> main + tags to GitHub
 #
-# Requires variables in GitLab -> Settings -> CI/CD -> Variables:
+# Variables (GitLab -> Settings -> CI/CD -> Variables):
 #   GITHUB_PAT         = github_pat_...    (fine-grained, Contents R/W)
 #   GITHUB_MIRROR_REPO = github.com/xv1rcn/academics.git
 
@@ -12,7 +12,9 @@ mirror-to-github:
   image: alpine:latest
   before_script:
     - apk add --no-cache git git-lfs
+    - git lfs install
   script:
+    - git lfs fetch --all origin
     - git push "https://x-access-token:${GITHUB_PAT}@${GITHUB_MIRROR_REPO}" HEAD:main --tags
   only:
     - main
