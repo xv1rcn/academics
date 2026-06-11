@@ -15,6 +15,6 @@ mirror-to-github:
     - git lfs install
   script:
     - git lfs fetch --all origin
-    - git push "https://x-access-token:${GITHUB_PAT}@${GITHUB_MIRROR_REPO}" HEAD:main --tags
+    - git push --force "https://x-access-token:${GITHUB_PAT}@${GITHUB_MIRROR_REPO}" HEAD:main --tags
   only:
     - main
