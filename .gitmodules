@@ -1,3 +1,6 @@
 [submodule "advanced-programming-language/course-design"]
 	path = advanced-programming-language/course-design
 	url = https://github.com/xv1rcn/genealogy.git
+[submodule "java-and-web-development/course-design"]
+	path = java-and-web-development/course-design
+	url = https://github.com/xv1rcn/clonescope.git
