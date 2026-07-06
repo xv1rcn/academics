@@ -1,0 +1,233 @@
+\documentclass[12pt, a4paper]{academics}
+
+\academicsCourse{数据库原理与应用}{Database Principle and Application}
+\academicsReport{并发控制下的不可重复读实验}{2026 年 6 月 15 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\def\PYGZus{\textunderscore}
+\AtBeginEnvironment{MintedVerbatim}{\catcode`\_=12\relax}
+\setminted{mathescape=false}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{数据库平台}
+
+PostgreSQL 16（Docker 容器，\texttt{postgres:16} 镜像）。
+
+\subsection{文档工具}
+
+\LaTeX{}。
+
+\section{实验目的}
+
+\begin{enumerate}
+    \item 理解数据库管理系统并发控制的基本原理——事务 ACID 特性中隔离性（Isolation）的含义，以及不同隔离级别对数据一致性的影响；
+    \item 掌握 PostgreSQL 中事务隔离级别的设置命令（\texttt{SET TRANSACTION ISOLATION LEVEL}）以及手动事务控制（\texttt{BEGIN}、\texttt{COMMIT}）；
+    \item 通过两个并发事务的交替执行，验证「读已提交」与「可重复读」两种隔离级别下不可重复读现象的表现差异。
+\end{enumerate}
+
+\section{实验内容}
+
+\subsection{环境准备}
+
+本实验需要两个并发的数据库会话分别模拟事务 A 和事务 B。两个终端均关闭自动提交以便手动控制事务边界。
+
+打开两个终端窗口，均执行：
+
+\begin{minted}{bash}
+docker exec -it pg-ex4 psql -U postgres
+\end{minted}
+
+两个终端均执行：
+
+\begin{minted}{sql}
+\set AUTOCOMMIT off
+\end{minted}
+
+\textbf{步骤 1：终端 A 创建测试数据库和表。}建表并提交以确保终端 B 可见。
+
+\begin{minted}[label=终端 A]{sql}
+CREATE DATABASE concurrency_test;
+\c concurrency_test
+
+CREATE TABLE accounts (id INT PRIMARY KEY, bal INT);
+INSERT INTO accounts VALUES (1, 100);
+COMMIT;
+\end{minted}
+
+\begin{minted}{text}
+CREATE DATABASE
+You are now connected to database "concurrency_test" as user "postgres".
+CREATE TABLE
+INSERT 0 1
+COMMIT
+\end{minted}
+
+\textbf{步骤 2：终端 B 连接同一数据库。}
+
+\begin{minted}[label=终端 B]{sql}
+\c concurrency_test
+\end{minted}
+
+\begin{minted}{text}
+You are now connected to database "concurrency_test" as user "postgres".
+\end{minted}
+
+\subsection{实验一：读已提交（Read Committed）下的不可重复读}
+
+PostgreSQL 的默认隔离级别为 Read Committed。在此级别下，一个事务内每次查询都会看到已提交的最新数据——同一事务内两次相同的 SELECT 可能返回不同结果，即不可重复读。
+
+\textbf{步骤 1：事务 A 开始，执行第一次查询。}
+
+\begin{minted}[label=终端 A]{sql}
+BEGIN;
+SELECT * FROM accounts WHERE id = 1;
+\end{minted}
+
+\begin{minted}{text}
+BEGIN
+ id | bal
+----+-----
+  1 | 100
+(1 row)
+\end{minted}
+
+\textbf{步骤 2：事务 B 更新同一行数据并提交。}
+
+\begin{minted}[label=终端 B]{sql}
+BEGIN;
+UPDATE accounts SET bal = 200 WHERE id = 1;
+COMMIT;
+\end{minted}
+
+\begin{minted}{text}
+BEGIN
+UPDATE 1
+COMMIT
+\end{minted}
+
+\textbf{步骤 3：事务 A 执行第二次查询。}
+
+\begin{minted}[label=终端 A]{sql}
+SELECT * FROM accounts WHERE id = 1;
+COMMIT;
+\end{minted}
+
+\begin{minted}{text}
+ id | bal
+----+-----
+  1 | 200
+(1 row)
+COMMIT
+\end{minted}
+
+\textbf{结论：}在 Read Committed 隔离级别下发生了不可重复读——事务 A 内两次相同的查询返回了不同的 \texttt{bal} 值（100 → 200），原因是事务 B 在两次查询之间提交了更新，而 Read Committed 允许读到其他事务已提交的变更。
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{../res/01-read-committed.png}
+\caption{实验一：Read Committed 下发生不可重复读}
+\end{figure}
+
+\subsection{实验二：可重复读（Repeatable Read）下的数据一致性}
+
+PostgreSQL 的 Repeatable Read 隔离级别确保事务内的每次查询看到的是事务开始时刻的快照，即使其他事务提交了修改，当前事务也看不到。
+
+\textbf{步骤 1：恢复初始数据。}
+
+\begin{minted}[label=终端 A]{sql}
+UPDATE accounts SET bal = 100 WHERE id = 1;
+COMMIT;
+\end{minted}
+
+\begin{minted}{text}
+UPDATE 1
+COMMIT
+\end{minted}
+
+\textbf{步骤 2：事务 A 设置隔离级别为 Repeatable Read，执行第一次查询。}
+
+\begin{minted}[label=终端 A]{sql}
+BEGIN;
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+SELECT * FROM accounts WHERE id = 1;
+\end{minted}
+
+\begin{minted}{text}
+BEGIN
+SET
+ id | bal
+----+-----
+  1 | 100
+(1 row)
+\end{minted}
+
+\textbf{步骤 3：事务 B 更新同一行数据并提交。}
+
+\begin{minted}[label=终端 B]{sql}
+BEGIN;
+UPDATE accounts SET bal = 200 WHERE id = 1;
+COMMIT;
+\end{minted}
+
+\begin{minted}{text}
+BEGIN
+UPDATE 1
+COMMIT
+\end{minted}
+
+\textbf{步骤 4：事务 A 执行第二次查询。}
+
+\begin{minted}[label=终端 A]{sql}
+SELECT * FROM accounts WHERE id = 1;
+COMMIT;
+\end{minted}
+
+\begin{minted}{text}
+ id | bal
+----+-----
+  1 | 100
+(1 row)
+COMMIT
+\end{minted}
+
+\textbf{结论：}在 Repeatable Read 隔离级别下，事务 A 的两次查询返回一致的 \texttt{bal=100}，未受事务 B 已提交更新的影响。PostgreSQL 通过快照隔离（Snapshot Isolation）机制实现——事务 A 在整个生命周期中看到的是开始时刻的数据快照。
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{../res/02-repeatable-read.png}
+\caption{实验二：Repeatable Read 下数据保持一致}
+\end{figure}
+
+\section{实验关键点总结}
+
+\begin{enumerate}
+    \item \textbf{隔离级别的语义差异}：Read Committed 保证每次查询看到已提交数据（可能随其他事务提交而变化）；Repeatable Read 保证同一事务内查询结果不变（快照一致性）。前者允许不可重复读，后者不允许。
+    \item \textbf{PostgreSQL 的 MVCC 实现}：Repeatable Read 在 PostgreSQL 中通过多版本并发控制（MVCC）的快照实现——每个事务在开始时获得一个数据快照，后续查询均基于此快照，不受其他事务提交的影响。这与基于锁的并发控制有本质区别。
+    \item \textbf{\texttt{\\set~AUTOCOMMIT~off} 的关键作用}：关闭自动提交后，每条 SQL 不会自动包装为单独事务，必须显式使用 \texttt{BEGIN}/\texttt{COMMIT} 控制事务边界。实验时若忘记关闭 autocommit，\texttt{CREATE TABLE} 和 \texttt{INSERT} 会组成一个未提交的事务，导致终端 B 看不到表。
+    \item \textbf{建表后先 COMMIT 的必要性}：在 \texttt{AUTOCOMMIT off} 模式下，DDL 操作也处于事务中。必须显式 \texttt{COMMIT} 后才能让其他会话看到新建的表和数据，否则终端 B 将报 \texttt{relation "accounts" does not exist}。
+\end{enumerate}
+
+\section{实验过程归纳总结}
+
+本次实验在 PostgreSQL 中验证了两种隔离级别下不可重复读现象的表现差异。回顾这一过程，有以下三点收获。
+
+\textbf{第一，理解并发问题的本质。}不可重复读不是数据库的 bug，而是 Read Committed 隔离级别的设计行为——它在一致性和并发性能之间选择了更偏向并发的一端。选择隔离级别本质上是业务需求决定技术参数的决策过程：金融对账需要 Repeatable Read 甚至 Serializable，而社交媒体计数用 Read Committed 可能就够了。
+
+\textbf{第二，实验时序控制是并发实验的核心。}如果两个终端的事务没有正确交错执行（例如事务 A 在事务 B 提交前就完成了两次 SELECT），则观察不到不可重复读。必须精确控制时序：A BEGIN → A SELECT → B BEGIN → B UPDATE → B COMMIT → A SELECT。这种手动编排是并发控制实验中最基本也最容易出错的环节。
+
+\textbf{第三，AUTOCOMMIT 模式是双刃剑。}关闭自动提交是手动事务控制的必要条件，但也引入了一个陷阱：DDL 操作（CREATE TABLE 等）在 autocommit off 下同样处于事务中，忘记显式 COMMIT 会导致其他会话无法访问新建的表。这一踩坑经历恰好强化了对事务边界的理解——在 PostgreSQL 中，一切皆为事务。
+
+\section{结论}
+
+本实验在 PostgreSQL 平台上通过两个并发事务的交替执行，验证了 Read Committed 隔离级别下的不可重复读现象以及 Repeatable Read 隔离级别下的数据一致性表现。实验表明：（1）在默认的 Read Committed 级别下，事务 A 的两次相同查询返回了不同的值（100 → 200），证实了不可重复读的存在；（2）将隔离级别提升至 Repeatable Read 后，事务 A 的两次查询保持一致（100），不可重复读被消除；（3）PostgreSQL 通过 MVCC 快照机制实现 Repeatable Read，无需加锁阻塞其他事务的写操作，兼顾了一致性与并发性能。本实验也提醒我们，在实际开发中应根据业务场景选择合适的隔离级别——更高的隔离级别提供更强的一致性保证，但也可能引入额外的性能开销。
+
+\end{document}

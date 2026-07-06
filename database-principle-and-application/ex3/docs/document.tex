@@ -1,0 +1,337 @@
+\documentclass[12pt, a4paper]{academics}
+
+\academicsCourse{数据库原理与应用}{Database Principle and Application}
+\academicsReport{Schema 测试}{2026 年 5 月 20 日}
+\academicsArthur{华博文}{19240212}
+
+\begin{document}
+
+\def\PYGZus{\textunderscore}
+\AtBeginEnvironment{MintedVerbatim}{\catcode`\_=12\relax}
+\setminted{mathescape=false}
+
+\makeacademicscover
+
+\section{实验环境}
+
+\subsection{操作系统}
+
+macOS 26.4 arm64，Darwin 25.4.0，Apple M5。
+
+\subsection{数据库平台}
+
+PostgreSQL 16（Docker 容器，\texttt{postgres:16} 镜像）。
+
+\subsection{文档工具}
+
+\LaTeX{}。
+
+\section{实验目的}
+
+\begin{enumerate}
+    \item 理解数据库用户（登录名）与模式（Schema）之间的关系——用户是连接和访问数据库的主体，模式是数据库对象的逻辑容器，两者通过默认模式机制关联；
+    \item 掌握不同登录用户创建数据库对象（表、视图等）时，对象的默认归属模式及命名解析规则；
+    \item 能够区分隐式模式解析（依赖默认模式）与显式模式指定（\texttt{schema\_name.table\_name}）两种命名方式，理解各自的适用场景与潜在冲突。
+\end{enumerate}
+
+\section{实验内容}
+
+\subsection{环境准备}
+
+在数据库管理系统中，用户（User）与模式（Schema）是两个相互关联但独立的概念：
+（1）\textbf{数据库用户}用于连接和访问数据库，每个用户有一个默认模式；
+（2）\textbf{模式}是数据库对象的逻辑容器，独立于用户存在；
+（3）当用户创建对象且未显式指定模式时，对象创建在该用户的默认模式中。
+
+以下在 PostgreSQL 中搭建验证环境——以超级用户 \texttt{postgres} 登录，创建测试用户 \texttt{alice} 和 \texttt{bob}。
+
+\textbf{步骤 1：创建测试用户。}
+
+\begin{minted}{sql}
+CREATE USER alice WITH PASSWORD 'alice123';
+CREATE USER bob   WITH PASSWORD 'bob123';
+\end{minted}
+
+\textbf{步骤 2：为每个用户创建独立模式，并通过 \texttt{search\_path} 设为默认模式。}
+PostgreSQL 没有「创建用户时指定默认模式」的语法，而是通过 \texttt{ALTER USER ... SET search\_path} 间接实现。
+
+\begin{minted}{sql}
+CREATE SCHEMA alice_schema;
+CREATE SCHEMA bob_schema;
+
+ALTER USER alice SET search_path TO alice_schema, public;
+ALTER USER bob   SET search_path TO bob_schema,   public;
+
+GRANT ALL ON SCHEMA alice_schema TO alice;
+GRANT ALL ON SCHEMA bob_schema   TO bob;
+\end{minted}
+
+\textbf{步骤 3：查询系统表确认配置。}
+
+\begin{minted}{sql}
+-- 确认用户的 search_path 配置
+SELECT usename, useconfig
+FROM pg_user
+WHERE usename IN ('alice', 'bob');
+
+-- 确认模式已创建
+SELECT nspname
+FROM pg_namespace
+WHERE nspname LIKE '%schema%';
+\end{minted}
+
+\begin{minted}{text}
+ usename |              useconfig
+---------+--------------------------------------
+ alice   | {"search_path=alice_schema, public"}
+ bob     | {"search_path=bob_schema, public"}
+(2 rows)
+
+      nspname
+--------------------
+ information_schema
+ alice_schema
+ bob_schema
+(3 rows)
+\end{minted}
+
+\textbf{环境就绪。}此时 alice 和 bob 各有独立命名空间，下面按三种方式验证对象命名与归属规则。
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{../res/01-env-start.png}
+\caption{环境准备：启动 PostgreSQL 并创建用户与模式}
+\end{figure}
+
+\subsection{方式一：使用默认模式}
+
+用户创建对象时不显式指定模式名，对象自动解析到默认模式——在 PostgreSQL 中即 \texttt{search\_path} 的首项。
+
+\textbf{步骤 1：以 alice 身份创建表 \texttt{t1}，插入一行数据并查询。}
+
+\begin{minted}{sql}
+-- \c - alice  切换至 alice
+CREATE TABLE t1 (id INT);
+INSERT INTO t1 VALUES (1);
+SELECT *, current_user, current_schema FROM t1;
+\end{minted}
+
+\begin{minted}{text}
+CREATE TABLE
+INSERT 0 1
+ id | current_user | current_schema
+----+--------------+----------------
+  1 | alice        | alice_schema
+(1 row)
+\end{minted}
+
+\textbf{步骤 2：以 bob 身份创建同名表 \texttt{t1}，插入不同数据并查询。}
+
+\begin{minted}{sql}
+-- \c - bob  切换至 bob
+CREATE TABLE t1 (id INT);
+INSERT INTO t1 VALUES (2);
+SELECT *, current_user, current_schema FROM t1;
+\end{minted}
+
+\begin{minted}{text}
+CREATE TABLE
+INSERT 0 1
+ id | current_user | current_schema
+----+--------------+----------------
+  2 | bob          | bob_schema
+(1 row)
+\end{minted}
+
+\textbf{步骤 3：以超级用户视角确认两张 \texttt{t1} 的实际归属。}
+
+\begin{minted}{sql}
+-- \c - postgres  切换至 postgres
+SELECT table_schema, table_name
+FROM information_schema.tables
+WHERE table_name = 't1';
+\end{minted}
+
+\begin{minted}{text}
+ table_schema | table_name
+--------------+------------
+ alice_schema | t1
+ bob_schema   | t1
+(2 rows)
+\end{minted}
+
+\textbf{结论：}默认模式（\texttt{search\_path} 首项）为每个用户提供了独立的命名空间。同名表 \texttt{t1} 分别落在各自模式中，互不冲突。但若多个用户共享同一默认模式（如 \texttt{public}），同名对象将产生冲突——这也是 PostgreSQL 在生产环境中建议收回 \texttt{public} 模式 CREATE 权限的原因。
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{../res/02-method1-verify.png}
+\caption{方式一：使用默认模式——同名表各自归属不同模式}
+\end{figure}
+
+\subsection{方式二：显式指定模式}
+
+使用 \texttt{ schema\_name.table\_name } 语法创建对象，明确归属，不依赖默认模式。
+
+\textbf{步骤 1：以 alice 身份在 \texttt{public} 模式中创建表。}
+PostgreSQL 15+ 默认收回了普通用户对 \texttt{public} 模式的 CREATE 权限，需先由超级用户授权。
+
+\begin{minted}{sql}
+-- \c - postgres  切换至 postgres
+GRANT CREATE ON SCHEMA public TO alice;
+GRANT CREATE ON SCHEMA public TO bob;
+
+-- \c - alice  切换至 alice
+CREATE TABLE public.shared_t (id INT, created_by TEXT DEFAULT current_user);
+INSERT INTO public.shared_t VALUES (1, 'alice');
+SELECT *, current_user, current_schema FROM public.shared_t;
+\end{minted}
+
+\begin{minted}{text}
+CREATE TABLE
+INSERT 0 1
+ id | created_by | current_user | current_schema
+----+------------+--------------+----------------
+  1 | alice      | alice        | alice_schema
+(1 row)
+\end{minted}
+
+\textbf{步骤 2：以 bob 身份跨用户访问 \texttt{public.shared\_t}，并在自己的默认模式中创建同名表。}
+跨用户读取另一用户创建的表需显式授予 SELECT 权限。
+
+\begin{minted}{sql}
+-- \c - alice  切换至 alice
+GRANT SELECT ON public.shared_t TO bob;
+
+-- \c - bob  切换至 bob
+
+-- 跨用户读取 public 模式中的表
+SELECT *, current_user FROM public.shared_t;
+
+-- 在自己的默认模式（bob_schema）中创建同名表
+CREATE TABLE shared_t (id INT);
+INSERT INTO shared_t VALUES (99);
+
+-- 分别查询两处的 shared_t，验证互不冲突
+SELECT 'public.shared_t'     AS source, id FROM public.shared_t
+UNION ALL
+SELECT 'bob_schema.shared_t' AS source, id FROM shared_t;
+\end{minted}
+
+\begin{minted}{text}
+ id | created_by | current_user
+----+------------+--------------
+  1 | alice      | bob
+(1 row)
+
+CREATE TABLE
+INSERT 0 1
+       source        | id
+---------------------+----
+ public.shared_t     |  1
+ bob_schema.shared_t | 99
+(2 rows)
+\end{minted}
+
+\textbf{结论：}显式指定模式可以精确控制对象的归属，且支持跨用户访问同一模式（只要权限允许）。同名表 \texttt{shared\_t} 分别位于 \texttt{public} 和 \texttt{bob\_schema} 中，互不冲突。
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{../res/03-method2.png}
+\caption{方式二：显式指定模式——跨用户访问与同名表隔离}
+\end{figure}
+
+\subsection{方式三：显式授权模式所有权}
+
+\texttt{CREATE SCHEMA ... AUTHORIZATION username} 创建模式并将所有权授予指定用户（该用户可以并非当前执行者），从而观察对象归属与授权模型的交互。
+
+\textbf{步骤 1：以超级用户创建模式并预先授权。}
+使用 \texttt{AUTHORIZATION} 将所有权授予 alice，同时提前为 bob 分配 CREATE 和 USAGE 权限，确保后续流程一步到位。
+
+\begin{minted}{sql}
+-- \c - postgres  切换至 postgres
+CREATE SCHEMA app_schema AUTHORIZATION alice;
+GRANT CREATE, USAGE ON SCHEMA app_schema TO bob;
+
+-- 确认模式的所有权归属
+SELECT n.nspname AS schema_name,
+       r.rolname AS owner
+FROM pg_namespace n
+JOIN pg_roles r ON n.nspowner = r.oid
+WHERE n.nspname = 'app_schema';
+\end{minted}
+
+\begin{minted}{text}
+ schema_name | owner
+-------------+-------
+ app_schema  | alice
+(1 row)
+\end{minted}
+
+\textbf{步骤 2：alice 在授权给自己的模式中创建对象。}
+
+\begin{minted}{sql}
+-- \c - alice  切换至 alice
+CREATE TABLE app_schema.data (id INT, payload TEXT);
+INSERT INTO app_schema.data VALUES (1, 'alice data');
+SELECT * FROM app_schema.data;
+\end{minted}
+
+\begin{minted}{text}
+CREATE TABLE
+INSERT 0 1
+ id |  payload
+----+------------
+  1 | alice data
+(1 row)
+\end{minted}
+
+\textbf{步骤 3：bob 在已获授权的模式中创建对象。}
+
+\begin{minted}{sql}
+-- \c - bob  切换至 bob
+CREATE TABLE app_schema.bob_data (id INT);
+INSERT INTO app_schema.bob_data VALUES (2);
+SELECT * FROM app_schema.bob_data;
+\end{minted}
+
+\begin{minted}{text}
+CREATE TABLE
+INSERT 0 1
+ id
+----
+  2
+(1 row)
+\end{minted}
+
+\textbf{结论：}\texttt{AUTHORIZATION} 子句将模式所有权授予指定用户（而非当前执行者），使 DBA 可以以超级用户身份批量创建模式同时将所有权分配给业务用户。PostgreSQL 中在模式内创建对象需同时拥有 CREATE 和 USAGE 两项权限——前者允许创建对象，后者允许访问模式本身，二者缺一不可。若仅授予 CREATE 而未授予 USAGE，建表可以成功但后续 INSERT 将失败，这一权限分离机制是 PostgreSQL 细粒度访问控制的重要组成部分。
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{../res/04-method3.png}
+\caption{方式三：显式授权模式所有权——权限分离与调试过程}
+\end{figure}
+
+\section{实验关键点总结}
+
+\begin{enumerate}
+    \item \textbf{\texttt{search\_path} 决定命名解析}：PostgreSQL 通过 \texttt{search\_path} 参数决定未限定对象名的解析顺序。默认值为 \texttt{"\$user", public}——优先查找与当前用户同名的模式，其次查找 \texttt{public} 模式。这是同名表共存的基础机制。
+    \item \textbf{模式与用户独立管理}：删除用户不会自动删除其拥有的模式，删除模式也不会删除用户。对象的归属通过系统表 \texttt{pg\_namespace} 和 \texttt{pg\_class} 维护，而非级联关系。
+    \item \textbf{显式模式优于默认模式}：在多人协作场景下，依赖默认模式容易导致命名冲突。显式指定 \texttt{schema\_name.table\_name} 是避免冲突的最可靠方式。
+\end{enumerate}
+
+\section{实验过程归纳总结}
+
+本次实验在 PostgreSQL 中验证了用户与模式的三种关系模型。回顾这一过程，有以下三点收获。
+
+\textbf{第一，SQL 标准与具体实现的差异。}课程教材以 SQL Server 为例讲解默认模式的概念。PostgreSQL 没有「创建用户时指定默认模式」的语法，而是通过 \texttt{ALTER USER ... SET search\_path} 间接实现。这一差异迫使实验者深入阅读 PostgreSQL 文档，而非机械地翻译 Transact-SQL 语句——这本身就是一次有价值的踩坑练习。
+
+\textbf{第二，命名解析是一个搜索路径问题。}表面上看，默认模式只是「用户 → 对象」的一对一映射，但实际上 \texttt{search\_path} 是一个有序列表，对象解析沿此列表逐项尝试。理解这一点后，「同名表如何共存」的问题便迎刃而解——它们位于不同的路径节点上。
+
+\textbf{第三，权限体系与模式归属的解耦。}方式三的实验表明，模式的所有权（\texttt{AUTHORIZATION}）与模式的创建权限（\texttt{CREATE}）是两个独立维度：一个用户可以拥有模式但另一些用户可以被授予在该模式中创建对象的权限。这种解耦为多租户场景中的细粒度权限控制提供了基础。
+
+\section{结论}
+\label{sec:conclusion}
+
+本实验在 PostgreSQL 平台上验证了数据库用户与模式之间的三种核心关系：默认模式归属（方式一）、显式模式指定（方式二）、以及显式授权模式所有权（方式三）。通过创建多用户、配置各自 \texttt{search\_path}、构造同名对象与跨模式访问等测试用例，完整演示了 \texttt{search\_path} 驱动的命名解析机制。实验建议在生产环境中：（1）收回 \texttt{public} 模式的 CREATE 权限，为每个用户创建独立模式；（2）显式指定模式名以消除命名歧义；（3）使用 \texttt{CREATE SCHEMA AUTHORIZATION} 实现所有权与执行者的分离，配合细粒度权限管理。
+
+\end{document}

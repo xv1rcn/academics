@@ -1,0 +1,62 @@
+CREATE TABLE 类别 (
+    类别ID    INT PRIMARY KEY,
+    类别名称  VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE 商品 (
+    商品ID    INT PRIMARY KEY,
+    商品名称  VARCHAR(100) NOT NULL,
+    描述      TEXT,
+    单价      DECIMAL(10,2) NOT NULL,
+    库存数量  INT NOT NULL DEFAULT 0,
+    类别ID    INT NOT NULL,
+    FOREIGN KEY (类别ID) REFERENCES 类别(类别ID)
+);
+
+CREATE TABLE 顾客 (
+    顾客ID    INT PRIMARY KEY,
+    用户名    VARCHAR(50) NOT NULL UNIQUE,
+    密码      VARCHAR(255) NOT NULL,
+    真实姓名  VARCHAR(50) NOT NULL,
+    联系电话  VARCHAR(20)
+);
+
+CREATE TABLE 收货地址 (
+    地址ID    INT PRIMARY KEY,
+    顾客ID    INT NOT NULL,
+    详细地址  VARCHAR(200) NOT NULL,
+    是否默认  TINYINT DEFAULT 0,
+    FOREIGN KEY (顾客ID) REFERENCES 顾客(顾客ID)
+);
+
+CREATE TABLE 购物车项 (
+    购物车项ID INT PRIMARY KEY,
+    顾客ID     INT NOT NULL,
+    商品ID     INT NOT NULL,
+    数量       INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (顾客ID) REFERENCES 顾客(顾客ID),
+    FOREIGN KEY (商品ID) REFERENCES 商品(商品ID)
+);
+
+CREATE TABLE 订单 (
+    订单ID     INT PRIMARY KEY,
+    顾客ID     INT NOT NULL,
+    地址ID     INT NOT NULL,
+    下单时间   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    总金额     DECIMAL(12,2) NOT NULL,
+    支付状态   TINYINT DEFAULT 0,
+    订单状态   TINYINT DEFAULT 0,
+    FOREIGN KEY (顾客ID) REFERENCES 顾客(顾客ID),
+    FOREIGN KEY (地址ID) REFERENCES 收货地址(地址ID)
+);
+
+CREATE TABLE 订单明细 (
+    订单ID     INT NOT NULL,
+    商品ID     INT NOT NULL,
+    商品名称   VARCHAR(100) NOT NULL,
+    单价       DECIMAL(10,2) NOT NULL,
+    数量       INT NOT NULL,
+    PRIMARY KEY (订单ID, 商品ID),
+    FOREIGN KEY (订单ID) REFERENCES 订单(订单ID),
+    FOREIGN KEY (商品ID) REFERENCES 商品(商品ID)
+);

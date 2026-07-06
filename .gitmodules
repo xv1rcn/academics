@@ -4,3 +4,6 @@
 [submodule "java-and-web-development/course-design"]
 	path = java-and-web-development/course-design
 	url = https://github.com/xv1rcn/clonescope.git
+[submodule "database-principle-and-application/course-design"]
+	path = database-principle-and-application/course-design
+	url = https://github.com/xv1rcn/medqueue.git
